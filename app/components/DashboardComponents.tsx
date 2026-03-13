@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { 
   Calendar as CalendarIcon, 
@@ -33,27 +33,41 @@ import {
   scheduleItems 
 } from '@/lib/mockData';
 
-export const Sparkline = ({ data, color }: any) => (
-  <ResponsiveContainer width="100%" height={60}>
-    <AreaChart data={data}>
-      <defs>
-        <linearGradient id={`gradient-${color}`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="5%" stopColor={color} stopOpacity={0.3}/>
-          <stop offset="95%" stopColor={color} stopOpacity={0}/>
-        </linearGradient>
-      </defs>
-      <Area 
-        type="monotone" 
-        dataKey="value" 
-        stroke={color} 
-        strokeWidth={2} 
-        fillOpacity={1} 
-        fill={`url(#gradient-${color})`} 
-        isAnimationActive={true}
-      />
-    </AreaChart>
-  </ResponsiveContainer>
-);
+// Custom hook to handle hydration
+const useMounted = () => {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  return mounted;
+};
+
+export const Sparkline = ({ data, color }: any) => {
+  const mounted = useMounted();
+  if (!mounted) return <div className="h-[60px] w-full" />;
+
+  return (
+    <div className="h-[60px] w-full">
+      <ResponsiveContainer width="100%" height="100%">
+        <AreaChart data={data}>
+          <defs>
+            <linearGradient id={`gradient-${color}`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor={color} stopOpacity={0.3}/>
+              <stop offset="95%" stopColor={color} stopOpacity={0}/>
+            </linearGradient>
+          </defs>
+          <Area 
+            type="monotone" 
+            dataKey="value" 
+            stroke={color} 
+            strokeWidth={2} 
+            fillOpacity={1} 
+            fill={`url(#gradient-${color})`} 
+            isAnimationActive={true}
+          />
+        </AreaChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
 
 export const StatCard = ({ title, value, total, percentage, isPositive, data, color }: any) => (
   <motion.div 
@@ -80,70 +94,79 @@ export const StatCard = ({ title, value, total, percentage, isPositive, data, co
   </motion.div>
 );
 
-export const SaleHistory = () => (
-  <motion.div 
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ delay: 0.1 }}
-    className="glass-card p-6"
-  >
-    <div className="flex items-center justify-between mb-8">
-      <div>
-        <h3 className="text-lg font-bold mb-1">Sale History</h3>
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-1.5">
-            <div className="w-2 h-2 rounded-full bg-neon-pink" />
-            <span className="text-[10px] text-white/50">Avg: Sell Price</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <div className="w-2 h-2 rounded-full bg-yellow-400" />
-            <span className="text-[10px] text-white/50">Total Sell</span>
+export const SaleHistory = () => {
+  const mounted = useMounted();
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.1 }}
+      className="glass-card p-6"
+    >
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h3 className="text-lg font-bold mb-1">Sale History</h3>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-1.5">
+              <div className="w-2 h-2 rounded-full bg-neon-pink" />
+              <span className="text-[10px] text-white/50">Avg: Sell Price</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <div className="w-2 h-2 rounded-full bg-yellow-400" />
+              <span className="text-[10px] text-white/50">Total Sell</span>
+            </div>
           </div>
         </div>
+        <div className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg border border-white/5 cursor-pointer hover:bg-white/10 transition-colors">
+          <span className="text-xs text-white/70">Apr 25 - Apr 29</span>
+          <CalendarIcon size={14} className="text-white/30" />
+        </div>
       </div>
-      <div className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg border border-white/5 cursor-pointer hover:bg-white/10 transition-colors">
-        <span className="text-xs text-white/70">Apr 25 - Apr 29</span>
-        <CalendarIcon size={14} className="text-white/30" />
-      </div>
-    </div>
 
-    <div className="h-[280px] w-full">
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={saleHistoryData} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
-          <XAxis 
-            dataKey="name" 
-            axisLine={false} 
-            tickLine={false} 
-            tick={{ fill: 'rgba(255,255,255,0.3)', fontSize: 10 }} 
-            dy={10}
-          />
-          <YAxis 
-            axisLine={false} 
-            tickLine={false} 
-            tick={{ fill: 'rgba(255,255,255,0.3)', fontSize: 10 }}
-            tickFormatter={(value) => `${value}%`}
-          />
-          <Tooltip 
-            cursor={{ fill: 'rgba(255,255,255,0.05)' }}
-            contentStyle={{ backgroundColor: '#161922', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }}
-            itemStyle={{ fontSize: '12px' }}
-          />
-          <Bar dataKey="avg" radius={[4, 4, 0, 0]} barSize={12}>
-            {saleHistoryData.map((entry: any, index) => (
-              <Cell key={`cell-${index}`} fill={entry.active ? '#FF00D6' : 'rgba(255,255,255,0.1)'} className={entry.active ? "neon-glow-pink" : ""} />
-            ))}
-          </Bar>
-          <Bar dataKey="total" radius={[4, 4, 0, 0]} barSize={12}>
-            {saleHistoryData.map((entry: any, index) => (
-              <Cell key={`cell-${index}`} fill={entry.active ? '#FACC15' : 'rgba(255,255,255,0.05)'} />
-            ))}
-          </Bar>
-        </BarChart>
-      </ResponsiveContainer>
-    </div>
-  </motion.div>
-);
+      <div className="h-[280px] w-full">
+        {mounted ? (
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={saleHistoryData} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
+              <XAxis 
+                dataKey="name" 
+                axisLine={false} 
+                tickLine={false} 
+                tick={{ fill: 'rgba(255,255,255,0.3)', fontSize: 10 }} 
+                dy={10}
+              />
+              <YAxis 
+                axisLine={false} 
+                tickLine={false} 
+                tick={{ fill: 'rgba(255,255,255,0.3)', fontSize: 10 }}
+                tickFormatter={(value) => `${value}%`}
+              />
+              <Tooltip 
+                cursor={{ fill: 'rgba(255,255,255,0.05)' }}
+                contentStyle={{ backgroundColor: '#161922', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }}
+                itemStyle={{ fontSize: '12px' }}
+              />
+              <Bar dataKey="avg" radius={[4, 4, 0, 0]} barSize={12}>
+                {saleHistoryData.map((entry: any, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.active ? '#FF00D6' : 'rgba(255,255,255,0.1)'} className={entry.active ? "neon-glow-pink" : ""} />
+                ))}
+              </Bar>
+              <Bar dataKey="total" radius={[4, 4, 0, 0]} barSize={12}>
+                {saleHistoryData.map((entry: any, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.active ? '#FACC15' : 'rgba(255,255,255,0.05)'} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        ) : (
+          <div className="w-full h-full bg-white/5 animate-pulse rounded-lg" />
+        )}
+      </div>
+    </motion.div>
+  );
+};
+
 
 export const TopPeopleTable = () => (
   <motion.div 
@@ -205,6 +228,7 @@ export const TopPeopleTable = () => (
 );
 
 export const ProductHighlight = () => {
+  const mounted = useMounted();
   const data = [
     { name: 'Pink', value: 40, color: '#FF00D6' },
     { name: 'Purple', value: 30, color: '#9D00FF' },
@@ -218,27 +242,32 @@ export const ProductHighlight = () => {
       </div>
 
       <div className="relative h-40 flex items-center justify-center mb-6">
-        <ResponsiveContainer width="100%" height="100%">
-          <PieChart>
-            <Pie
-              data={data}
-              cx="50%"
-              cy="100%"
-              startAngle={180}
-              endAngle={0}
-              innerRadius={60}
-              outerRadius={80}
-              paddingAngle={5}
-              dataKey="value"
-              stroke="none"
-            >
-              {data.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.color} />
-              ))}
-            </Pie>
-          </PieChart>
-        </ResponsiveContainer>
+        {mounted ? (
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={data}
+                cx="50%"
+                cy="100%"
+                startAngle={180}
+                endAngle={0}
+                innerRadius={60}
+                outerRadius={80}
+                paddingAngle={5}
+                dataKey="value"
+                stroke="none"
+              >
+                {data.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Pie>
+            </PieChart>
+          </ResponsiveContainer>
+        ) : (
+          <div className="w-full h-full bg-white/5 animate-pulse rounded-lg" />
+        )}
         <div className="absolute bottom-0 text-center">
+
           <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center mx-auto mb-1">
             <span className="text-white font-bold text-xs">P</span>
           </div>
