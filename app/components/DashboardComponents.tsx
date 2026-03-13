@@ -1,34 +1,16 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
+'use client';
 
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import React from 'react';
+import { motion } from 'motion/react';
 import { 
-  LayoutDashboard, 
-  FileText, 
-  CheckSquare, 
-  BarChart3, 
-  CreditCard, 
   Calendar as CalendarIcon, 
-  Bell, 
-  MessageSquare, 
-  User, 
-  Building2, 
-  Folder, 
-  Settings, 
-  Grid2X2, 
-  Search, 
-  Sun, 
-  ChevronDown, 
-  Command,
   MoreHorizontal,
   Phone,
   Plus,
   ChevronLeft,
   ChevronRight,
-  Lock
+  CheckSquare,
+  BarChart3
 } from 'lucide-react';
 import { 
   AreaChart, 
@@ -44,128 +26,14 @@ import {
   PieChart,
   Pie
 } from 'recharts';
-import { cn } from './lib/utils';
+import { cn } from '@/lib/utils';
 import { 
-  taskProgressData, 
-  taskExpensesData, 
   saleHistoryData, 
   topPeople, 
   scheduleItems 
-} from './lib/mockData';
+} from '@/lib/mockData';
 
-// --- Components ---
-
-const SidebarItem = ({ icon: Icon, label, active = false, hasSubmenu = false }: any) => (
-  <div className={cn(
-    "flex items-center justify-between px-4 py-2.5 rounded-xl cursor-pointer transition-all duration-200 group",
-    active ? "bg-neon-pink text-white neon-glow-pink" : "text-white/50 hover:text-white hover:bg-white/5"
-  )}>
-    <div className="flex items-center gap-3">
-      <Icon size={18} className={cn(active ? "text-white" : "group-hover:text-white")} />
-      <span className="text-sm font-medium">{label}</span>
-    </div>
-    {hasSubmenu && <ChevronDown size={14} className={active ? "text-white" : "text-white/30"} />}
-  </div>
-);
-
-const Sidebar = () => (
-  <aside className="w-64 h-screen flex flex-col border-r border-white/5 p-6 overflow-y-auto">
-    <div className="flex items-center gap-2 mb-10">
-      <div className="w-8 h-8 bg-neon-pink rounded-lg flex items-center justify-center neon-glow-pink">
-        <div className="w-4 h-4 border-2 border-white rotate-45" />
-      </div>
-      <h1 className="text-xl font-bold tracking-tight">Sass Admin</h1>
-      <div className="ml-auto flex gap-1">
-        <ChevronLeft size={16} className="text-white/30" />
-        <ChevronRight size={16} className="text-white/30" />
-      </div>
-    </div>
-
-    <div className="space-y-6 flex-1">
-      <div>
-        <p className="text-[10px] uppercase tracking-widest text-white/30 font-bold mb-4 px-4">Menu</p>
-        <nav className="space-y-1">
-          <SidebarItem icon={LayoutDashboard} label="Dashboard" active />
-          <SidebarItem icon={FileText} label="Notes" />
-          <SidebarItem icon={CheckSquare} label="Task" />
-          <SidebarItem icon={BarChart3} label="Analytics" />
-          <SidebarItem icon={CreditCard} label="Subscription" hasSubmenu />
-          <SidebarItem icon={CalendarIcon} label="Calendar" />
-          <SidebarItem icon={Bell} label="Notification" />
-          <SidebarItem icon={MessageSquare} label="Messages" />
-          <SidebarItem icon={User} label="User" />
-          <SidebarItem icon={Building2} label="Companies" />
-          <SidebarItem icon={Folder} label="File Manager" />
-        </nav>
-      </div>
-
-      <div>
-        <p className="text-[10px] uppercase tracking-widest text-white/30 font-bold mb-4 px-4">Support</p>
-        <nav className="space-y-1">
-          <SidebarItem icon={Settings} label="Settings" />
-          <SidebarItem icon={Grid2X2} label="Integrations" />
-        </nav>
-      </div>
-    </div>
-
-    <div className="mt-10 p-4 glass-card relative overflow-hidden">
-      <div className="relative z-10">
-        <h3 className="text-xs font-bold mb-1">Sasste Pro. Subsection</h3>
-        <p className="text-[10px] text-white/50 mb-4 leading-relaxed">Get All Dashboards access and 300+ use pre-ready tools.</p>
-        <button className="w-full py-2 bg-white text-obsidian rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-neon-pink hover:text-white transition-colors group">
-          Upgrade pro <Lock size={12} className="group-hover:text-white" />
-        </button>
-      </div>
-      <div className="absolute -bottom-4 -right-4 w-16 h-16 bg-neon-pink/20 blur-2xl rounded-full" />
-    </div>
-  </aside>
-);
-
-const TopBar = () => (
-  <header className="h-20 px-8 flex items-center justify-between border-b border-white/5">
-    <div className="flex-1 max-w-md">
-      <div className="relative group">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30 group-focus-within:text-neon-pink transition-colors" size={18} />
-        <input 
-          type="text" 
-          placeholder="Search" 
-          className="w-full bg-white/5 border border-white/5 rounded-xl py-2 pl-10 pr-12 text-sm focus:outline-none focus:border-neon-pink/50 transition-all"
-        />
-        <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1 px-1.5 py-0.5 bg-white/5 border border-white/10 rounded text-[10px] text-white/30">
-          <Command size={10} />
-          <span>K</span>
-        </div>
-      </div>
-    </div>
-
-    <div className="flex items-center gap-4">
-      <div className="flex items-center gap-2">
-        <button className="p-2 hover:bg-white/5 rounded-lg transition-colors text-white/50 hover:text-white">
-          <Sun size={20} />
-        </button>
-        <button className="p-2 hover:bg-white/5 rounded-lg transition-colors text-white/50 hover:text-white relative">
-          <Bell size={20} />
-          <span className="absolute top-2 right-2 w-2 h-2 bg-neon-pink rounded-full border-2 border-obsidian" />
-        </button>
-        <button className="p-2 hover:bg-white/5 rounded-lg transition-colors text-white/50 hover:text-white">
-          <MessageSquare size={20} />
-        </button>
-      </div>
-      
-      <div className="h-8 w-[1px] bg-white/10 mx-2" />
-      
-      <div className="flex items-center gap-3 cursor-pointer group">
-        <div className="text-right">
-          <p className="text-sm font-bold group-hover:text-neon-pink transition-colors">Lily Carter</p>
-        </div>
-        <img src="https://picsum.photos/seed/lily/40/40" alt="Avatar" className="w-10 h-10 rounded-xl border border-white/10" referrerPolicy="no-referrer" />
-        <ChevronDown size={16} className="text-white/30" />
-      </div>
-    </div>
-  </header>
-);
-
-const Sparkline = ({ data, color }: any) => (
+export const Sparkline = ({ data, color }: any) => (
   <ResponsiveContainer width="100%" height={60}>
     <AreaChart data={data}>
       <defs>
@@ -187,7 +55,7 @@ const Sparkline = ({ data, color }: any) => (
   </ResponsiveContainer>
 );
 
-const StatCard = ({ title, value, total, percentage, isPositive, data, color }: any) => (
+export const StatCard = ({ title, value, total, percentage, isPositive, data, color }: any) => (
   <motion.div 
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
@@ -212,7 +80,7 @@ const StatCard = ({ title, value, total, percentage, isPositive, data, color }: 
   </motion.div>
 );
 
-const SaleHistory = () => (
+export const SaleHistory = () => (
   <motion.div 
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
@@ -277,7 +145,7 @@ const SaleHistory = () => (
   </motion.div>
 );
 
-const TopPeopleTable = () => (
+export const TopPeopleTable = () => (
   <motion.div 
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
@@ -287,19 +155,8 @@ const TopPeopleTable = () => (
     <div className="flex items-center justify-between mb-6">
       <h3 className="text-lg font-bold">Top People</h3>
       <div className="flex items-center gap-3">
-        <div className="relative">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
-          <input 
-            type="text" 
-            placeholder="Search" 
-            className="bg-white/5 border border-white/5 rounded-lg py-1.5 pl-9 pr-4 text-xs focus:outline-none focus:border-neon-pink/30 w-48"
-          />
-        </div>
         <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg border border-white/5 text-xs text-white/70 hover:bg-white/10">
           <BarChart3 size={14} /> Sort By
-        </button>
-        <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg border border-white/5 text-xs text-white/70 hover:bg-white/10">
-          <Grid2X2 size={14} /> Filter
         </button>
       </div>
     </div>
@@ -308,21 +165,15 @@ const TopPeopleTable = () => (
       <table className="w-full text-left">
         <thead>
           <tr className="border-b border-white/5 text-[10px] uppercase tracking-wider text-white/30">
-            <th className="pb-4 font-bold w-10">
-              <div className="w-4 h-4 border border-white/20 rounded cursor-pointer" />
-            </th>
-            <th className="pb-4 font-bold">Name <ChevronDown size={10} className="inline" /></th>
-            <th className="pb-4 font-bold">Email <ChevronDown size={10} className="inline" /></th>
-            <th className="pb-4 font-bold">Category <ChevronDown size={10} className="inline" /></th>
-            <th className="pb-4 font-bold text-right">Action <ChevronDown size={10} className="inline" /></th>
+            <th className="pb-4 font-bold">Name</th>
+            <th className="pb-4 font-bold">Email</th>
+            <th className="pb-4 font-bold">Category</th>
+            <th className="pb-4 font-bold text-right">Action</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-white/5">
           {topPeople.map((person) => (
             <tr key={person.id} className="group hover:bg-white/5 transition-colors">
-              <td className="py-4">
-                <div className="w-4 h-4 border border-white/20 rounded cursor-pointer group-hover:border-neon-pink" />
-              </td>
               <td className="py-4">
                 <div className="flex items-center gap-3">
                   <img src={person.avatar} alt={person.name} className="w-8 h-8 rounded-lg" referrerPolicy="no-referrer" />
@@ -341,14 +192,9 @@ const TopPeopleTable = () => (
                 </span>
               </td>
               <td className="py-4 text-right">
-                <div className="flex items-center justify-end gap-2">
-                  <button className="flex items-center gap-1.5 px-3 py-1 bg-white/5 border border-white/5 rounded-lg text-[10px] font-bold hover:bg-neon-pink hover:text-white transition-all">
-                    <Phone size={10} /> Call
-                  </button>
-                  <button className="p-1 text-white/30 hover:text-white">
-                    <MoreHorizontal size={14} />
-                  </button>
-                </div>
+                <button className="flex items-center gap-1.5 px-3 py-1 bg-white/5 border border-white/5 rounded-lg text-[10px] font-bold hover:bg-neon-pink hover:text-white transition-all ml-auto">
+                  <Phone size={10} /> Call
+                </button>
               </td>
             </tr>
           ))}
@@ -358,7 +204,7 @@ const TopPeopleTable = () => (
   </motion.div>
 );
 
-const ProductHighlight = () => {
+export const ProductHighlight = () => {
   const data = [
     { name: 'Pink', value: 40, color: '#FF00D6' },
     { name: 'Purple', value: 30, color: '#9D00FF' },
@@ -366,16 +212,9 @@ const ProductHighlight = () => {
   ];
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      className="glass-card p-6"
-    >
+    <div className="glass-card p-6">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-sm font-bold">Product Highlight</h3>
-        <div className="flex items-center gap-1 text-[10px] text-white/50 bg-white/5 px-2 py-1 rounded border border-white/5 cursor-pointer">
-          Monthly <ChevronDown size={10} />
-        </div>
       </div>
 
       <div className="relative h-40 flex items-center justify-center mb-6">
@@ -431,17 +270,12 @@ const ProductHighlight = () => {
           <span className="text-xs font-bold">128</span>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
-const TaskSchedule = () => (
-  <motion.div 
-    initial={{ opacity: 0, x: 20 }}
-    animate={{ opacity: 1, x: 0 }}
-    transition={{ delay: 0.1 }}
-    className="glass-card p-6 mt-6"
-  >
+export const TaskSchedule = () => (
+  <div className="glass-card p-6">
     <h3 className="text-sm font-bold mb-6">Task Schedule</h3>
     
     <div className="bg-white/5 rounded-xl p-4 mb-6">
@@ -473,13 +307,6 @@ const TaskSchedule = () => (
       </div>
     </div>
 
-    <div className="flex items-center justify-between mb-4">
-      <h4 className="text-xs font-bold">April 23, 2024</h4>
-      <button className="text-neon-pink text-[10px] font-bold flex items-center gap-1">
-        <Plus size={10} /> Add New
-      </button>
-    </div>
-
     <div className="space-y-4">
       {scheduleItems.map((item) => (
         <div key={item.id} className="bg-white/5 border border-white/5 rounded-xl p-4 relative group">
@@ -503,81 +330,11 @@ const TaskSchedule = () => (
               {item.attendees.map((a, i) => (
                 <img key={i} src={a} className="w-6 h-6 rounded-full border-2 border-obsidian" referrerPolicy="no-referrer" />
               ))}
-              {item.extraAttendees && (
-                <div className="w-6 h-6 rounded-full bg-white/10 border-2 border-obsidian flex items-center justify-center text-[8px] font-bold">
-                  +{item.extraAttendees}
-                </div>
-              )}
               <span className="ml-4 text-[8px] text-white/50 self-center">People</span>
-            </div>
-            <div className="flex items-center gap-3">
-              {item.todoCount && (
-                <div className="flex items-center gap-1 text-[8px] text-white/30">
-                  <CheckSquare size={10} /> {item.todoCount} Todo List
-                </div>
-              )}
-              {item.duration && (
-                <div className="flex items-center gap-1 text-[8px] text-white/30">
-                  <BarChart3 size={10} /> {item.duration}
-                </div>
-              )}
             </div>
           </div>
         </div>
       ))}
     </div>
-  </motion.div>
+  </div>
 );
-
-// --- Main App ---
-
-export default function App() {
-  return (
-    <div className="flex h-screen bg-obsidian text-white overflow-hidden">
-      <Sidebar />
-      
-      <main className="flex-1 flex flex-col overflow-hidden">
-        <TopBar />
-        
-        <div className="flex-1 overflow-y-auto p-8">
-          <div className="flex gap-8">
-            {/* Left Content */}
-            <div className="flex-[2.5] space-y-8">
-              {/* Top Row Stats */}
-              <div className="flex gap-6">
-                <StatCard 
-                  title="Task Progress" 
-                  value="120" 
-                  total="236" 
-                  percentage="-2.5" 
-                  isPositive={false} 
-                  data={taskProgressData} 
-                  color="#FF00D6" 
-                />
-                <StatCard 
-                  title="Task Expenses" 
-                  value="$6,045" 
-                  total="" 
-                  percentage="25" 
-                  isPositive={true} 
-                  data={taskExpensesData} 
-                  color="#00FFD1" 
-                />
-              </div>
-
-              {/* Charts & Tables */}
-              <SaleHistory />
-              <TopPeopleTable />
-            </div>
-
-            {/* Right Content */}
-            <div className="flex-1 space-y-6">
-              <ProductHighlight />
-              <TaskSchedule />
-            </div>
-          </div>
-        </div>
-      </main>
-    </div>
-  );
-}
