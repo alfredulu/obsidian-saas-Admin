@@ -1,46 +1,48 @@
 @import "tailwindcss";
 
 @theme {
-  --color-obsidian: #0F1117;
-  --color-card: rgba(22, 25, 34, 0.7);
-  --color-neon-pink: #FF00D6;
-  --color-neon-purple: #9D00FF;
-  --color-neon-green: #00FFD1;
+  --color-obsidian: #0A0A0B;
+  --color-neon-pink: #FF2D95;
+  --color-neon-cyan: #00F5FF;
+  --color-neon-purple: #BC13FE;
   
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
   body {
-    @apply bg-obsidian text-white antialiased selection:bg-neon-pink/30;
+    @apply bg-obsidian text-white antialiased;
   }
 }
 
 @layer components {
   .glass-card {
-    @apply bg-card backdrop-blur-xl border border-white/5 rounded-2xl;
+    @apply bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl;
   }
   
   .neon-glow-pink {
-    box-shadow: 0 0 15px rgba(255, 0, 214, 0.4);
+    box-shadow: 0 0 20px rgba(255, 45, 149, 0.3);
   }
   
-  .neon-glow-green {
-    box-shadow: 0 0 15px rgba(0, 255, 209, 0.4);
+  .neon-glow-cyan {
+    box-shadow: 0 0 20px rgba(0, 245, 255, 0.3);
   }
 }
 
-/* Custom scrollbar */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
 }
+
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 10px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.2);
 }

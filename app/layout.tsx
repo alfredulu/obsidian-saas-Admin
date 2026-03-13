@@ -7,8 +7,8 @@ import { TopBar } from "./components/TopBar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Sass Admin Dashboard",
-  description: "Premium SaaS Admin Dashboard built with Next.js",
+  title: "Obsidian SaaS Admin",
+  description: "Premium SaaS Admin Dashboard",
 };
 
 export default function RootLayout({
@@ -18,15 +18,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-obsidian text-white antialiased`}>
-        <div className="flex h-screen overflow-hidden">
+      <body className={inter.className}>
+        <div className="flex h-screen overflow-hidden bg-obsidian">
           <Sidebar />
-          <main className="flex-1 flex flex-col overflow-hidden">
+          <div className="flex flex-col flex-1 overflow-hidden">
             <TopBar />
-            <div className="flex-1 overflow-y-auto p-8">
+            <main className="flex-1 overflow-y-auto p-8">
               {children}
-            </div>
-          </main>
+            </main>
+          </div>
         </div>
       </body>
     </html>
