@@ -34,11 +34,9 @@ const StatCard = ({ icon: Icon, label, value, trend, color }: any) => (
       </div>
       <MoreHorizontal size={16} className="text-white/20" />
     </div>
-    <div className="flex flex-wrap gap-3 items-end mt-2">
-      <h3 className="text-xl sm:text-2xl font-bold leading-tight whitespace-nowrap flex-1 min-w-0">{value}</h3>
-      <div className="flex-shrink-0 text-right w-full sm:w-auto">
-        <span className="text-emerald-400 text-[10px] font-bold whitespace-nowrap">{trend}</span>
-      </div>
+    <div className="mt-2 grid gap-2 items-end sm:grid-cols-[minmax(0,1fr)_auto]">
+      <h3 className="text-xl sm:text-2xl font-bold leading-tight whitespace-nowrap">{value}</h3>
+      <span className="text-emerald-400 text-[10px] font-bold text-right">{trend}</span>
     </div>
   </div>
 );

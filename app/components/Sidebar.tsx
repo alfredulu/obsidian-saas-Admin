@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   LayoutDashboard, 
@@ -52,7 +52,12 @@ const SidebarItem = ({ icon: Icon, label, href, hasSubmenu = false, isActive, is
           <Icon size={18} className={cn("transition-colors", iconColor)} />
           <span className="text-sm font-medium">{label}</span>
         </div>
-        {hasSubmenu && <ChevronDown size={14} className={cn("transition-colors", isActive ? "text-white" : "text-white/30 group-hover:text-white")} />}
+        <div className="flex items-center gap-2">
+          {isNavigating && (
+            <span className="w-3 h-3 border-[2px] border-white/20 border-t-white rounded-full animate-spin" aria-hidden />
+          )}
+          {hasSubmenu && <ChevronDown size={14} className={cn("transition-colors", isActive ? "text-white" : "text-white/30 group-hover:text-white")} />}
+        </div>
       </Link>
     </motion.div>
   );
@@ -60,6 +65,7 @@ const SidebarItem = ({ icon: Icon, label, href, hasSubmenu = false, isActive, is
 export const Sidebar = () => {
   const { isOpen, close } = useSidebar();
   const pathname = usePathname();
+    const router = useRouter();
   const [navigatingHref, setNavigatingHref] = React.useState<string | null>(null);
 
   React.useEffect(() => {
@@ -68,8 +74,28 @@ export const Sidebar = () => {
     }
   }, [pathname, navigatingHref]);
 
-  const handleClick = (href: string) => () => {
+  const handleClick = (href: string) => async (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.metaKey ||
+      event.altKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      href === pathname
+    ) {
+      return;
+    }
+
+    event.preventDefault();
     setNavigatingHref(href);
+    event.currentTarget.blur();
+
+    try {
+      await router.push(href, undefined, { scroll: false });
+    } catch (error) {
+      setNavigatingHref(null);
+    }
   };
 
   const isActive = (href: string) => pathname === href;
