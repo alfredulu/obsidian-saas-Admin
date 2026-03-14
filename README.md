@@ -1,30 +1,100 @@
 # Obsidian SaaS Admin
 
-A premium, high-performance SaaS Admin Dashboard built with Next.js, Tailwind CSS, and Framer Motion.
+Obsidian SaaS Admin is a modern SaaS dashboard built with Next.js, designed to replicate the structure and interaction patterns of real production admin systems.
+
+The project focuses on responsive dashboard architecture, reusable UI components, and modern micro-interaction patterns commonly used in professional SaaS products.
 
 ## Features
 
-- **Responsive Design**: Mobile-first layout with adaptive sidebars and interactive drawers.
-- **Micro-Interactions**: Smooth animations powered by Framer Motion.
-- **Glassmorphism UI**: Modern obsidian-themed interface with backdrop blurs and neon accents.
-- **Real-time Feel**: Optimized components for a seamless user experience.
+Core Dashboard
+• Analytics overview with metric cards and charts
+• Fully responsive dashboard layout
+• Command palette for fast navigation (Ctrl/Cmd + K)
+
+Productivity Tools
+• Kanban-style task management
+• Notes management system
+• Messaging interface with chat layout
+
+Management Interfaces
+• Users management table
+• Companies directory
+• Notifications feed
+• File manager
+
+UX & Interface
+• Toast notification system
+• Skeleton loading states
+• Animated UI micro-interactions with Framer Motion
+• Glassmorphism interface with Obsidian Noir theme
 
 ## Tech Stack
 
-- **Framework**: [Next.js 15+](https://nextjs.org/)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-- **Animations**: [Framer Motion](https://www.framer.com/motion/)
-- **Icons**: [Lucide React](https://lucide.dev/)
+Framework
+Next.js (App Router)
+
+UI
+Tailwind CSS
+Framer Motion
+
+Charts
+Recharts
+
+Icons
+Lucide React
+
+Architecture
+Component-driven UI design
+Reusable UI primitives
+Responsive layout contracts
 
 ## Getting Started
 
-1. Clone the repository.
-2. Install dependencies: `npm install`.
-3. Run the development server: `npm run dev`.
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+Clone the repository
+
+```
+git clone <repo-url>
+```
+
+Install dependencies
+
+```
+npm install
+```
+
+Run development server
+
+```
+npm run dev
+```
+
+Open
+
+```
+http://localhost:3000
+```
 
 ## Project Structure
 
-- `/app`: Next.js App Router (pages, layouts, components).
-- `/lib`: Data and utility functions.
-- `/public`: Static assets.
+```
+/app
+  pages, layouts, and route components
+
+/components
+  reusable UI components
+
+/lib
+  utilities and mock data
+
+/public
+  static assets
+```
+
+## Goals of the Project
+
+This project demonstrates the architecture and interaction patterns used in real SaaS dashboards:
+
+• component-based UI systems
+• responsive admin layouts
+• complex navigation patterns
+• interactive dashboards

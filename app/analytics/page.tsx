@@ -26,15 +26,19 @@ const useMounted = () => {
 const StatCard = ({ icon: Icon, label, value, trend, color }: any) => (
   <div className="glass-card p-6">
     <div className="flex items-center justify-between mb-4">
-      <div className={`p-2 rounded-lg bg-${color}/10 text-${color}`}>
-        <Icon size={20} />
+      <div className="flex items-center gap-3">
+        <div className={`p-2 rounded-lg bg-${color}/10 text-${color}`}>
+          <Icon size={20} />
+        </div>
+        <p className="text-white/30 text-[10px] uppercase tracking-widest font-bold">{label}</p>
       </div>
       <MoreHorizontal size={16} className="text-white/20" />
     </div>
-    <p className="text-white/30 text-[10px] uppercase tracking-widest font-bold">{label}</p>
-    <div className="flex items-baseline justify-between gap-2 mt-1 overflow-hidden">
-      <h3 className="text-xl sm:text-2xl font-bold min-w-0">{value}</h3>
-      <span className="text-emerald-400 text-[10px] font-bold shrink-0 whitespace-nowrap">{trend}</span>
+    <div className="flex flex-wrap gap-3 items-end mt-2">
+      <h3 className="text-xl sm:text-2xl font-bold leading-tight whitespace-nowrap flex-1 min-w-0">{value}</h3>
+      <div className="flex-shrink-0 text-right w-full sm:w-auto">
+        <span className="text-emerald-400 text-[10px] font-bold whitespace-nowrap">{trend}</span>
+      </div>
     </div>
   </div>
 );

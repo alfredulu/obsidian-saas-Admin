@@ -28,10 +28,10 @@ export default function MessagesPage() {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="h-[calc(100vh-104px)] flex flex-col md:flex-row gap-6 overflow-hidden"
+      className="h-[calc(100vh-104px)] flex flex-col min-[600px]:flex-row gap-6 overflow-hidden"
     >
-      {/* Left Panel: Chat List */}
-      <div className="w-full md:w-80 flex flex-col glass-card overflow-hidden shrink-0 h-[40%] md:h-full">
+    {/* Left Panel: Chat List */}
+      <div className="w-full min-[600px]:w-[260px] min-[600px]:min-w-[260px] min-[600px]:flex-shrink-0 flex flex-col glass-card overflow-hidden h-[40%] min-[600px]:h-full">
         <div className="p-4 border-b border-white/5">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/20" size={16} />
@@ -100,7 +100,7 @@ export default function MessagesPage() {
       </div>
 
       {/* Right Panel: Active Chat */}
-      <div className="flex-1 flex flex-col glass-card overflow-hidden h-[60%] md:h-full min-w-0 md:min-w-[400px]">
+      <div className="flex-1 flex flex-col glass-card overflow-hidden h-[60%] min-[600px]:h-full min-[600px]:min-w-[360px] min-w-0">
         {/* Chat Header */}
         <div className="p-4 border-b border-white/5 flex items-center justify-between bg-white/[0.02] shrink-0">
           <div className="flex items-center gap-3">
@@ -156,12 +156,12 @@ export default function MessagesPage() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 className={cn(
-                  "flex flex-col max-w-[70%]",
+                  "flex flex-col max-w-[80%] break-words",
                   msg.sender === 'me' ? "ml-auto items-end" : "items-start"
                 )}
               >
                 <div className={cn(
-                  "px-4 py-2.5 rounded-2xl text-xs leading-relaxed shadow-lg",
+                  "px-4 py-2.5 rounded-2xl text-xs leading-relaxed shadow-lg break-words",
                   msg.sender === 'me' 
                     ? "bg-neon-pink text-white neon-glow-pink rounded-tr-none" 
                     : "bg-white/5 text-white/80 border border-white/5 rounded-tl-none"
