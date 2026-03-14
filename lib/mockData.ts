@@ -138,3 +138,19 @@ export const notifications = [
   { id: 4, title: 'New Message', description: 'You have a new message from Alex Rivera.', time: '5 hours ago', unread: false, type: 'message' },
   { id: 5, title: 'Security Alert', description: 'A login attempt was detected from a new device.', time: '1 day ago', unread: false, type: 'security' },
 ];
+
+export const tasks = [
+  { id: 1, title: 'Dashboard Redesign', description: 'Update the main dashboard with the new Obsidian Noir theme.', status: 'In Progress', priority: 'High', dueDate: '2023-11-05', user: 'Cody Fish' },
+  { id: 2, title: 'API Integration', description: 'Connect the frontend with the new GraphQL backend endpoints.', status: 'Todo', priority: 'Medium', dueDate: '2023-11-10', user: 'Isaac Foster' },
+  { id: 3, title: 'User Testing', description: 'Conduct usability testing with the first batch of beta users.', status: 'Todo', priority: 'Low', dueDate: '2023-11-12', user: 'Chloe Perez' },
+  { id: 4, title: 'Bug Fixes', description: 'Resolve the reported issues in the mobile navigation drawer.', status: 'Completed', priority: 'High', dueDate: '2023-10-30', user: 'Emma Wilson' },
+  { id: 5, title: 'Documentation', description: 'Write the technical documentation for the new component library.', status: 'In Progress', priority: 'Medium', dueDate: '2023-11-08', user: 'Cody Fish' },
+  { id: 6, title: 'SEO Optimization', description: 'Improve the landing page SEO scores for better visibility.', status: 'Todo', priority: 'Low', dueDate: '2023-11-15', user: 'Richard Clark' },
+];
+
+export const notes = [
+  { id: 1, title: 'Project Roadmap', content: 'The roadmap for Q4 includes the launch of the mobile app and the new analytics engine.', createdAt: '2023-10-20' },
+  { id: 2, title: 'Meeting Notes', content: 'Discussed the budget for the next marketing campaign. Approved $50k for social media ads.', createdAt: '2023-10-22' },
+  { id: 3, title: 'Design Ideas', content: 'Consider using more neon accents in the dashboard for a futuristic look.', createdAt: '2023-10-25' },
+  { id: 4, title: 'Tech Stack', content: 'We are moving towards a fully serverless architecture using Next.js and Vercel.', createdAt: '2023-10-28' },
+];

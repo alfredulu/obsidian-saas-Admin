@@ -75,7 +75,7 @@ export const Sidebar = () => {
           <nav className="space-y-0.5">
             <SidebarItem icon={LayoutDashboard} label="Dashboard" href="/" />
             <SidebarItem icon={FileText} label="Notes" href="/notes" />
-            <SidebarItem icon={CheckSquare} label="Task" href="/task" />
+            <SidebarItem icon={CheckSquare} label="Task" href="/tasks" />
             <SidebarItem icon={BarChart3} label="Analytics" href="/analytics" />
             <SidebarItem icon={CreditCard} label="Subscription" href="/subscription" />
             <SidebarItem icon={CalendarIcon} label="Calendar" href="/calendar" />
