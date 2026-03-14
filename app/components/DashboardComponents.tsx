@@ -65,15 +65,15 @@ export const SaleHistoryBar = () => {
             <span className="text-[10px] text-white/30">Sales</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-white/10" />
+            <div className="w-2 h-2 rounded-full bg-[#FFD700]" />
             <span className="text-[10px] text-white/30">Revenue</span>
           </div>
         </div>
       </div>
-      <div className="h-[240px] w-full">
+      <div className="h-[240px] w-full relative">
         {mounted ? (
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={salesData} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
+            <BarChart data={salesData} margin={{ top: 0, right: 0, left: -20, bottom: 0 }} barGap={8}>
               <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
               <XAxis 
                 dataKey="name" 
@@ -91,11 +91,19 @@ export const SaleHistoryBar = () => {
                 cursor={{fill: 'transparent'}}
                 contentStyle={{backgroundColor: '#0A0A0B', border: '1px solid #ffffff10', borderRadius: '8px'}}
               />
-              <Bar dataKey="sales" radius={[4, 4, 0, 0]} barSize={30}>
+              <Bar dataKey="sales" radius={[4, 4, 0, 0]} barSize={12}>
                 {salesData.map((entry: any, index: number) => (
                   <Cell 
-                    key={`cell-${index}`} 
+                    key={`cell-sales-${index}`} 
                     fill={entry.isCurrent ? '#FF00D6' : '#ffffff10'} 
+                  />
+                ))}
+              </Bar>
+              <Bar dataKey="revenue" radius={[4, 4, 0, 0]} barSize={12}>
+                {salesData.map((entry: any, index: number) => (
+                  <Cell 
+                    key={`cell-rev-${index}`} 
+                    fill={entry.isCurrent ? '#FFD700' : '#ffffff05'} 
                   />
                 ))}
               </Bar>
@@ -140,8 +148,14 @@ export const TopPeopleTable = () => (
               </td>
               <td className="py-3">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center text-[9px] font-bold">
-                    {person.avatar}
+                  <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-white/10 to-white/5 p-[1px]">
+                    <div className="w-full h-full rounded-[7px] bg-obsidian flex items-center justify-center overflow-hidden">
+                      <img 
+                        src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${person.name}`} 
+                        alt={person.name} 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
                   </div>
                   <span className="font-bold">{person.name}</span>
                 </div>

@@ -39,3 +39,31 @@ export const analyticsData = [
   { time: '20:00', users: 2390, sessions: 1380, bounce: 35 },
   { time: '23:59', users: 3490, sessions: 2300, bounce: 40 },
 ];
+
+export const revenueOverTime = [
+  { month: 'Jan', revenue: 12000 },
+  { month: 'Feb', revenue: 15000 },
+  { month: 'Mar', revenue: 18000 },
+  { month: 'Apr', revenue: 22000 },
+  { month: 'May', revenue: 21000 },
+  { month: 'Jun', revenue: 28000 },
+  { month: 'Jul', revenue: 35000 },
+];
+
+export const userAcquisition = [
+  { month: 'Jan', newUsers: 1200 },
+  { month: 'Feb', newUsers: 1900 },
+  { month: 'Mar', newUsers: 1500 },
+  { month: 'Apr', newUsers: 2200 },
+  { month: 'May', newUsers: 2800 },
+  { month: 'Jun', newUsers: 3400 },
+  { month: 'Jul', newUsers: 4100 },
+];
+
+export const recentEvents = [
+  { id: 1, user: 'Alex Rivera', event: 'Upgraded to Pro', time: '2 mins ago', type: 'Upgrade' },
+  { id: 2, user: 'Sarah Chen', event: 'New Subscription', time: '15 mins ago', type: 'New' },
+  { id: 3, user: 'James Wilson', event: 'Payment Success', time: '1 hour ago', type: 'Payment' },
+  { id: 4, user: 'Maria Garcia', event: 'New User Signup', time: '3 hours ago', type: 'Signup' },
+  { id: 5, user: 'David Kim', event: 'Support Ticket Closed', time: '5 hours ago', type: 'Support' },
+];

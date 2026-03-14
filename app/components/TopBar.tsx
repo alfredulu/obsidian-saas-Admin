@@ -36,7 +36,7 @@ export const TopBar = () => (
 
       <div className="flex items-center gap-2.5 cursor-pointer group">
         <div className="text-right">
-          <p className="text-[11px] font-bold">Lily Carter</p>
+          <p className="text-[11px] font-bold">WorkLoad Hq</p>
           <p className="text-[9px] text-white/30 font-medium">Admin Account</p>
         </div>
         <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-neon-pink to-neon-purple p-[1px]">
