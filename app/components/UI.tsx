@@ -2,7 +2,8 @@
 
 import React from 'react';
 import { cn } from '@/lib/utils';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
+import { X } from 'lucide-react';
 
 // --- Card ---
 export const Card = ({ children, className, title, subtitle, action }: any) => (
@@ -118,3 +119,59 @@ export const TableCell = ({ children, className, align = 'left' }: any) => (
     {children}
   </td>
 );
+
+// --- Skeleton ---
+export const Skeleton = ({ className, variant = 'default' }: any) => {
+  const variants: any = {
+    default: 'bg-white/5',
+    circle: 'bg-white/5 rounded-full',
+    card: 'glass-card bg-white/5',
+  };
+
+  return (
+    <div className={cn(
+      "animate-pulse",
+      variants[variant] || variants.default,
+      className
+    )} />
+  );
+};
+
+// --- Modal ---
+export const Modal = ({ isOpen, onClose, title, children, maxWidth = 'max-w-lg' }: any) => {
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 z-[150] flex items-center justify-center p-4">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+          />
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            className={cn(
+              "relative w-full glass-card p-8 bg-obsidian border border-white/10 shadow-2xl",
+              maxWidth
+            )}
+          >
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-xl font-bold tracking-tight">{title}</h2>
+              <button 
+                onClick={onClose}
+                className="p-2 rounded-xl hover:bg-white/5 text-white/30 hover:text-white transition-all"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            {children}
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
+  );
+};

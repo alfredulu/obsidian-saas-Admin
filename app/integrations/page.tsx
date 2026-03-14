@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { integrations } from '@/lib/mockData';
 import { Card, Badge } from '@/app/components/UI';
@@ -18,6 +18,8 @@ const getIntegrationIcon = (name: string) => {
 };
 
 export default function IntegrationsPage() {
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 10 }}
@@ -37,48 +39,63 @@ export default function IntegrationsPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {integrations.map((app) => (
-          <motion.div
-            key={app.id}
-            whileHover={{ y: -4, scale: 1.02 }}
-            transition={{ type: "spring", stiffness: 400, damping: 10 }}
-          >
-            <Card className="h-full flex flex-col">
-              <div className="flex justify-between items-start mb-6">
-                <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10">
-                  {getIntegrationIcon(app.name)}
+        {integrations.map((app) => {
+          const isSelected = selectedId === app.id;
+          return (
+            <motion.div
+              key={app.id}
+              onClick={() => setSelectedId(app.id)}
+              animate={{ 
+                y: isSelected ? -4 : 0,
+                scale: isSelected ? 1.02 : 1
+              }}
+              whileHover={{ y: -4, scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              className="cursor-pointer"
+            >
+              <Card className={cn(
+                "h-full flex flex-col transition-all duration-300",
+                isSelected ? "border-neon-pink shadow-[0_0_20px_rgba(255,0,128,0.1)] bg-white/[0.07]" : "border-white/5"
+              )}>
+                <div className="flex justify-between items-start mb-6">
+                  <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10">
+                    {getIntegrationIcon(app.name)}
+                  </div>
+                  {app.connected ? (
+                    <Badge variant="emerald" className="flex items-center gap-1">
+                      <Check size={10} />
+                      Connected
+                    </Badge>
+                  ) : (
+                    <Badge>Disconnected</Badge>
+                  )}
                 </div>
-                {app.connected ? (
-                  <Badge variant="emerald" className="flex items-center gap-1">
-                    <Check size={10} />
-                    Connected
-                  </Badge>
-                ) : (
-                  <Badge>Disconnected</Badge>
-                )}
-              </div>
 
-              <h3 className="text-sm font-bold mb-2">{app.name}</h3>
-              <p className="text-[11px] text-white/40 leading-relaxed mb-8 flex-1">
-                {app.description}
-              </p>
+                <h3 className={cn(
+                  "text-sm font-bold mb-2 transition-colors",
+                  isSelected ? "text-neon-pink" : "text-white"
+                )}>{app.name}</h3>
+                <p className="text-[11px] text-white/40 leading-relaxed mb-8 flex-1">
+                  {app.description}
+                </p>
 
-              <div className="flex gap-2 pt-4 border-t border-white/5">
-                <button className={cn(
-                  "flex-1 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all",
-                  app.connected 
-                    ? "bg-white/5 text-white/40 hover:bg-white/10 hover:text-white" 
-                    : "bg-neon-pink text-white neon-glow-pink hover:bg-neon-pink/80"
-                )}>
-                  {app.connected ? 'Configure' : 'Connect'}
-                </button>
-                <button className="p-2 bg-white/5 border border-white/5 rounded-xl text-white/30 hover:text-white transition-all">
-                  <ExternalLink size={14} />
-                </button>
-              </div>
-            </Card>
-          </motion.div>
-        ))}
+                <div className="flex gap-2 pt-4 border-t border-white/5">
+                  <button className={cn(
+                    "flex-1 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all",
+                    app.connected 
+                      ? "bg-white/5 text-white/40 hover:bg-white/10 hover:text-white" 
+                      : "bg-neon-pink text-white neon-glow-pink hover:bg-neon-pink/80"
+                  )}>
+                    {app.connected ? 'Configure' : 'Connect'}
+                  </button>
+                  <button className="p-2 bg-white/5 border border-white/5 rounded-xl text-white/30 hover:text-white transition-all">
+                    <ExternalLink size={14} />
+                  </button>
+                </div>
+              </Card>
+            </motion.div>
+          );
+        })}
       </div>
 
       <Card className="mt-12 bg-gradient-to-br from-neon-pink/5 to-neon-purple/5 border-neon-pink/10">

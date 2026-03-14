@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { motion, AnimatePresence } from 'motion/react';
 import { 
   LayoutDashboard, 
   FileText, 
@@ -23,6 +24,7 @@ import {
   Lock
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useSidebar } from './SidebarContext';
 
 const SidebarItem = ({ icon: Icon, label, href, hasSubmenu = false }: any) => {
   const pathname = usePathname();
@@ -53,9 +55,6 @@ const SidebarItem = ({ icon: Icon, label, href, hasSubmenu = false }: any) => {
   );
 };
 
-import { useSidebar } from './SidebarContext';
-import { motion, AnimatePresence } from 'motion/react';
-
 export const Sidebar = () => {
   const { isOpen, close } = useSidebar();
 
@@ -78,13 +77,13 @@ export const Sidebar = () => {
             <SidebarItem icon={LayoutDashboard} label="Dashboard" href="/" />
             <SidebarItem icon={Folder} label="File Manager" href="/file-manager" />
             <SidebarItem icon={FileText} label="Notes" href="/notes" />
-            <SidebarItem icon={CheckSquare} label="Task" href="/tasks" />
+            <SidebarItem icon={CheckSquare} label="Tasks" href="/tasks" />
             <SidebarItem icon={BarChart3} label="Analytics" href="/analytics" />
             <SidebarItem icon={CreditCard} label="Subscription" href="/subscription" />
             <SidebarItem icon={CalendarIcon} label="Calendar" href="/calendar" />
-            <SidebarItem icon={Bell} label="Notification" href="/notifications" />
+            <SidebarItem icon={Bell} label="Notifications" href="/notifications" />
             <SidebarItem icon={MessageSquare} label="Messages" href="/messages" />
-            <SidebarItem icon={User} label="User" href="/users" />
+            <SidebarItem icon={User} label="Users" href="/users" />
             <SidebarItem icon={Building2} label="Companies" href="/companies" />
           </nav>
         </div>

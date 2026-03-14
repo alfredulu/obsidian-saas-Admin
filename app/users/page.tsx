@@ -1,12 +1,19 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { users } from '@/lib/mockData';
 import { Edit2, Trash2, Eye, UserPlus, Search, Filter } from 'lucide-react';
-import { Card, Badge, Avatar, Table, TableRow, TableCell } from '@/app/components/UI';
+import { Card, Badge, Avatar, Table, TableRow, TableCell, Skeleton } from '@/app/components/UI';
 
 export default function UsersPage() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
   const tableHeaders = [
     { label: 'User' },
     { label: 'Email' },
@@ -52,47 +59,70 @@ export default function UsersPage() {
         </div>
 
         <Table headers={tableHeaders}>
-          {users.map((user) => (
-            <TableRow key={user.id}>
-              <TableCell>
-                <div className="flex items-center gap-3">
-                  <Avatar name={user.name} />
-                  <span className="font-bold">{user.name}</span>
-                </div>
-              </TableCell>
-              <TableCell className="text-white/40">{user.email}</TableCell>
-              <TableCell>
-                <Badge variant={
-                  user.role === 'Admin' ? 'pink' :
-                  user.role === 'Staff' ? 'cyan' :
-                  'purple'
-                }>
-                  {user.role}
-                </Badge>
-              </TableCell>
-              <TableCell>
-                <div className="flex items-center gap-1.5">
-                  <div className={`w-1.5 h-1.5 rounded-full ${user.status === 'Active' ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-white/20'}`} />
-                  <span className={user.status === 'Active' ? 'text-emerald-400' : 'text-white/30'}>
-                    {user.status}
-                  </span>
-                </div>
-              </TableCell>
-              <TableCell align="right">
-                <div className="flex items-center justify-end gap-2">
-                  <button className="p-2 rounded-lg bg-white/5 text-white/30 hover:text-white hover:bg-white/10 transition-all">
-                    <Eye size={14} />
-                  </button>
-                  <button className="p-2 rounded-lg bg-white/5 text-white/30 hover:text-white hover:bg-white/10 transition-all">
-                    <Edit2 size={14} />
-                  </button>
-                  <button className="p-2 rounded-lg bg-white/5 text-white/30 hover:text-red-500 hover:bg-red-500/10 transition-all">
-                    <Trash2 size={14} />
-                  </button>
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
+          {isLoading ? (
+            Array.from({ length: 5 }).map((_, i) => (
+              <TableRow key={i}>
+                <TableCell>
+                  <div className="flex items-center gap-3">
+                    <Skeleton variant="circle" className="w-8 h-8" />
+                    <Skeleton className="w-24 h-4 rounded" />
+                  </div>
+                </TableCell>
+                <TableCell><Skeleton className="w-40 h-4 rounded" /></TableCell>
+                <TableCell><Skeleton className="w-16 h-4 rounded-full" /></TableCell>
+                <TableCell><Skeleton className="w-20 h-4 rounded" /></TableCell>
+                <TableCell align="right">
+                  <div className="flex items-center justify-end gap-2">
+                    <Skeleton className="w-8 h-8 rounded-lg" />
+                    <Skeleton className="w-8 h-8 rounded-lg" />
+                    <Skeleton className="w-8 h-8 rounded-lg" />
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            users.map((user) => (
+              <TableRow key={user.id}>
+                <TableCell>
+                  <div className="flex items-center gap-3">
+                    <Avatar name={user.name} />
+                    <span className="font-bold">{user.name}</span>
+                  </div>
+                </TableCell>
+                <TableCell className="text-white/40">{user.email}</TableCell>
+                <TableCell>
+                  <Badge variant={
+                    user.role === 'Admin' ? 'pink' :
+                    user.role === 'Staff' ? 'cyan' :
+                    'purple'
+                  }>
+                    {user.role}
+                  </Badge>
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-1.5">
+                    <div className={`w-1.5 h-1.5 rounded-full ${user.status === 'Active' ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-white/20'}`} />
+                    <span className={user.status === 'Active' ? 'text-emerald-400' : 'text-white/30'}>
+                      {user.status}
+                    </span>
+                  </div>
+                </TableCell>
+                <TableCell align="right">
+                  <div className="flex items-center justify-end gap-2">
+                    <button className="p-2 rounded-lg bg-white/5 text-white/30 hover:text-white hover:bg-white/10 transition-all">
+                      <Eye size={14} />
+                    </button>
+                    <button className="p-2 rounded-lg bg-white/5 text-white/30 hover:text-white hover:bg-white/10 transition-all">
+                      <Edit2 size={14} />
+                    </button>
+                    <button className="p-2 rounded-lg bg-white/5 text-white/30 hover:text-red-500 hover:bg-red-500/10 transition-all">
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))
+          )}
         </Table>
       </Card>
     </motion.div>

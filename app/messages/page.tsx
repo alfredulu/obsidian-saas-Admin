@@ -1,15 +1,22 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Search, MoreVertical, Send, Paperclip, Smile, Phone, Video, Info } from 'lucide-react';
 import { chats } from '@/lib/mockData';
 import { cn } from '@/lib/utils';
+import { Skeleton } from '@/app/components/UI';
 
 export default function MessagesPage() {
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedChatId, setSelectedChatId] = useState(chats[0].id);
   const [searchQuery, setSearchQuery] = useState('');
   const [messageInput, setMessageInput] = useState('');
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
   const selectedChat = chats.find(c => c.id === selectedChatId) || chats[0];
   const filteredChats = chats.filter(c => 
@@ -39,41 +46,56 @@ export default function MessagesPage() {
         </div>
         
         <div className="flex-1 overflow-y-auto custom-scrollbar">
-          {filteredChats.map((chat) => (
-            <motion.div 
-              key={chat.id}
-              whileHover={{ backgroundColor: "rgba(255, 255, 255, 0.03)" }}
-              onClick={() => setSelectedChatId(chat.id)}
-              className={cn(
-                "p-4 flex gap-3 cursor-pointer transition-all border-l-2",
-                selectedChatId === chat.id 
-                  ? "bg-white/5 border-neon-pink" 
-                  : "border-transparent hover:bg-white/[0.02]"
-              )}
-            >
-              <div className="relative shrink-0">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-white/10 to-white/5 p-[1px]">
-                  <div className="w-full h-full rounded-[9px] bg-obsidian flex items-center justify-center overflow-hidden">
-                    <img 
-                      src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${chat.name}`} 
-                      alt={chat.name} 
-                      className="w-full h-full object-cover"
-                    />
+          {isLoading ? (
+            Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="p-4 flex gap-3 border-l-2 border-transparent">
+                <Skeleton variant="circle" className="w-10 h-10 shrink-0" />
+                <div className="flex-1 space-y-2">
+                  <div className="flex justify-between">
+                    <Skeleton className="w-20 h-3 rounded" />
+                    <Skeleton className="w-8 h-2 rounded" />
                   </div>
+                  <Skeleton className="w-full h-2 rounded" />
                 </div>
-                {chat.status === 'online' && (
-                  <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 border-2 border-obsidian rounded-full" />
+              </div>
+            ))
+          ) : (
+            filteredChats.map((chat) => (
+              <motion.div 
+                key={chat.id}
+                whileHover={{ backgroundColor: "rgba(255, 255, 255, 0.03)" }}
+                onClick={() => setSelectedChatId(chat.id)}
+                className={cn(
+                  "p-4 flex gap-3 cursor-pointer transition-all border-l-2",
+                  selectedChatId === chat.id 
+                    ? "bg-white/5 border-neon-pink" 
+                    : "border-transparent hover:bg-white/[0.02]"
                 )}
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex justify-between items-center mb-0.5">
-                  <h4 className="text-[11px] font-bold truncate">{chat.name}</h4>
-                  <span className="text-[9px] text-white/20">{chat.time}</span>
+              >
+                <div className="relative shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-white/10 to-white/5 p-[1px]">
+                    <div className="w-full h-full rounded-[9px] bg-obsidian flex items-center justify-center overflow-hidden">
+                      <img 
+                        src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${chat.name}`} 
+                        alt={chat.name} 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  </div>
+                  {chat.status === 'online' && (
+                    <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 border-2 border-obsidian rounded-full" />
+                  )}
                 </div>
-                <p className="text-[10px] text-white/40 truncate">{chat.lastMessage}</p>
-              </div>
-            </motion.div>
-          ))}
+                <div className="flex-1 min-w-0">
+                  <div className="flex justify-between items-center mb-0.5">
+                    <h4 className="text-[11px] font-bold truncate">{chat.name}</h4>
+                    <span className="text-[9px] text-white/20">{chat.time}</span>
+                  </div>
+                  <p className="text-[10px] text-white/40 truncate">{chat.lastMessage}</p>
+                </div>
+              </motion.div>
+            ))
+          )}
         </div>
       </div>
 
@@ -82,21 +104,33 @@ export default function MessagesPage() {
         {/* Chat Header */}
         <div className="p-4 border-b border-white/5 flex items-center justify-between bg-white/[0.02] shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-white/10 to-white/5 p-[1px]">
-              <div className="w-full h-full rounded-[9px] bg-obsidian flex items-center justify-center overflow-hidden">
-                <img 
-                  src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${selectedChat.name}`} 
-                  alt={selectedChat.name} 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
-            <div>
-              <h3 className="text-sm font-bold">{selectedChat.name}</h3>
-              <p className="text-[10px] text-emerald-400 font-medium">
-                {selectedChat.status === 'online' ? 'Online' : 'Offline'}
-              </p>
-            </div>
+            {isLoading ? (
+              <>
+                <Skeleton variant="circle" className="w-10 h-10" />
+                <div className="space-y-2">
+                  <Skeleton className="w-24 h-3 rounded" />
+                  <Skeleton className="w-12 h-2 rounded" />
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-white/10 to-white/5 p-[1px]">
+                  <div className="w-full h-full rounded-[9px] bg-obsidian flex items-center justify-center overflow-hidden">
+                    <img 
+                      src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${selectedChat.name}`} 
+                      alt={selectedChat.name} 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold">{selectedChat.name}</h3>
+                  <p className="text-[10px] text-emerald-400 font-medium">
+                    {selectedChat.status === 'online' ? 'Online' : 'Offline'}
+                  </p>
+                </div>
+              </>
+            )}
           </div>
           <div className="flex items-center gap-4 text-white/30">
             <motion.button whileHover={{ color: "#fff" }} className="transition-colors"><Phone size={18} /></motion.button>
@@ -108,7 +142,14 @@ export default function MessagesPage() {
 
         {/* Message Area */}
         <div className="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar bg-obsidian/20">
-          {selectedChat.messages.length > 0 ? (
+          {isLoading ? (
+            Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className={cn("flex flex-col max-w-[70%]", i % 2 === 0 ? "ml-auto items-end" : "items-start")}>
+                <Skeleton className={cn("h-10 rounded-2xl", i % 2 === 0 ? "w-48 rounded-tr-none" : "w-64 rounded-tl-none")} />
+                <Skeleton className="w-12 h-2 mt-2 rounded" />
+              </div>
+            ))
+          ) : selectedChat.messages.length > 0 ? (
             selectedChat.messages.map((msg) => (
               <motion.div 
                 key={msg.id}
