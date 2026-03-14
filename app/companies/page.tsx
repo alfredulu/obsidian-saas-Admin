@@ -4,9 +4,17 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { companies } from '@/lib/mockData';
 import { Building2, Search, Filter, MoreHorizontal, ExternalLink, Users } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { Card, Badge, Table, TableRow, TableCell } from '@/app/components/UI';
 
 export default function CompaniesPage() {
+  const tableHeaders = [
+    { label: 'Company' },
+    { label: 'Industry' },
+    { label: 'Employees' },
+    { label: 'Plan' },
+    { label: 'Action', className: 'text-right' },
+  ];
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 10 }}
@@ -25,7 +33,7 @@ export default function CompaniesPage() {
         </button>
       </div>
 
-      <div className="glass-card p-6">
+      <Card>
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/20" size={16} />
@@ -40,67 +48,50 @@ export default function CompaniesPage() {
               <Filter size={14} />
               <span>Industry</span>
             </button>
-            <button className="flex items-center gap-2 px-3 py-2 bg-white/5 border border-white/5 rounded-xl text-xs font-medium hover:bg-white/10 transition-all">
-              <span>Plan Type</span>
-            </button>
           </div>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-left">
-            <thead>
-              <tr className="text-white/20 text-[9px] uppercase tracking-widest border-b border-white/5">
-                <th className="pb-3 font-bold">Company</th>
-                <th className="pb-3 font-bold">Industry</th>
-                <th className="pb-3 font-bold">Employees</th>
-                <th className="pb-3 font-bold">Plan</th>
-                <th className="pb-3 font-bold text-right">Action</th>
-              </tr>
-            </thead>
-            <tbody className="text-[11px]">
-              {companies.map((company) => (
-                <tr key={company.id} className="border-b border-white/5 last:border-0 group hover:bg-white/[0.02] transition-colors">
-                  <td className="py-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center font-bold text-neon-cyan border border-white/10 group-hover:border-neon-cyan/50 transition-colors">
-                        {company.logo}
-                      </div>
-                      <span className="font-bold">{company.name}</span>
-                    </div>
-                  </td>
-                  <td className="py-4 text-white/40">{company.industry}</td>
-                  <td className="py-4">
-                    <div className="flex items-center gap-2">
-                      <Users size={12} className="text-white/20" />
-                      <span>{company.employees}</span>
-                    </div>
-                  </td>
-                  <td className="py-4">
-                    <span className={cn(
-                      "px-2 py-0.5 rounded-md text-[9px] font-bold uppercase",
-                      company.plan === 'Enterprise' ? 'bg-neon-purple/10 text-neon-purple' :
-                      company.plan === 'Pro' ? 'bg-neon-pink/10 text-neon-pink' :
-                      'bg-white/10 text-white/50'
-                    )}>
-                      {company.plan}
-                    </span>
-                  </td>
-                  <td className="py-4 text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <button className="p-2 rounded-lg bg-white/5 text-white/30 hover:text-white hover:bg-white/10 transition-all">
-                        <ExternalLink size={14} />
-                      </button>
-                      <button className="p-2 rounded-lg bg-white/5 text-white/30 hover:text-white hover:bg-white/10 transition-all">
-                        <MoreHorizontal size={14} />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+        <Table headers={tableHeaders}>
+          {companies.map((company) => (
+            <TableRow key={company.id}>
+              <TableCell>
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center font-bold text-neon-cyan border border-white/10 group-hover:border-neon-cyan/50 transition-colors">
+                    {company.logo}
+                  </div>
+                  <span className="font-bold">{company.name}</span>
+                </div>
+              </TableCell>
+              <TableCell className="text-white/40">{company.industry}</TableCell>
+              <TableCell>
+                <div className="flex items-center gap-2">
+                  <Users size={12} className="text-white/20" />
+                  <span>{company.employees}</span>
+                </div>
+              </TableCell>
+              <TableCell>
+                <Badge variant={
+                  company.plan === 'Enterprise' ? 'purple' :
+                  company.plan === 'Pro' ? 'pink' :
+                  'default'
+                }>
+                  {company.plan}
+                </Badge>
+              </TableCell>
+              <TableCell align="right">
+                <div className="flex items-center justify-end gap-2">
+                  <button className="p-2 rounded-lg bg-white/5 text-white/30 hover:text-white hover:bg-white/10 transition-all">
+                    <ExternalLink size={14} />
+                  </button>
+                  <button className="p-2 rounded-lg bg-white/5 text-white/30 hover:text-white hover:bg-white/10 transition-all">
+                    <MoreHorizontal size={14} />
+                  </button>
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
+        </Table>
+      </Card>
     </motion.div>
   );
 }

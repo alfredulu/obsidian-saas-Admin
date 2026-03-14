@@ -30,6 +30,7 @@ const SidebarItem = ({ icon: Icon, label, href, hasSubmenu = false }: any) => {
 
   return (
     <motion.div
+      animate={{ x: isActive ? 4 : 0 }}
       whileHover={{ x: 4 }}
       transition={{ type: "spring", stiffness: 400, damping: 10 }}
     >
@@ -41,10 +42,10 @@ const SidebarItem = ({ icon: Icon, label, href, hasSubmenu = false }: any) => {
         )}
       >
         <div className="flex items-center gap-3">
-          <Icon size={18} className="group-hover:text-white" />
+          <Icon size={18} className={cn("transition-colors", isActive ? "text-white" : "group-hover:text-white")} />
           <span className="text-sm font-medium">{label}</span>
         </div>
-        {hasSubmenu && <ChevronDown size={14} className="text-white/30 group-hover:text-white" />}
+        {hasSubmenu && <ChevronDown size={14} className={cn("transition-colors", isActive ? "text-white" : "text-white/30 group-hover:text-white")} />}
       </Link>
     </motion.div>
   );
@@ -78,9 +79,9 @@ export const Sidebar = () => {
             <SidebarItem icon={BarChart3} label="Analytics" href="/analytics" />
             <SidebarItem icon={CreditCard} label="Subscription" href="/subscription" />
             <SidebarItem icon={CalendarIcon} label="Calendar" href="/calendar" />
-            <SidebarItem icon={Bell} label="Notification" href="/notification" />
+            <SidebarItem icon={Bell} label="Notification" href="/notifications" />
             <SidebarItem icon={MessageSquare} label="Messages" href="/messages" />
-            <SidebarItem icon={User} label="User" href="/user" />
+            <SidebarItem icon={User} label="User" href="/users" />
             <SidebarItem icon={Building2} label="Companies" href="/companies" />
           </nav>
         </div>
