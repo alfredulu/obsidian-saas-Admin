@@ -111,3 +111,30 @@ export const calendarEvents = [
   { id: 2, title: 'Design Review', date: '2023-10-25', type: 'Starting' },
   { id: 3, title: 'Client Meeting', date: '2023-10-28', type: 'New' },
 ];
+
+export const users = [
+  { id: 1, name: 'Cody Fish', email: 'codyfish@gmail.com', role: 'Admin', status: 'Active', avatar: 'CF' },
+  { id: 2, name: 'Isaac Foster', email: 'issacfo@gmail.com', role: 'Staff', status: 'Active', avatar: 'IF' },
+  { id: 3, name: 'Alice Long', email: 'alicelong@gmail.com', role: 'Customer', status: 'Inactive', avatar: 'AL' },
+  { id: 4, name: 'Chloe Perez', email: 'chloeperez@gmail.com', role: 'Staff', status: 'Active', avatar: 'CP' },
+  { id: 5, name: 'Richard Clark', email: 'richardclark@gmail.com', role: 'Customer', status: 'Active', avatar: 'RC' },
+  { id: 6, name: 'Emma Wilson', email: 'emmaw@gmail.com', role: 'Staff', status: 'Inactive', avatar: 'EW' },
+  { id: 7, name: 'Liam Neeson', email: 'liam@gmail.com', role: 'Customer', status: 'Active', avatar: 'LN' },
+];
+
+export const companies = [
+  { id: 1, name: 'TechFlow', industry: 'Software', employees: 150, plan: 'Enterprise', logo: 'TF' },
+  { id: 2, name: 'GreenGrid', industry: 'Energy', employees: 45, plan: 'Pro', logo: 'GG' },
+  { id: 3, name: 'SkyHigh', industry: 'Aviation', employees: 300, plan: 'Enterprise', logo: 'SH' },
+  { id: 4, name: 'BlueWave', industry: 'Marine', employees: 12, plan: 'Basic', logo: 'BW' },
+  { id: 5, name: 'NovaSoft', industry: 'IT Services', employees: 85, plan: 'Pro', logo: 'NS' },
+  { id: 6, name: 'PulseMedia', industry: 'Marketing', employees: 25, plan: 'Basic', logo: 'PM' },
+];
+
+export const notifications = [
+  { id: 1, title: 'New User Signup', description: 'A new user has registered on your platform.', time: '2 mins ago', unread: true, type: 'user' },
+  { id: 2, title: 'System Update', description: 'The system will undergo maintenance at 2:00 AM UTC.', time: '1 hour ago', unread: true, type: 'system' },
+  { id: 3, title: 'Payment Received', description: 'Invoice #4521 has been paid successfully.', time: '3 hours ago', unread: false, type: 'payment' },
+  { id: 4, title: 'New Message', description: 'You have a new message from Alex Rivera.', time: '5 hours ago', unread: false, type: 'message' },
+  { id: 5, title: 'Security Alert', description: 'A login attempt was detected from a new device.', time: '1 day ago', unread: false, type: 'security' },
+];
