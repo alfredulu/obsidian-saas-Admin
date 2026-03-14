@@ -8,6 +8,7 @@ import {
 } from './components/DashboardComponents';
 import { taskProgressData, taskExpensesData } from '@/lib/mockData';
 import { motion } from 'motion/react';
+import { ProductHighlight, TaskSchedule } from './components/RightSidebar';
 
 export default function Dashboard() {
   return (
@@ -18,7 +19,7 @@ export default function Dashboard() {
       className="space-y-6"
     >
       {/* Top Row: Two Cards Only */}
-      <div className="flex gap-6">
+      <div className="flex flex-col sm:flex-row gap-6">
         <SparklineCard 
           label="Task Progress" 
           value="213.52" 
@@ -38,6 +39,12 @@ export default function Dashboard() {
 
       {/* Bottom Row: Top People Table */}
       <TopPeopleTable />
+
+      {/* Mobile-only components from RightSidebar */}
+      <div className="xl:hidden grid grid-cols-1 md:grid-cols-2 gap-6">
+        <ProductHighlight />
+        <TaskSchedule />
+      </div>
     </motion.div>
   );
 }

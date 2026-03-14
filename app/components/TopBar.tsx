@@ -1,24 +1,34 @@
 'use client';
 
 import React from 'react';
-import { Search, Bell, Mail, ChevronDown, Zap } from 'lucide-react';
+import { Search, Bell, Mail, ChevronDown, Zap, Menu } from 'lucide-react';
+import { useSidebar } from './SidebarContext';
 
-export const TopBar = () => (
-  <header className="h-14 border-b border-white/5 flex items-center justify-between px-6 shrink-0 bg-obsidian/50 backdrop-blur-xl">
-    <div className="flex items-center gap-4 w-80">
-      <div className="relative w-full">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" size={14} />
-        <input 
-          type="text" 
-          placeholder="Search anything..." 
-          className="w-full bg-white/5 border border-white/5 rounded-lg py-1.5 pl-9 pr-12 text-[11px] focus:outline-none focus:border-neon-pink/50 transition-colors"
-        />
-        <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-0.5 text-[9px] text-white/20 font-bold">
-          <span>⌘</span>
-          <span>K</span>
+export const TopBar = () => {
+  const { toggle } = useSidebar();
+
+  return (
+    <header className="h-14 border-b border-white/5 flex items-center justify-between px-6 shrink-0 bg-obsidian/50 backdrop-blur-xl">
+      <div className="flex items-center gap-4 w-full lg:w-80">
+        <button 
+          onClick={toggle}
+          className="lg:hidden text-white/50 hover:text-white p-1.5 hover:bg-white/5 rounded-lg transition-colors"
+        >
+          <Menu size={20} />
+        </button>
+        <div className="relative w-full hidden sm:block">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" size={14} />
+          <input 
+            type="text" 
+            placeholder="Search anything..." 
+            className="w-full bg-white/5 border border-white/5 rounded-lg py-1.5 pl-9 pr-12 text-[11px] focus:outline-none focus:border-neon-pink/50 transition-colors"
+          />
+          <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-0.5 text-[9px] text-white/20 font-bold">
+            <span>⌘</span>
+            <span>K</span>
+          </div>
         </div>
       </div>
-    </div>
 
     <div className="flex items-center gap-4">
       <div className="flex items-center gap-3 border-r border-white/5 pr-4">
@@ -52,4 +62,5 @@ export const TopBar = () => (
       </div>
     </div>
   </header>
-);
+  );
+};

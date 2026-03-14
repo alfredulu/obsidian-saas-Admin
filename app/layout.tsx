@@ -12,6 +12,8 @@ export const metadata: Metadata = {
   description: "Premium SaaS Admin Dashboard",
 };
 
+import { SidebarProvider } from "./components/SidebarContext";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -20,18 +22,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="flex h-screen overflow-hidden bg-obsidian">
-          <Sidebar />
-          <div className="flex flex-col flex-1 overflow-hidden">
-            <TopBar />
-            <div className="flex flex-1 overflow-hidden">
-              <main className="flex-1 overflow-y-auto p-6">
-                {children}
-              </main>
-              <RightSidebar />
+        <SidebarProvider>
+          <div className="flex h-screen overflow-hidden bg-obsidian">
+            <Sidebar />
+            <div className="flex flex-col flex-1 overflow-hidden">
+              <TopBar />
+              <div className="grid grid-cols-1 xl:grid-cols-[1fr_auto] flex-1 overflow-hidden">
+                <main className="overflow-y-auto p-6 w-full">
+                  {children}
+                </main>
+                <RightSidebar />
+              </div>
             </div>
           </div>
-        </div>
+        </SidebarProvider>
       </body>
     </html>
   );

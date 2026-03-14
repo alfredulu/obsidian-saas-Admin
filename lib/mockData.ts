@@ -67,3 +67,47 @@ export const recentEvents = [
   { id: 4, user: 'Maria Garcia', event: 'New User Signup', time: '3 hours ago', type: 'Signup' },
   { id: 5, user: 'David Kim', event: 'Support Ticket Closed', time: '5 hours ago', type: 'Support' },
 ];
+
+export const chats = [
+  {
+    id: 1,
+    name: 'Alex Rivera',
+    avatar: 'AR',
+    status: 'online',
+    lastMessage: 'The design looks great! Let\'s proceed.',
+    time: '2m ago',
+    messages: [
+      { id: 1, text: 'Hey, how is the progress on the dashboard?', sender: 'me', time: '10:00 AM' },
+      { id: 2, text: 'It\'s going well! I just finished the analytics section.', sender: 'them', time: '10:05 AM' },
+      { id: 3, text: 'The design looks great! Let\'s proceed.', sender: 'them', time: '10:06 AM' },
+    ]
+  },
+  {
+    id: 2,
+    name: 'Sarah Chen',
+    avatar: 'SC',
+    status: 'online',
+    lastMessage: 'Can we schedule a call for tomorrow?',
+    time: '15m ago',
+    messages: [
+      { id: 1, text: 'Hi Sarah, did you see the latest update?', sender: 'me', time: '09:00 AM' },
+      { id: 2, text: 'Yes, I did. Looks promising.', sender: 'them', time: '09:15 AM' },
+      { id: 3, text: 'Can we schedule a call for tomorrow?', sender: 'them', time: '09:16 AM' },
+    ]
+  },
+  {
+    id: 3,
+    name: 'James Wilson',
+    avatar: 'JW',
+    status: 'offline',
+    lastMessage: 'The payment was successful.',
+    time: '1h ago',
+    messages: []
+  },
+];
+
+export const calendarEvents = [
+  { id: 1, title: 'Project Sync', date: '2023-10-24', type: 'Design' },
+  { id: 2, title: 'Design Review', date: '2023-10-25', type: 'Starting' },
+  { id: 3, title: 'Client Meeting', date: '2023-10-28', type: 'New' },
+];
