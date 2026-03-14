@@ -20,12 +20,21 @@ const PriorityBadge = ({ priority }: { priority: string }) => {
   }
 };
 
-const TaskCard = ({ task }: { task: any }) => (
+const TaskCard = ({ task, isSelected, onSelect }: { task: any, isSelected: boolean, onSelect: () => void }) => (
   <motion.div
+    animate={{ 
+      y: isSelected ? -4 : 0, 
+      scale: isSelected ? 1.02 : 1,
+      boxShadow: isSelected ? "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)" : "none"
+    }}
     whileHover={{ y: -4, scale: 1.02 }}
     transition={{ type: "spring", stiffness: 400, damping: 10 }}
+    onClick={onSelect}
   >
-    <Card className="p-4 mb-4 cursor-grab active:cursor-grabbing">
+    <Card className={cn(
+      "p-4 mb-4 cursor-pointer transition-all duration-200",
+      isSelected ? "border-neon-pink/50 bg-white/[0.05]" : "border-white/5"
+    )}>
       <div className="flex justify-between items-start mb-3">
         <PriorityBadge priority={task.priority} />
         <button className="text-white/20 hover:text-white transition-colors">
@@ -49,7 +58,7 @@ const TaskCard = ({ task }: { task: any }) => (
   </motion.div>
 );
 
-const KanbanColumn = ({ title, status, tasks }: { title: string, status: string, tasks: any[] }) => {
+const KanbanColumn = ({ title, status, tasks, selectedId, onSelect }: { title: string, status: string, tasks: any[], selectedId: number | null, onSelect: (id: number) => void }) => {
   const filteredTasks = tasks.filter(t => t.status === status);
   
   return (
@@ -68,7 +77,12 @@ const KanbanColumn = ({ title, status, tasks }: { title: string, status: string,
       
       <div className="min-h-[500px] rounded-2xl bg-white/[0.02] p-2 border border-white/[0.03]">
         {filteredTasks.map(task => (
-          <TaskCard key={task.id} task={task} />
+          <TaskCard 
+            key={task.id} 
+            task={task} 
+            isSelected={selectedId === task.id}
+            onSelect={() => onSelect(task.id)}
+          />
         ))}
         
         {filteredTasks.length === 0 && (
@@ -82,6 +96,8 @@ const KanbanColumn = ({ title, status, tasks }: { title: string, status: string,
 };
 
 export default function TasksPage() {
+  const [selectedId, setSelectedId] = React.useState<number | null>(null);
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 10 }}
@@ -106,9 +122,9 @@ export default function TasksPage() {
       </div>
 
       <div className="flex flex-col lg:flex-row gap-6 overflow-x-auto pb-6">
-        <KanbanColumn title="Todo" status="Todo" tasks={tasks} />
-        <KanbanColumn title="In Progress" status="In Progress" tasks={tasks} />
-        <KanbanColumn title="Completed" status="Completed" tasks={tasks} />
+        <KanbanColumn title="Todo" status="Todo" tasks={tasks} selectedId={selectedId} onSelect={setSelectedId} />
+        <KanbanColumn title="In Progress" status="In Progress" tasks={tasks} selectedId={selectedId} onSelect={setSelectedId} />
+        <KanbanColumn title="Completed" status="Completed" tasks={tasks} selectedId={selectedId} onSelect={setSelectedId} />
       </div>
     </motion.div>
   );

@@ -37,8 +37,10 @@ const SidebarItem = ({ icon: Icon, label, href, hasSubmenu = false }: any) => {
       <Link 
         href={href}
         className={cn(
-          "flex items-center justify-between px-4 py-2.5 rounded-xl cursor-pointer transition-all duration-200 group",
-          isActive ? "bg-neon-pink text-white neon-glow-pink" : "text-white/50 hover:text-white hover:bg-white/5"
+          "flex items-center justify-between px-4 py-2.5 rounded-xl cursor-pointer transition-all duration-200 group relative overflow-hidden",
+          isActive 
+            ? "bg-neon-pink text-white neon-glow-pink" 
+            : "text-white/50 hover:text-white hover:bg-white/10 hover:shadow-[0_0_15px_rgba(255,255,255,0.05)]"
         )}
       >
         <div className="flex items-center gap-3">
