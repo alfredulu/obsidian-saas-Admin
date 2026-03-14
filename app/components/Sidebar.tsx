@@ -29,19 +29,24 @@ const SidebarItem = ({ icon: Icon, label, href, hasSubmenu = false }: any) => {
   const isActive = pathname === href;
 
   return (
-    <Link 
-      href={href}
-      className={cn(
-        "flex items-center justify-between px-4 py-2.5 rounded-xl cursor-pointer transition-all duration-200 group",
-        isActive ? "bg-neon-pink text-white neon-glow-pink" : "text-white/50 hover:text-white hover:bg-white/5"
-      )}
+    <motion.div
+      whileHover={{ x: 4 }}
+      transition={{ type: "spring", stiffness: 400, damping: 10 }}
     >
-      <div className="flex items-center gap-3">
-        <Icon size={18} className="group-hover:text-white" />
-        <span className="text-sm font-medium">{label}</span>
-      </div>
-      {hasSubmenu && <ChevronDown size={14} className="text-white/30 group-hover:text-white" />}
-    </Link>
+      <Link 
+        href={href}
+        className={cn(
+          "flex items-center justify-between px-4 py-2.5 rounded-xl cursor-pointer transition-all duration-200 group",
+          isActive ? "bg-neon-pink text-white neon-glow-pink" : "text-white/50 hover:text-white hover:bg-white/5"
+        )}
+      >
+        <div className="flex items-center gap-3">
+          <Icon size={18} className="group-hover:text-white" />
+          <span className="text-sm font-medium">{label}</span>
+        </div>
+        {hasSubmenu && <ChevronDown size={14} className="text-white/30 group-hover:text-white" />}
+      </Link>
+    </motion.div>
   );
 };
 
@@ -52,11 +57,14 @@ export const Sidebar = () => {
   const { isOpen, close } = useSidebar();
 
   const SidebarContent = () => (
-    <aside className="w-60 h-full flex flex-col border-r border-white/5 p-5 overflow-y-auto shrink-0 bg-obsidian/50 backdrop-blur-xl">
+    <aside className="w-60 min-w-[240px] h-full flex flex-col border-r border-white/5 p-5 overflow-y-auto shrink-0 bg-obsidian/50 backdrop-blur-xl">
       <div className="flex items-center gap-2 mb-8">
-        <div className="w-7 h-7 bg-neon-pink rounded-lg flex items-center justify-center neon-glow-pink">
+        <motion.div 
+          whileHover={{ rotate: 90 }}
+          className="w-7 h-7 bg-neon-pink rounded-lg flex items-center justify-center neon-glow-pink"
+        >
           <div className="w-3.5 h-3.5 border-2 border-white rotate-45" />
-        </div>
+        </motion.div>
         <h1 className="text-lg font-bold tracking-tight">Sass Admin</h1>
       </div>
 
@@ -86,7 +94,10 @@ export const Sidebar = () => {
         </div>
       </div>
 
-      <div className="mt-8 p-4 glass-card relative overflow-hidden bg-white/5">
+      <motion.div 
+        whileHover={{ scale: 1.02 }}
+        className="mt-8 p-4 glass-card relative overflow-hidden bg-white/5 shrink-0"
+      >
         <div className="relative z-10">
           <h3 className="text-[11px] font-bold mb-1">Sasste Pro. Subsection</h3>
           <p className="text-[9px] text-white/50 mb-3 leading-tight">Get All Dashboards access and 300+ use pre-ready tools.</p>
@@ -94,7 +105,7 @@ export const Sidebar = () => {
             Upgrade pro <Lock size={10} />
           </Link>
         </div>
-      </div>
+      </motion.div>
     </aside>
   );
 
