@@ -28,7 +28,7 @@ export const SparklineCard = ({ label, value, data, color }: any) => {
   return (
     <Card className="p-5 flex flex-col gap-2 flex-1" title={label} action={<MoreHorizontal size={14} className="text-white/30" />}>
       <div className="flex items-end justify-between gap-2 overflow-hidden">
-        <h3 className="text-2xl font-bold truncate shrink min-w-0">{value}</h3>
+        <h3 className="text-xl sm:text-2xl font-bold min-w-0">{value}</h3>
         <div className="h-10 w-24 shrink-0">
           {mounted && (
             <ResponsiveContainer width="100%" height="100%">

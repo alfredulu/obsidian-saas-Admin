@@ -26,9 +26,9 @@ import {
 import { cn } from '@/lib/utils';
 import { useSidebar } from './SidebarContext';
 
-const SidebarItem = ({ icon: Icon, label, href, hasSubmenu = false }: any) => {
+const SidebarItem = ({ icon: Icon, label, href, hasSubmenu = false, onClick, isClicked }: any) => {
   const pathname = usePathname();
-  const isActive = pathname === href;
+  const isActive = pathname === href || isClicked;
 
   return (
     <motion.div
@@ -38,6 +38,7 @@ const SidebarItem = ({ icon: Icon, label, href, hasSubmenu = false }: any) => {
     >
       <Link 
         href={href}
+        onClick={onClick}
         className={cn(
           "flex items-center justify-between px-4 py-2.5 rounded-xl cursor-pointer transition-all duration-200 group relative overflow-hidden",
           isActive 
@@ -57,6 +58,13 @@ const SidebarItem = ({ icon: Icon, label, href, hasSubmenu = false }: any) => {
 
 export const Sidebar = () => {
   const { isOpen, close } = useSidebar();
+  const [clickedHref, setClickedHref] = React.useState<string | null>(null);
+  const pathname = usePathname();
+
+  // Reset clicked state when route changes
+  React.useEffect(() => {
+    setClickedHref(null);
+  }, [pathname]);
 
   const SidebarContent = () => (
     <aside className="w-60 min-w-[240px] h-full flex flex-col border-r border-white/5 p-5 overflow-y-auto shrink-0 bg-obsidian/50 backdrop-blur-xl">
@@ -74,25 +82,25 @@ export const Sidebar = () => {
         <div>
           <p className="text-[10px] uppercase tracking-widest text-white/30 font-bold mb-3 px-3">Menu</p>
           <nav className="space-y-0.5">
-            <SidebarItem icon={LayoutDashboard} label="Dashboard" href="/" />
-            <SidebarItem icon={Folder} label="File Manager" href="/file-manager" />
-            <SidebarItem icon={FileText} label="Notes" href="/notes" />
-            <SidebarItem icon={CheckSquare} label="Tasks" href="/tasks" />
-            <SidebarItem icon={BarChart3} label="Analytics" href="/analytics" />
-            <SidebarItem icon={CreditCard} label="Subscription" href="/subscription" />
-            <SidebarItem icon={CalendarIcon} label="Calendar" href="/calendar" />
-            <SidebarItem icon={Bell} label="Notifications" href="/notifications" />
-            <SidebarItem icon={MessageSquare} label="Messages" href="/messages" />
-            <SidebarItem icon={User} label="Users" href="/users" />
-            <SidebarItem icon={Building2} label="Companies" href="/companies" />
+            <SidebarItem icon={LayoutDashboard} label="Dashboard" href="/" onClick={() => setClickedHref('/')} isClicked={clickedHref === '/'} />
+            <SidebarItem icon={Folder} label="File Manager" href="/file-manager" onClick={() => setClickedHref('/file-manager')} isClicked={clickedHref === '/file-manager'} />
+            <SidebarItem icon={FileText} label="Notes" href="/notes" onClick={() => setClickedHref('/notes')} isClicked={clickedHref === '/notes'} />
+            <SidebarItem icon={CheckSquare} label="Tasks" href="/tasks" onClick={() => setClickedHref('/tasks')} isClicked={clickedHref === '/tasks'} />
+            <SidebarItem icon={BarChart3} label="Analytics" href="/analytics" onClick={() => setClickedHref('/analytics')} isClicked={clickedHref === '/analytics'} />
+            <SidebarItem icon={CreditCard} label="Subscription" href="/subscription" onClick={() => setClickedHref('/subscription')} isClicked={clickedHref === '/subscription'} />
+            <SidebarItem icon={CalendarIcon} label="Calendar" href="/calendar" onClick={() => setClickedHref('/calendar')} isClicked={clickedHref === '/calendar'} />
+            <SidebarItem icon={Bell} label="Notifications" href="/notifications" onClick={() => setClickedHref('/notifications')} isClicked={clickedHref === '/notifications'} />
+            <SidebarItem icon={MessageSquare} label="Messages" href="/messages" onClick={() => setClickedHref('/messages')} isClicked={clickedHref === '/messages'} />
+            <SidebarItem icon={User} label="Users" href="/users" onClick={() => setClickedHref('/users')} isClicked={clickedHref === '/users'} />
+            <SidebarItem icon={Building2} label="Companies" href="/companies" onClick={() => setClickedHref('/companies')} isClicked={clickedHref === '/companies'} />
           </nav>
         </div>
 
         <div>
           <p className="text-[10px] uppercase tracking-widest text-white/30 font-bold mb-3 px-3">Support</p>
           <nav className="space-y-0.5">
-            <SidebarItem icon={Settings} label="Settings" href="/settings" />
-            <SidebarItem icon={Grid2X2} label="Integrations" href="/integrations" />
+            <SidebarItem icon={Settings} label="Settings" href="/settings" onClick={() => setClickedHref('/settings')} isClicked={clickedHref === '/settings'} />
+            <SidebarItem icon={Grid2X2} label="Integrations" href="/integrations" onClick={() => setClickedHref('/integrations')} isClicked={clickedHref === '/integrations'} />
           </nav>
         </div>
       </div>

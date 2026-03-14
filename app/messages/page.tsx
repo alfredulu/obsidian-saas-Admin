@@ -28,10 +28,10 @@ export default function MessagesPage() {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="h-[calc(100vh-104px)] flex flex-col lg:flex-row gap-6 overflow-hidden"
+      className="h-[calc(100vh-104px)] flex flex-col md:flex-row gap-6 overflow-hidden"
     >
       {/* Left Panel: Chat List */}
-      <div className="w-full lg:w-80 flex flex-col glass-card overflow-hidden shrink-0 h-1/3 lg:h-full">
+      <div className="w-full md:w-80 flex flex-col glass-card overflow-hidden shrink-0 h-[40%] md:h-full">
         <div className="p-4 border-b border-white/5">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/20" size={16} />
@@ -100,7 +100,7 @@ export default function MessagesPage() {
       </div>
 
       {/* Right Panel: Active Chat */}
-      <div className="flex-1 flex flex-col glass-card overflow-hidden h-2/3 lg:h-full">
+      <div className="flex-1 flex flex-col glass-card overflow-hidden h-[60%] md:h-full min-w-0 md:min-w-[400px]">
         {/* Chat Header */}
         <div className="p-4 border-b border-white/5 flex items-center justify-between bg-white/[0.02] shrink-0">
           <div className="flex items-center gap-3">

@@ -33,7 +33,7 @@ const StatCard = ({ icon: Icon, label, value, trend, color }: any) => (
     </div>
     <p className="text-white/30 text-[10px] uppercase tracking-widest font-bold">{label}</p>
     <div className="flex items-baseline justify-between gap-2 mt-1 overflow-hidden">
-      <h3 className="text-2xl font-bold truncate shrink min-w-0">{value}</h3>
+      <h3 className="text-xl sm:text-2xl font-bold min-w-0">{value}</h3>
       <span className="text-emerald-400 text-[10px] font-bold shrink-0 whitespace-nowrap">{trend}</span>
     </div>
   </div>
