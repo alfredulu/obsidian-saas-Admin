@@ -2,7 +2,7 @@
 
 @theme {
   --color-obsidian: #0A0A0B;
-  --color-neon-pink: #FF2D95;
+  --color-neon-pink: #FF00D6;
   --color-neon-cyan: #00F5FF;
   --color-neon-purple: #BC13FE;
   
@@ -11,17 +11,17 @@
 
 @layer base {
   body {
-    @apply bg-obsidian text-white antialiased;
+    @apply bg-obsidian text-white antialiased overflow-hidden;
   }
 }
 
 @layer components {
   .glass-card {
-    @apply bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl;
+    @apply bg-white/60 backdrop-blur-xl border border-white/10 rounded-2xl;
   }
   
   .neon-glow-pink {
-    box-shadow: 0 0 20px rgba(255, 45, 149, 0.3);
+    box-shadow: 0 0 20px rgba(255, 0, 214, 0.3);
   }
   
   .neon-glow-cyan {

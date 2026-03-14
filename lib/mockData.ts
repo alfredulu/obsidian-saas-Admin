@@ -2,17 +2,32 @@ export const salesData = [
   { name: 'Jan', sales: 4000, revenue: 2400 },
   { name: 'Feb', sales: 3000, revenue: 1398 },
   { name: 'Mar', sales: 2000, revenue: 9800 },
-  { name: 'Apr', sales: 2780, revenue: 3908 },
+  { name: 'Apr', sales: 2780, revenue: 3908, isCurrent: true },
   { name: 'May', sales: 1890, revenue: 4800 },
   { name: 'Jun', sales: 2390, revenue: 3800 },
   { name: 'Jul', sales: 3490, revenue: 4300 },
 ];
 
 export const productHighlights = [
-  { name: 'SaaS Pro', value: 400, color: '#FF2D95' },
-  { name: 'Enterprise', value: 300, color: '#00F5FF' },
-  { name: 'Basic', value: 300, color: '#BC13FE' },
-  { name: 'Add-ons', value: 200, color: '#FFFFFF' },
+  { name: 'Get Pro', value: 25018, color: '#FF00D6' },
+  { name: 'Active Visitor', value: 12450, color: '#00F5FF' },
+  { name: 'Cancel', value: 1200, color: '#FF4444' },
+];
+
+export const taskProgressData = [
+  { value: 40 }, { value: 35 }, { value: 55 }, { value: 45 }, { value: 70 }, { value: 65 }, { value: 85 }
+];
+
+export const taskExpensesData = [
+  { value: 6045 }, { value: 5800 }, { value: 6200 }, { value: 5900 }, { value: 6100 }, { value: 6045 }
+];
+
+export const topPeople = [
+  { id: 1, name: 'John Doe', email: 'john@example.com', status: 'Employee', avatar: 'JD' },
+  { id: 2, name: 'Jane Smith', email: 'jane@example.com', status: 'Customer', avatar: 'JS' },
+  { id: 3, name: 'Mike Ross', email: 'mike@example.com', status: 'Partner', avatar: 'MR' },
+  { id: 4, name: 'Harvey Specter', email: 'harvey@example.com', status: 'Employee', avatar: 'HS' },
+  { id: 5, name: 'Donna Paulsen', email: 'donna@example.com', status: 'Partner', avatar: 'DP' },
 ];
 
 export const analyticsData = [
