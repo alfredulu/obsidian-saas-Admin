@@ -76,6 +76,7 @@ export const Sidebar = () => {
           <p className="text-[10px] uppercase tracking-widest text-white/30 font-bold mb-3 px-3">Menu</p>
           <nav className="space-y-0.5">
             <SidebarItem icon={LayoutDashboard} label="Dashboard" href="/" />
+            <SidebarItem icon={Folder} label="File Manager" href="/file-manager" />
             <SidebarItem icon={FileText} label="Notes" href="/notes" />
             <SidebarItem icon={CheckSquare} label="Task" href="/tasks" />
             <SidebarItem icon={BarChart3} label="Analytics" href="/analytics" />

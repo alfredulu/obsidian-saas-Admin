@@ -154,3 +154,19 @@ export const notes = [
   { id: 3, title: 'Design Ideas', content: 'Consider using more neon accents in the dashboard for a futuristic look.', createdAt: '2023-10-25' },
   { id: 4, title: 'Tech Stack', content: 'We are moving towards a fully serverless architecture using Next.js and Vercel.', createdAt: '2023-10-28' },
 ];
+
+export const files = [
+  { id: 1, name: 'Project Assets', type: 'folder', size: '1.2 GB', modified: '2023-10-25' },
+  { id: 2, name: 'Brand Guidelines.pdf', type: 'document', size: '4.5 MB', modified: '2023-10-22' },
+  { id: 3, name: 'Dashboard_Mockup.fig', type: 'image', size: '12.8 MB', modified: '2023-10-24' },
+  { id: 4, name: 'Marketing Videos', type: 'folder', size: '4.8 GB', modified: '2023-10-20' },
+  { id: 5, name: 'User_Interviews.mp4', type: 'video', size: '850 MB', modified: '2023-10-21' },
+  { id: 6, name: 'Invoices_Q3.xlsx', type: 'document', size: '1.2 MB', modified: '2023-10-18' },
+];
+
+export const integrations = [
+  { id: 1, name: 'Slack', description: 'Send notifications and alerts directly to your Slack channels.', connected: true, logo: 'Slack' },
+  { id: 2, name: 'Google', description: 'Sync your calendar and drive files with the platform.', connected: false, logo: 'Google' },
+  { id: 3, name: 'GitHub', description: 'Automate your deployment workflow with GitHub Actions.', connected: true, logo: 'GitHub' },
+  { id: 4, name: 'Stripe', description: 'Manage your subscriptions and payments with Stripe.', connected: false, logo: 'Stripe' },
+];
