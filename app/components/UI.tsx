@@ -101,7 +101,7 @@ export const TableRow = ({ children, className, onClick }: any) => (
   <tr 
     onClick={onClick}
     className={cn(
-      "group hover:bg-white/[0.02] transition-colors cursor-pointer",
+      "group hover:bg-white/[0.02] transition-colors cursor-pointer interactive-row",
       className
     )}
   >

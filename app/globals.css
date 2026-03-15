@@ -18,6 +18,38 @@
 @layer components {
   .glass-card {
     @apply bg-white/[0.03] backdrop-blur-xl border border-white/10 rounded-2xl;
+    transition-property: transform, box-shadow, background-color;
+    transition-duration: 280ms;
+    transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+    will-change: transform, box-shadow;
+  }
+
+  .glass-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.45), 0 0 24px rgba(255, 255, 255, 0.05);
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  .sidebar-interactive {
+    transition-property: box-shadow, background-color;
+    transition-duration: 220ms;
+    transition-timing-function: ease-out;
+  }
+
+  .sidebar-interactive:hover {
+    box-shadow: 0 18px 30px rgba(255, 255, 255, 0.08);
+  }
+
+  .interactive-row {
+    transition-property: transform, box-shadow, background-color;
+    transition-duration: 260ms;
+    transition-timing-function: ease-out;
+  }
+
+  .interactive-row:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+    background-color: rgba(255, 255, 255, 0.04);
   }
   
   .neon-glow-pink {

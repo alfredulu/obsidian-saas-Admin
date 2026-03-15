@@ -76,7 +76,7 @@ const SidebarItem = ({
         scroll={false}
         onClick={onClick}
         className={cn(
-          'flex items-center justify-between px-4 py-2.5 rounded-xl cursor-pointer transition-all duration-200 group relative overflow-hidden',
+          'flex items-center justify-between px-4 py-2.5 rounded-xl cursor-pointer transition-all duration-200 group relative overflow-hidden sidebar-interactive',
           stateClass
         )}
       >
