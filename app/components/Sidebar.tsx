@@ -26,6 +26,12 @@ import {
 import { cn } from '@/lib/utils';
 import { useSidebar } from './SidebarContext';
 
+const SidebarScrollContainer = React.memo(({ children }: { children: React.ReactNode }) => (
+  <div className="flex-1 h-full overflow-y-auto space-y-6">
+    {children}
+  </div>
+));
+
   const SidebarItem = ({ icon: Icon, label, href, hasSubmenu = false, isActive, isNavigating, onClick }: any) => {
   const stateClass = isActive
     ? "bg-neon-pink text-white neon-glow-pink"
@@ -42,6 +48,7 @@ import { useSidebar } from './SidebarContext';
     >
       <Link 
         href={href}
+        scroll={false}
         onClick={onClick}
         className={cn(
           "flex items-center justify-between px-4 py-2.5 rounded-xl cursor-pointer transition-all duration-200 group relative overflow-hidden",
@@ -66,24 +73,15 @@ export const Sidebar = () => {
   const { isOpen, close } = useSidebar();
   const pathname = usePathname();
   const [navigatingHref, setNavigatingHref] = React.useState<string | null>(null);
-  const navRef = React.useRef<HTMLElement | null>(null);
-  const savedScroll = React.useRef<number | null>(null);
 
   React.useEffect(() => {
     if (navigatingHref && pathname === navigatingHref) {
       setNavigatingHref(null);
-      if (savedScroll.current !== null && navRef.current) {
-        navRef.current.scrollTop = savedScroll.current;
-        savedScroll.current = null;
-      }
     }
   }, [pathname, navigatingHref]);
 
   const handleClick = (href: string) => () => {
     if (href === pathname) return;
-    if (navRef.current) {
-      savedScroll.current = navRef.current.scrollTop;
-    }
     setNavigatingHref(href);
   };
 
@@ -102,31 +100,32 @@ export const Sidebar = () => {
         <h1 className="text-lg font-bold tracking-tight">Sass Admin</h1>
       </div>
 
-      <div className="space-y-6 flex-1">
-        <div>
-          <p className="text-[10px] uppercase tracking-widest text-white/30 font-bold mb-3 px-3">Menu</p>
-          <nav ref={navRef} className="space-y-0.5">
-            <SidebarItem icon={LayoutDashboard} label="Dashboard" href="/" isActive={isActive('/')} isNavigating={isNavigating('/')} onClick={handleClick('/')} />
-            <SidebarItem icon={Folder} label="File Manager" href="/file-manager" isActive={isActive('/file-manager')} isNavigating={isNavigating('/file-manager')} onClick={handleClick('/file-manager')} />
-            <SidebarItem icon={FileText} label="Notes" href="/notes" isActive={isActive('/notes')} isNavigating={isNavigating('/notes')} onClick={handleClick('/notes')} />
-            <SidebarItem icon={CheckSquare} label="Tasks" href="/tasks" isActive={isActive('/tasks')} isNavigating={isNavigating('/tasks')} onClick={handleClick('/tasks')} />
-            <SidebarItem icon={BarChart3} label="Analytics" href="/analytics" isActive={isActive('/analytics')} isNavigating={isNavigating('/analytics')} onClick={handleClick('/analytics')} />
-            <SidebarItem icon={CreditCard} label="Subscription" href="/subscription" isActive={isActive('/subscription')} isNavigating={isNavigating('/subscription')} onClick={handleClick('/subscription')} />
-            <SidebarItem icon={CalendarIcon} label="Calendar" href="/calendar" isActive={isActive('/calendar')} isNavigating={isNavigating('/calendar')} onClick={handleClick('/calendar')} />
-            <SidebarItem icon={Bell} label="Notifications" href="/notifications" isActive={isActive('/notifications')} isNavigating={isNavigating('/notifications')} onClick={handleClick('/notifications')} />
-            <SidebarItem icon={MessageSquare} label="Messages" href="/messages" isActive={isActive('/messages')} isNavigating={isNavigating('/messages')} onClick={handleClick('/messages')} />
-            <SidebarItem icon={User} label="Users" href="/users" isActive={isActive('/users')} isNavigating={isNavigating('/users')} onClick={handleClick('/users')} />
-            <SidebarItem icon={Building2} label="Companies" href="/companies" isActive={isActive('/companies')} isNavigating={isNavigating('/companies')} onClick={handleClick('/companies')} />
-          </nav>
-        </div>
-
-        <div>
-          <p className="text-[10px] uppercase tracking-widest text-white/30 font-bold mb-3 px-3">Support</p>
-          <nav className="space-y-0.5">
-            <SidebarItem icon={Settings} label="Settings" href="/settings" isActive={isActive('/settings')} isNavigating={isNavigating('/settings')} onClick={handleClick('/settings')} />
-            <SidebarItem icon={Grid2X2} label="Integrations" href="/integrations" isActive={isActive('/integrations')} isNavigating={isNavigating('/integrations')} onClick={handleClick('/integrations')} />
-          </nav>
-        </div>
+      <div className="flex-1 flex flex-col">
+        <SidebarScrollContainer>
+          <div>
+            <p className="text-[10px] uppercase tracking-widest text-white/30 font-bold mb-3 px-3">Menu</p>
+            <nav className="space-y-0.5">
+              <SidebarItem icon={LayoutDashboard} label="Dashboard" href="/" isActive={isActive('/')} isNavigating={isNavigating('/')} onClick={handleClick('/')} />
+              <SidebarItem icon={Folder} label="File Manager" href="/file-manager" isActive={isActive('/file-manager')} isNavigating={isNavigating('/file-manager')} onClick={handleClick('/file-manager')} />
+              <SidebarItem icon={FileText} label="Notes" href="/notes" isActive={isActive('/notes')} isNavigating={isNavigating('/notes')} onClick={handleClick('/notes')} />
+              <SidebarItem icon={CheckSquare} label="Tasks" href="/tasks" isActive={isActive('/tasks')} isNavigating={isNavigating('/tasks')} onClick={handleClick('/tasks')} />
+              <SidebarItem icon={BarChart3} label="Analytics" href="/analytics" isActive={isActive('/analytics')} isNavigating={isNavigating('/analytics')} onClick={handleClick('/analytics')} />
+              <SidebarItem icon={CreditCard} label="Subscription" href="/subscription" isActive={isActive('/subscription')} isNavigating={isNavigating('/subscription')} onClick={handleClick('/subscription')} />
+              <SidebarItem icon={CalendarIcon} label="Calendar" href="/calendar" isActive={isActive('/calendar')} isNavigating={isNavigating('/calendar')} onClick={handleClick('/calendar')} />
+              <SidebarItem icon={Bell} label="Notifications" href="/notifications" isActive={isActive('/notifications')} isNavigating={isNavigating('/notifications')} onClick={handleClick('/notifications')} />
+              <SidebarItem icon={MessageSquare} label="Messages" href="/messages" isActive={isActive('/messages')} isNavigating={isNavigating('/messages')} onClick={handleClick('/messages')} />
+              <SidebarItem icon={User} label="Users" href="/users" isActive={isActive('/users')} isNavigating={isNavigating('/users')} onClick={handleClick('/users')} />
+              <SidebarItem icon={Building2} label="Companies" href="/companies" isActive={isActive('/companies')} isNavigating={isNavigating('/companies')} onClick={handleClick('/companies')} />
+            </nav>
+          </div>
+          <div>
+            <p className="text-[10px] uppercase tracking-widest text-white/30 font-bold mb-3 px-3">Support</p>
+            <nav className="space-y-0.5">
+              <SidebarItem icon={Settings} label="Settings" href="/settings" isActive={isActive('/settings')} isNavigating={isNavigating('/settings')} onClick={handleClick('/settings')} />
+              <SidebarItem icon={Grid2X2} label="Integrations" href="/integrations" isActive={isActive('/integrations')} isNavigating={isNavigating('/integrations')} onClick={handleClick('/integrations')} />
+            </nav>
+          </div>
+        </SidebarScrollContainer>
       </div>
 
       <motion.div 

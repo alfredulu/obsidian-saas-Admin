@@ -11,8 +11,8 @@ export const TopBar = () => {
 
   return (
     <header className="h-14 border-b border-white/5 px-6 shrink-0 bg-obsidian/50 backdrop-blur-xl">
-      <div className="grid grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-4 h-full">
-        <div className="flex items-center gap-3 min-w-0">
+      <div className="flex items-center h-full gap-3">
+        <div className="flex items-center gap-2 flex-1 min-w-0">
           <button 
             onClick={toggle}
             className="lg:hidden text-white/50 hover:text-white p-1.5 hover:bg-white/5 rounded-lg transition-colors"
@@ -21,13 +21,13 @@ export const TopBar = () => {
           </button>
           <button 
             onClick={open}
-            className="sm:hidden text-white/50 hover:text-white p-1.5 hover:bg-white/5 rounded-lg transition-colors"
+            className="sm:hidden text-white/50 hover:text-white p-1.5 hover:bg-white/5 rounded-lg transition-colors max-[400px]:hidden"
           >
             <Search size={20} />
           </button>
           <div 
             onClick={open}
-            className="relative hidden sm:flex flex-1 min-w-0 max-w-[360px] cursor-pointer group"
+            className="relative hidden lg:flex flex-1 min-w-0 max-w-[360px] cursor-pointer group"
           >
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30 group-hover:text-white transition-colors" size={14} />
             <div className="w-full bg-white/5 border border-white/5 rounded-lg py-1.5 pl-9 pr-12 text-[11px] text-white/30 group-hover:text-white/50 transition-colors overflow-hidden text-ellipsis">
@@ -40,7 +40,7 @@ export const TopBar = () => {
           </div>
         </div>
 
-        <div className="flex items-center justify-center gap-2 sm:gap-3 text-white/30">
+        <div className="flex-1 flex items-center justify-center gap-3 text-white/30">
           <button className="p-1.5 rounded-lg hover:bg-white/5 transition-colors">
             <Zap size={16} />
           </button>
@@ -53,7 +53,7 @@ export const TopBar = () => {
           </button>
         </div>
 
-        <div className="flex items-center gap-3 cursor-pointer group pt-1">
+        <div className="flex items-center gap-3 cursor-pointer group pt-1 ml-auto">
           <div className="text-right">
             <p className="text-[11px] font-bold">WorkLoad Hq</p>
             <p className="text-[9px] text-white/30 font-medium">Admin Account</p>
