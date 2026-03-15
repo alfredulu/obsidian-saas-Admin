@@ -50,30 +50,65 @@ const supportItems: NavItem[] = [
   { icon: Grid2X2, label: 'Integrations', href: '/integrations' },
 ];
 
-const SidebarItem = ({ icon: Icon, label, href, hasSubmenu = false, isActive }: NavItem & { isActive: boolean }) => (
-  <motion.div
-    animate={{ x: isActive ? 4 : 0 }}
-    whileHover={{ x: 4 }}
-    transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-  >
-    <Link
-      href={href}
-      scroll={false}
-      className={cn(
-        'flex items-center justify-between px-4 py-2.5 rounded-xl cursor-pointer transition-all duration-200 group relative overflow-hidden',
-        isActive ? 'bg-neon-pink text-white neon-glow-pink' : 'text-white/50 hover:text-white hover:bg-white/10 hover:shadow-[0_0_15px_rgba(255,255,255,0.05)]'
-      )}
-    >
-      <div className="flex items-center gap-3">
-        <Icon size={18} className={cn('transition-colors', isActive ? 'text-white' : 'group-hover:text-white')} />
-        <span className="text-sm font-medium">{label}</span>
-      </div>
-      {hasSubmenu && <ChevronDown size={14} className={cn('transition-colors', isActive ? 'text-white' : 'text-white/30 group-hover:text-white')} />}
-    </Link>
-  </motion.div>
-);
+const SidebarItem = ({
+  icon: Icon,
+  label,
+  href,
+  hasSubmenu = false,
+  isActive,
+  isPending,
+  onClick
+}: NavItem & { isActive: boolean; isPending: boolean; onClick?: () => void }) => {
+  const stateClass = isActive
+    ? 'bg-neon-pink text-white neon-glow-pink'
+    : isPending
+    ? 'bg-white/10 text-white/70 border border-white/10 cursor-default'
+    : 'text-white/50 hover:text-white hover:bg-white/10 hover:shadow-[0_0_15px_rgba(255,255,255,0.05)]';
 
-const SidebarSection = ({ title, items, pathname }: { title: string; items: NavItem[]; pathname: string }) => (
+  return (
+    <motion.div
+      animate={{ x: isActive ? 4 : 0 }}
+      whileHover={!isPending ? { x: 4 } : undefined}
+      transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+    >
+      <Link
+        href={href}
+        scroll={false}
+        onClick={onClick}
+        className={cn(
+          'flex items-center justify-between px-4 py-2.5 rounded-xl cursor-pointer transition-all duration-200 group relative overflow-hidden',
+          stateClass
+        )}
+      >
+        <div className="flex items-center gap-3">
+          <Icon size={18} className={cn('transition-colors', isActive || isPending ? 'text-white' : 'group-hover:text-white')} />
+          <span className="text-sm font-medium">{label}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          {isPending && (
+            <span className="w-3 h-3 border-[2px] border-white/20 border-t-white rounded-full animate-spin" aria-hidden />
+          )}
+          {hasSubmenu && (
+            <ChevronDown size={14} className={cn('transition-colors', isActive ? 'text-white' : 'text-white/30 group-hover:text-white')} />
+          )}
+        </div>
+      </Link>
+    </motion.div>
+  );
+};
+const SidebarSection = ({
+  title,
+  items,
+  pathname,
+  pendingHref,
+  onItemClick
+}: {
+  title: string;
+  items: NavItem[];
+  pathname: string;
+  pendingHref: string | null;
+  onItemClick: (href: string) => void;
+}) => (
   <div>
     <p className="text-[10px] uppercase tracking-widest text-white/30 font-bold mb-3 px-3">{title}</p>
     <nav className="space-y-0.5">
@@ -82,6 +117,8 @@ const SidebarSection = ({ title, items, pathname }: { title: string; items: NavI
           key={item.href}
           {...item}
           isActive={pathname === item.href}
+          isPending={pendingHref === item.href && pathname !== item.href}
+          onClick={() => onItemClick(item.href)}
         />
       ))}
     </nav>
@@ -91,11 +128,23 @@ const SidebarSection = ({ title, items, pathname }: { title: string; items: NavI
 export const Sidebar = () => {
   const { isOpen, close } = useSidebar();
   const pathname = usePathname();
+  const [pendingHref, setPendingHref] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (pendingHref && pathname === pendingHref) {
+      setPendingHref(null);
+    }
+  }, [pathname, pendingHref]);
+
+  const handleItemClick = (href: string) => {
+    if (href === pathname) return;
+    setPendingHref(href);
+  };
 
   return (
     <>
       <div className="hidden lg:flex h-full">
-        <SidebarContent pathname={pathname} />
+        <SidebarContent pathname={pathname} pendingHref={pendingHref} onItemClick={handleItemClick} />
       </div>
       <AnimatePresence>
         {isOpen && (
@@ -114,7 +163,7 @@ export const Sidebar = () => {
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
               className="absolute left-0 top-0 bottom-0 w-64 bg-obsidian shadow-2xl"
             >
-              <SidebarContent pathname={pathname} />
+              <SidebarContent pathname={pathname} pendingHref={pendingHref} onItemClick={handleItemClick} />
             </motion.div>
           </div>
         )}
@@ -123,7 +172,15 @@ export const Sidebar = () => {
   );
 };
 
-const SidebarContent = ({ pathname }: { pathname: string }) => (
+const SidebarContent = ({
+  pathname,
+  pendingHref,
+  onItemClick
+}: {
+  pathname: string;
+  pendingHref: string | null;
+  onItemClick: (href: string) => void;
+}) => (
   <aside className="w-60 min-w-[240px] h-full flex flex-col border-r border-white/5 p-5 bg-obsidian/50 backdrop-blur-xl">
     <div className="flex items-center gap-2 mb-8">
       <motion.div
@@ -138,8 +195,8 @@ const SidebarContent = ({ pathname }: { pathname: string }) => (
     <div className="flex-1 flex flex-col overflow-hidden">
       <div className="flex-1 overflow-y-auto">
         <div className="space-y-6">
-          <SidebarSection title="Menu" items={menuItems} pathname={pathname} />
-          <SidebarSection title="Support" items={supportItems} pathname={pathname} />
+          <SidebarSection title="Menu" items={menuItems} pathname={pathname} pendingHref={pendingHref} onItemClick={onItemClick} />
+          <SidebarSection title="Support" items={supportItems} pathname={pathname} pendingHref={pendingHref} onItemClick={onItemClick} />
         </div>
       </div>
     </div>
