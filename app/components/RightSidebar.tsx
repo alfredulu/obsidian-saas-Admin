@@ -22,8 +22,8 @@ export const ProductHighlight = () => {
   return (
     <div className="glass-card p-5">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-xs font-bold uppercase tracking-widest text-white/50">Product Highlight</h3>
-        <MoreHorizontal size={14} className="text-white/30" />
+        <h3 className="text-xs font-bold uppercase tracking-widest text-muted-theme">Product Highlight</h3>
+        <MoreHorizontal size={14} className="text-muted-theme" />
       </div>
       
       <div className="h-40 w-full relative">
@@ -57,7 +57,7 @@ export const ProductHighlight = () => {
             <span className="text-neon-pink font-black text-sm">P</span>
           </div>
           <p className="text-lg font-bold">25,018</p>
-          <p className="text-[9px] text-white/30 uppercase font-bold">Product Hunt</p>
+          <p className="text-[9px] text-muted-theme uppercase font-bold">Product Hunt</p>
         </div>
       </div>
 
@@ -66,7 +66,7 @@ export const ProductHighlight = () => {
           <div key={i} className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="w-1.5 h-1.5 rounded-full" style={{backgroundColor: item.color}} />
-              <span className="text-[10px] text-white/50 font-medium">{item.name}</span>
+              <span className="text-[10px] text-muted-theme font-medium">{item.name}</span>
             </div>
             <span className="text-[10px] font-bold">{item.value.toLocaleString()}</span>
           </div>
@@ -79,8 +79,8 @@ export const ProductHighlight = () => {
 export const TaskSchedule = () => (
   <div className="space-y-6">
     <div className="flex items-center justify-between">
-      <h3 className="text-xs font-bold uppercase tracking-widest text-white/50">Task Schedule</h3>
-      <CalendarIcon size={14} className="text-white/30" />
+      <h3 className="text-xs font-bold uppercase tracking-widest text-muted-theme">Task Schedule</h3>
+      <CalendarIcon size={14} className="text-muted-theme" />
     </div>
 
     {/* Mini Calendar Placeholder */}
@@ -94,12 +94,12 @@ export const TaskSchedule = () => (
       </div>
       <div className="grid grid-cols-7 gap-1 text-center">
         {['S','M','T','W','T','F','S'].map((d, i) => (
-          <span key={`${d}-${i}`} className="text-[8px] text-white/20 font-bold">{d}</span>
+          <span key={`${d}-${i}`} className="text-[8px] text-muted-theme font-bold">{d}</span>
         ))}
         {Array.from({length: 31}).map((_, i) => (
           <span key={i} className={cn(
             "text-[9px] py-1 rounded cursor-pointer hover:bg-white/5 transition-colors",
-            i + 1 === 24 ? "bg-neon-pink text-white font-bold neon-glow-pink" : "text-white/50"
+            i + 1 === 24 ? "bg-neon-pink text-white font-bold neon-glow-pink" : "text-muted-theme"
           )}>
             {i + 1}
           </span>
@@ -114,7 +114,7 @@ export const TaskSchedule = () => (
           <h4 className="text-[11px] font-bold">Meeting Client</h4>
           <span className="px-2 py-0.5 rounded bg-red-500/10 text-red-500 text-[8px] font-bold uppercase">Starting</span>
         </div>
-        <div className="flex items-center gap-2 text-[9px] text-white/30">
+        <div className="flex items-center gap-2 text-[9px] text-muted-theme">
           <Clock size={10} />
           <span>09:00 AM - 10:30 AM</span>
         </div>
@@ -125,7 +125,7 @@ export const TaskSchedule = () => (
           <h4 className="text-[11px] font-bold">App Design</h4>
           <span className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 text-[8px] font-bold uppercase">Design</span>
         </div>
-        <div className="flex items-center gap-2 text-[9px] text-white/30">
+        <div className="flex items-center gap-2 text-[9px] text-muted-theme">
           <Clock size={10} />
           <span>01:00 PM - 03:00 PM</span>
         </div>
@@ -136,7 +136,7 @@ export const TaskSchedule = () => (
 
 export const RightSidebar = () => {
   return (
-    <aside className="hidden xl:flex w-72 h-screen flex-col border-l border-white/5 p-6 overflow-y-auto shrink-0 bg-obsidian/50 backdrop-blur-xl">
+    <aside className="hidden xl:flex w-72 h-screen flex-col border-l border-theme p-6 overflow-y-auto shrink-0 panel-surface-soft backdrop-blur-xl">
       <div className="space-y-8">
         <ProductHighlight />
         <TaskSchedule />

@@ -60,10 +60,10 @@ const SidebarItem = ({
   onClick
 }: NavItem & { isActive: boolean; isPending: boolean; onClick?: () => void }) => {
   const stateClass = isActive
-    ? 'bg-neon-pink text-white neon-glow-pink'
+    ? 'bg-neon-pink text-theme neon-glow-pink'
     : isPending
-    ? 'bg-white/10 text-white/70 border border-white/10 cursor-default'
-    : 'text-white/50 hover:text-white hover:bg-white/10 hover:shadow-[0_0_15px_rgba(255,255,255,0.05)]';
+    ? 'bg-white/10 text-muted-theme border border-white/10 cursor-default'
+    : 'text-muted-theme hover:text-theme hover:bg-white/10 hover:shadow-[0_0_15px_rgba(255,255,255,0.05)]';
 
   return (
     <motion.div
@@ -81,7 +81,7 @@ const SidebarItem = ({
         )}
       >
         <div className="flex items-center gap-3">
-          <Icon size={18} className={cn('transition-colors', isActive || isPending ? 'text-white' : 'group-hover:text-white')} />
+          <Icon size={18} className={cn('transition-colors', isActive || isPending ? 'text-theme' : 'group-hover:text-theme')} />
           <span className="text-sm font-medium">{label}</span>
         </div>
         <div className="flex items-center gap-2">
@@ -89,7 +89,13 @@ const SidebarItem = ({
             <span className="w-3 h-3 border-[2px] border-white/20 border-t-white rounded-full animate-spin" aria-hidden />
           )}
           {hasSubmenu && (
-            <ChevronDown size={14} className={cn('transition-colors', isActive ? 'text-white' : 'text-white/30 group-hover:text-white')} />
+            <ChevronDown
+              size={14}
+              className={cn(
+                'transition-colors',
+                isActive ? 'text-theme' : 'text-muted-theme group-hover:text-theme'
+              )}
+            />
           )}
         </div>
       </Link>
@@ -110,7 +116,7 @@ const SidebarSection = ({
   onItemClick: (href: string) => void;
 }) => (
   <div>
-    <p className="text-[10px] uppercase tracking-widest text-white/30 font-bold mb-3 px-3">{title}</p>
+    <p className="text-[10px] uppercase tracking-widest text-muted-theme font-bold mb-3 px-3">{title}</p>
     <nav className="space-y-0.5">
       {items.map((item) => (
         <SidebarItem
@@ -161,16 +167,16 @@ export const Sidebar = () => {
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="absolute left-0 top-0 bottom-0 w-64 bg-obsidian shadow-2xl"
+              className="absolute left-0 top-0 bottom-0 w-64 panel-surface-strong shadow-2xl"
             >
               <SidebarContent pathname={pathname} pendingHref={pendingHref} onItemClick={handleItemClick} />
             </motion.div>
           </div>
         )}
       </AnimatePresence>
-    </>
-  );
-};
+      </>
+    );
+  };
 
 const SidebarContent = ({
   pathname,
@@ -181,7 +187,7 @@ const SidebarContent = ({
   pendingHref: string | null;
   onItemClick: (href: string) => void;
 }) => (
-  <aside className="w-60 min-w-[240px] h-full flex flex-col border-r border-white/5 p-5 bg-obsidian/50 backdrop-blur-xl">
+  <aside className="w-60 min-w-[240px] h-full flex flex-col border-r border-theme p-5 panel-surface-soft backdrop-blur-xl">
     <div className="flex items-center gap-2 mb-8">
       <motion.div
         whileHover={{ rotate: 90 }}
@@ -207,7 +213,7 @@ const SidebarContent = ({
     >
       <div className="relative z-10">
         <h3 className="text-[11px] font-bold mb-1">Sasste Pro. Subsection</h3>
-        <p className="text-[9px] text-white/50 mb-3 leading-tight">Get All Dashboards access and 300+ use pre-ready tools.</p>
+        <p className="text-[9px] text-muted-theme mb-3 leading-tight">Get All Dashboards access and 300+ use pre-ready tools.</p>
         <Link href="/subscription" scroll={false} className="w-full py-2 bg-neon-pink text-white rounded-lg text-[10px] font-bold flex items-center justify-center gap-2 hover:bg-neon-pink/80 transition-all neon-glow-pink">
           Upgrade pro <Lock size={10} />
         </Link>

@@ -17,6 +17,7 @@ import { CommandPaletteProvider } from "./components/CommandPaletteContext";
 import { CommandPalette } from "./components/CommandPalette";
 import { ToastProvider } from "./components/ToastContext";
 import { GlobalModalsProvider } from "./components/GlobalModalsContext";
+import { ThemeProvider } from "./components/ThemeProvider";
 
 export default function RootLayout({
   children,
@@ -24,29 +25,31 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`dark ${inter.className}`}>
       <body className={inter.className}>
-        <SidebarProvider>
-          <ToastProvider>
-            <GlobalModalsProvider>
-              <CommandPaletteProvider>
-                <div className="flex h-screen overflow-hidden bg-obsidian">
-                  <Sidebar />
-                  <div className="flex flex-col flex-1 overflow-hidden">
-                    <TopBar />
-                    <div className="grid grid-cols-1 xl:grid-cols-[1fr_auto] flex-1 overflow-hidden">
-                      <main className="overflow-y-auto p-6 w-full">
-                        {children}
-                      </main>
-                      <RightSidebar />
+        <ThemeProvider>
+          <SidebarProvider>
+            <ToastProvider>
+              <GlobalModalsProvider>
+                <CommandPaletteProvider>
+                  <div className="flex h-screen overflow-hidden theme-bg">
+                    <Sidebar />
+                    <div className="flex flex-col flex-1 overflow-hidden">
+                      <TopBar />
+                      <div className="grid grid-cols-1 xl:grid-cols-[1fr_auto] flex-1 overflow-hidden">
+                        <main className="overflow-y-auto p-6 w-full">
+                          {children}
+                        </main>
+                        <RightSidebar />
+                      </div>
                     </div>
                   </div>
-                </div>
-                <CommandPalette />
-              </CommandPaletteProvider>
-            </GlobalModalsProvider>
-          </ToastProvider>
-        </SidebarProvider>
+                  <CommandPalette />
+                </CommandPaletteProvider>
+              </GlobalModalsProvider>
+            </ToastProvider>
+          </SidebarProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
