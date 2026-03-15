@@ -10,45 +10,45 @@ export const TopBar = () => {
   const { open } = useCommandPalette();
 
   return (
-    <header className="h-14 border-b border-white/5 flex items-center justify-between px-6 shrink-0 bg-obsidian/50 backdrop-blur-xl">
-      <div className="flex items-center gap-4 flex-1 min-w-0">
-        <button 
-          onClick={toggle}
-          className="lg:hidden text-white/50 hover:text-white p-1.5 hover:bg-white/5 rounded-lg transition-colors"
-        >
-          <Menu size={20} />
-        </button>
-        <button 
-          onClick={open}
-          className="sm:hidden text-white/50 hover:text-white p-1.5 hover:bg-white/5 rounded-lg transition-colors"
-        >
-          <Search size={20} />
-        </button>
-        <div 
-          onClick={open}
-          className="relative hidden sm:flex flex-1 min-w-0 max-w-[420px] cursor-pointer group"
-        >
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30 group-hover:text-white transition-colors" size={14} />
-          <div className="w-full bg-white/5 border border-white/5 rounded-lg py-1.5 pl-9 pr-12 text-[11px] text-white/30 group-hover:text-white/50 transition-colors truncate">
-            Search anything...
-          </div>
-          <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-0.5 text-[9px] text-white/20 font-bold">
-            <span>⌘</span>
-            <span>K</span>
+    <header className="h-14 border-b border-white/5 px-6 shrink-0 bg-obsidian/50 backdrop-blur-xl">
+      <div className="grid grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-4 h-full">
+        <div className="flex items-center gap-3 min-w-0">
+          <button 
+            onClick={toggle}
+            className="lg:hidden text-white/50 hover:text-white p-1.5 hover:bg-white/5 rounded-lg transition-colors"
+          >
+            <Menu size={20} />
+          </button>
+          <button 
+            onClick={open}
+            className="sm:hidden text-white/50 hover:text-white p-1.5 hover:bg-white/5 rounded-lg transition-colors"
+          >
+            <Search size={20} />
+          </button>
+          <div 
+            onClick={open}
+            className="relative hidden sm:flex flex-1 min-w-0 max-w-[360px] cursor-pointer group"
+          >
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30 group-hover:text-white transition-colors" size={14} />
+            <div className="w-full bg-white/5 border border-white/5 rounded-lg py-1.5 pl-9 pr-12 text-[11px] text-white/30 group-hover:text-white/50 transition-colors overflow-hidden text-ellipsis">
+              Search anything...
+            </div>
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-0.5 text-[9px] text-white/20 font-bold">
+              <span>⌘</span>
+              <span>K</span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-3 border-r border-white/5 pr-4">
-          <button className="text-white/30 hover:text-white transition-colors p-1.5 hover:bg-white/5 rounded-lg">
+        <div className="flex items-center justify-center gap-2 sm:gap-3 text-white/30">
+          <button className="p-1.5 rounded-lg hover:bg-white/5 transition-colors">
             <Zap size={16} />
           </button>
-          <button className="relative text-white/30 hover:text-white transition-colors p-1.5 hover:bg-white/5 rounded-lg">
+          <button className="relative p-1.5 rounded-lg hover:bg-white/5 transition-colors">
             <Bell size={16} />
             <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-neon-pink rounded-full border border-obsidian" />
           </button>
-          <button className="text-white/30 hover:text-white transition-colors p-1.5 hover:bg-white/5 rounded-lg">
+          <button className="p-1.5 rounded-lg hover:bg-white/5 transition-colors">
             <Mail size={16} />
           </button>
         </div>

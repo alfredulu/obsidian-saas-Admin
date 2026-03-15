@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   LayoutDashboard, 
@@ -26,7 +26,7 @@ import {
 import { cn } from '@/lib/utils';
 import { useSidebar } from './SidebarContext';
 
-const SidebarItem = ({ icon: Icon, label, href, hasSubmenu = false, isActive, isNavigating, onClick }: any) => {
+  const SidebarItem = ({ icon: Icon, label, href, hasSubmenu = false, isActive, isNavigating, onClick }: any) => {
   const stateClass = isActive
     ? "bg-neon-pink text-white neon-glow-pink"
     : isNavigating
@@ -65,37 +65,26 @@ const SidebarItem = ({ icon: Icon, label, href, hasSubmenu = false, isActive, is
 export const Sidebar = () => {
   const { isOpen, close } = useSidebar();
   const pathname = usePathname();
-    const router = useRouter();
   const [navigatingHref, setNavigatingHref] = React.useState<string | null>(null);
+  const navRef = React.useRef<HTMLElement | null>(null);
+  const savedScroll = React.useRef<number | null>(null);
 
   React.useEffect(() => {
     if (navigatingHref && pathname === navigatingHref) {
       setNavigatingHref(null);
+      if (savedScroll.current !== null && navRef.current) {
+        navRef.current.scrollTop = savedScroll.current;
+        savedScroll.current = null;
+      }
     }
   }, [pathname, navigatingHref]);
 
-  const handleClick = (href: string) => async (event: React.MouseEvent<HTMLAnchorElement>) => {
-    if (
-      event.defaultPrevented ||
-      event.button !== 0 ||
-      event.metaKey ||
-      event.altKey ||
-      event.ctrlKey ||
-      event.shiftKey ||
-      href === pathname
-    ) {
-      return;
+  const handleClick = (href: string) => () => {
+    if (href === pathname) return;
+    if (navRef.current) {
+      savedScroll.current = navRef.current.scrollTop;
     }
-
-    event.preventDefault();
     setNavigatingHref(href);
-    event.currentTarget.blur();
-
-    try {
-      await router.push(href, undefined, { scroll: false });
-    } catch (error) {
-      setNavigatingHref(null);
-    }
   };
 
   const isActive = (href: string) => pathname === href;
@@ -116,7 +105,7 @@ export const Sidebar = () => {
       <div className="space-y-6 flex-1">
         <div>
           <p className="text-[10px] uppercase tracking-widest text-white/30 font-bold mb-3 px-3">Menu</p>
-          <nav className="space-y-0.5">
+          <nav ref={navRef} className="space-y-0.5">
             <SidebarItem icon={LayoutDashboard} label="Dashboard" href="/" isActive={isActive('/')} isNavigating={isNavigating('/')} onClick={handleClick('/')} />
             <SidebarItem icon={Folder} label="File Manager" href="/file-manager" isActive={isActive('/file-manager')} isNavigating={isNavigating('/file-manager')} onClick={handleClick('/file-manager')} />
             <SidebarItem icon={FileText} label="Notes" href="/notes" isActive={isActive('/notes')} isNavigating={isNavigating('/notes')} onClick={handleClick('/notes')} />
