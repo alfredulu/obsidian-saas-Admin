@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { files } from '@/lib/mockData';
-import { Card } from '@/app/components/UI';
+import { Card, EmptyState } from '@/app/components/UI';
 import { Folder, FileText, Image as ImageIcon, Video, MoreVertical, Search, Plus, Grid, List } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -17,6 +17,8 @@ const getFileIcon = (type: string) => {
 };
 
 export default function FileManagerPage() {
+  const hasFiles = files.length > 0;
+
   const [selectedId, setSelectedId] = useState<number | null>(null);
 
   return (
@@ -62,47 +64,60 @@ export default function FileManagerPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
-        {files.map((file) => {
-          const isSelected = selectedId === file.id;
-          return (
-            <motion.div
-              key={file.id}
-              whileHover={{ y: -4, scale: 1.02 }}
-              animate={{ 
-                scale: isSelected ? 1.02 : 1,
-                y: isSelected ? -4 : 0
-              }}
-              onClick={() => setSelectedId(file.id)}
-              className="cursor-pointer"
-            >
-              <Card className={cn(
-                "p-4 flex flex-col items-center text-center group transition-all duration-200",
-                isSelected ? "border-neon-cyan/50 panel-surface-soft" : "border-theme"
-              )}>
-                <div className="w-full flex justify-end mb-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button className="text-muted-theme opacity-40 hover:text-theme">
-                    <MoreVertical size={14} />
-                  </button>
-                </div>
-                
-                <div className={cn(
-                  "w-12 h-12 rounded-2xl flex items-center justify-center mb-4 transition-colors",
-                  isSelected ? "bg-neon-cyan/10" : "panel-surface-soft group-hover:bg-[var(--color-hover)]"
+      {hasFiles ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+          {files.map((file) => {
+            const isSelected = selectedId === file.id;
+            return (
+              <motion.div
+                key={file.id}
+                whileHover={{ y: -4, scale: 1.02 }}
+                animate={{ 
+                  scale: isSelected ? 1.02 : 1,
+                  y: isSelected ? -4 : 0
+                }}
+                onClick={() => setSelectedId(file.id)}
+                className="cursor-pointer"
+              >
+                <Card className={cn(
+                  "p-4 flex flex-col items-center text-center group transition-all duration-200",
+                  isSelected ? "border-neon-cyan/50 panel-surface-soft" : "border-theme"
                 )}>
-                  {getFileIcon(file.type)}
-                </div>
+                  <div className="w-full flex justify-end mb-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button className="text-muted-theme opacity-40 hover:text-theme">
+                      <MoreVertical size={14} />
+                    </button>
+                  </div>
+                  
+                  <div className={cn(
+                    "w-12 h-12 rounded-2xl flex items-center justify-center mb-4 transition-colors",
+                    isSelected ? "bg-neon-cyan/10" : "panel-surface-soft group-hover:bg-[var(--color-hover)]"
+                  )}>
+                    {getFileIcon(file.type)}
+                  </div>
 
-                <h3 className="text-xs font-bold truncate w-full mb-1">{file.name}</h3>
-                <div className="flex flex-col gap-0.5">
-                  <span className="text-[10px] text-muted-theme opacity-40">{file.size}</span>
-                  <span className="text-[9px] text-muted-theme opacity-20 uppercase tracking-tighter">{file.modified}</span>
-                </div>
-              </Card>
-            </motion.div>
-          );
-        })}
-      </div>
+                  <h3 className="text-xs font-bold truncate w-full mb-1">{file.name}</h3>
+                  <div className="flex flex-col gap-0.5">
+                    <span className="text-[10px] text-muted-theme opacity-40">{file.size}</span>
+                    <span className="text-[9px] text-muted-theme opacity-20 uppercase tracking-tighter">{file.modified}</span>
+                  </div>
+                </Card>
+              </motion.div>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="min-h-[360px] flex items-center justify-center">
+          <EmptyState
+            icon={<Folder size={32} />}
+            title="No files uploaded yet"
+            description="Upload files to keep your assets and documents in one secure workspace."
+            actionLabel="Upload File"
+            onAction={() => {}}
+            className="w-full"
+          />
+        </div>
+      )}
     </motion.div>
   );
 }

@@ -2,14 +2,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { Search, MoreVertical, Send, Paperclip, Smile, Phone, Video, Info, ChevronLeft } from 'lucide-react';
+import { Search, MoreVertical, Send, Paperclip, Smile, Phone, Video, Info, ChevronLeft, MessageSquare } from 'lucide-react';
 import { chats } from '@/lib/mockData';
 import { cn } from '@/lib/utils';
-import { Skeleton } from '@/app/components/UI';
+import { Skeleton, EmptyState } from '@/app/components/UI';
 
 export default function MessagesPage() {
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedChatId, setSelectedChatId] = useState(chats[0].id);
+  const [selectedChatId, setSelectedChatId] = useState<number | null>(chats[0]?.id ?? null);
   const [searchQuery, setSearchQuery] = useState('');
   const [messageInput, setMessageInput] = useState('');
   const [isSmallScreen, setIsSmallScreen] = useState(false);
@@ -45,10 +45,33 @@ export default function MessagesPage() {
   const showList = !isSmallScreen || activePane === 'list';
   const showChat = !isSmallScreen || activePane === 'chat';
 
-  const selectedChat = chats.find(c => c.id === selectedChatId) || chats[0];
-  const filteredChats = chats.filter(c => 
-    c.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const hasChats = chats.length > 0;
+  const filteredChats = hasChats
+    ? chats.filter((c) =>
+        c.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : [];
+
+  if (!hasChats) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="h-[calc(100vh-104px)] flex items-center justify-center"
+      >
+        <EmptyState
+          icon={<MessageSquare size={30} />}
+          title="No conversations yet"
+          description="Start messaging your team or clients to see conversations appear here."
+          actionLabel="Start Conversation"
+          onAction={() => {}}
+        />
+      </motion.div>
+    );
+  }
+
+  const selectedChat = chats.find((c) => c.id === selectedChatId) || chats[0];
 
   return (
     <motion.div 

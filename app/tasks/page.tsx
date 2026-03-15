@@ -3,8 +3,8 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { tasks } from '@/lib/mockData';
-import { Card, Badge, Avatar } from '@/app/components/UI';
-import { Calendar, MoreVertical, Plus } from 'lucide-react';
+import { Card, Badge, Avatar, EmptyState } from '@/app/components/UI';
+import { Calendar, MoreVertical, Plus, ClipboardList } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const PriorityBadge = ({ priority }: { priority: string }) => {
@@ -96,6 +96,8 @@ const KanbanColumn = ({ title, status, tasks, selectedId, onSelect }: { title: s
 };
 
 export default function TasksPage() {
+  const hasTasks = tasks.length > 0;
+
   const [selectedId, setSelectedId] = React.useState<number | null>(null);
 
   return (
@@ -121,11 +123,24 @@ export default function TasksPage() {
         </div>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-6 overflow-x-auto pb-6">
-        <KanbanColumn title="Todo" status="Todo" tasks={tasks} selectedId={selectedId} onSelect={setSelectedId} />
-        <KanbanColumn title="In Progress" status="In Progress" tasks={tasks} selectedId={selectedId} onSelect={setSelectedId} />
-        <KanbanColumn title="Completed" status="Completed" tasks={tasks} selectedId={selectedId} onSelect={setSelectedId} />
-      </div>
+      {hasTasks ? (
+        <div className="flex flex-col lg:flex-row gap-6 overflow-x-auto pb-6">
+          <KanbanColumn title="Todo" status="Todo" tasks={tasks} selectedId={selectedId} onSelect={setSelectedId} />
+          <KanbanColumn title="In Progress" status="In Progress" tasks={tasks} selectedId={selectedId} onSelect={setSelectedId} />
+          <KanbanColumn title="Completed" status="Completed" tasks={tasks} selectedId={selectedId} onSelect={setSelectedId} />
+        </div>
+      ) : (
+        <div className="min-h-[420px] flex items-center justify-center">
+          <EmptyState
+            icon={<ClipboardList size={30} />}
+            title="No tasks yet"
+            description="Create a task to start filling the board and keep your projects moving."
+            actionLabel="Create First Task"
+            onAction={() => {}}
+            className="w-full"
+          />
+        </div>
+      )}
     </motion.div>
   );
 }

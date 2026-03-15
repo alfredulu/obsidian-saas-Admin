@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'motion/react';
 import { X } from 'lucide-react';
@@ -136,6 +136,52 @@ export const Skeleton = ({ className, variant = 'default' }: any) => {
     )} />
   );
 };
+
+type EmptyStateProps = {
+  icon?: ReactNode;
+  title: string;
+  description?: string;
+  actionLabel?: string;
+  onAction?: () => void;
+  className?: string;
+};
+
+export const EmptyState = ({
+  icon,
+  title,
+  description,
+  actionLabel,
+  onAction,
+  className,
+}: EmptyStateProps) => (
+  <div
+    className={cn(
+      "flex flex-col items-center justify-center gap-4 text-center text-muted-theme border border-dashed border-theme rounded-[26px] panel-surface-strong p-10 mx-auto max-w-md shadow-[0_0_40px_rgba(0,0,0,0.2)]",
+      className
+    )}
+  >
+    {icon && (
+      <div className="text-[32px] text-neon-pink shadow-[0_0_18px_rgba(255,0,214,0.45)]">
+        {icon}
+      </div>
+    )}
+    <h3 className="text-lg font-bold text-theme">{title}</h3>
+    {description && (
+      <p className="text-xs leading-relaxed opacity-80 max-w-[18rem]">
+        {description}
+      </p>
+    )}
+    {actionLabel && (
+      <button
+        type="button"
+        onClick={onAction}
+        className="px-6 py-2 text-sm font-bold rounded-xl bg-neon-pink text-theme neon-glow-pink hover:bg-neon-pink/80 transition-all"
+      >
+        {actionLabel}
+      </button>
+    )}
+  </div>
+);
 
 // --- Modal ---
 export const Modal = ({ isOpen, onClose, title, children, maxWidth = 'max-w-lg' }: any) => {

@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { notes as initialNotes } from '@/lib/mockData';
-import { Card } from '@/app/components/UI';
-import { Plus, Edit2, Trash2, X, Search, Clock } from 'lucide-react';
+import { Card, EmptyState } from '@/app/components/UI';
+import { Plus, Edit2, Trash2, X, Search, Clock, FileText } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export default function NotesPage() {
@@ -18,6 +18,13 @@ export default function NotesPage() {
     note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     note.content.toLowerCase().includes(searchQuery.toLowerCase())
   );
+  const hasNotes = notes.length > 0;
+  const shouldShowEmpty = filteredNotes.length === 0;
+  const trimmedQuery = searchQuery.trim();
+  const isSearching = trimmedQuery.length > 0;
+  const emptyDescription = hasNotes && isSearching
+    ? `No notes match "${trimmedQuery}". Try different keywords.`
+    : "Capture a thought to keep it handy for later.";
 
   const handleCreateNote = (e: React.FormEvent) => {
     e.preventDefault();
@@ -72,63 +79,75 @@ export default function NotesPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <AnimatePresence mode="popLayout">
-          {filteredNotes.map((note) => {
-            const isSelected = selectedId === note.id;
-            return (
-              <motion.div
-                key={note.id}
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ 
-                  opacity: 1, 
-                  scale: isSelected ? 1.02 : 1,
-                  y: isSelected ? -4 : 0
-                }}
-                whileHover={{ y: -4, scale: 1.02 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.2 }}
-                onClick={() => setSelectedId(note.id)}
-              >
-                <Card className={cn(
-                  "h-full flex flex-col group cursor-pointer transition-all duration-200",
-                  isSelected ? "border-neon-cyan/50 panel-surface-soft" : "border-theme"
-                )}>
-                  <div className="flex justify-between items-start mb-3">
-                    <h3 className={cn(
-                      "text-sm font-bold transition-colors",
-                      isSelected ? "text-neon-cyan" : "group-hover:text-neon-cyan"
-                    )}>{note.title}</h3>
-                    <div className={cn(
-                      "flex items-center gap-1 transition-opacity",
-                      isSelected ? "opacity-100" : "opacity-0 group-hover:opacity-100"
-                    )}>
-                      <button className="p-1.5 rounded-lg panel-surface-soft text-muted-theme hover:text-theme hover:bg-[var(--color-hover)] transition-all">
-                        <Edit2 size={12} />
-                      </button>
-                      <button 
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          deleteNote(note.id);
-                        }}
-                        className="p-1.5 rounded-lg panel-surface-soft text-muted-theme hover:text-red-500 hover:bg-red-500/10 transition-all"
-                      >
-                        <Trash2 size={12} />
-                      </button>
+        {shouldShowEmpty ? (
+          <div className="col-span-full">
+            <EmptyState
+              icon={<FileText size={34} />}
+              title={hasNotes ? "No matching notes" : "No notes yet"}
+              description={emptyDescription}
+              actionLabel="Create Note"
+              onAction={() => setIsModalOpen(true)}
+            />
+          </div>
+        ) : (
+          <AnimatePresence mode="popLayout">
+            {filteredNotes.map((note) => {
+              const isSelected = selectedId === note.id;
+              return (
+                <motion.div
+                  key={note.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ 
+                    opacity: 1, 
+                    scale: isSelected ? 1.02 : 1,
+                    y: isSelected ? -4 : 0
+                  }}
+                  whileHover={{ y: -4, scale: 1.02 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.2 }}
+                  onClick={() => setSelectedId(note.id)}
+                >
+                  <Card className={cn(
+                    "h-full flex flex-col group cursor-pointer transition-all duration-200",
+                    isSelected ? "border-neon-cyan/50 panel-surface-soft" : "border-theme"
+                  )}>
+                    <div className="flex justify-between items-start mb-3">
+                      <h3 className={cn(
+                        "text-sm font-bold transition-colors",
+                        isSelected ? "text-neon-cyan" : "group-hover:text-neon-cyan"
+                      )}>{note.title}</h3>
+                      <div className={cn(
+                        "flex items-center gap-1 transition-opacity",
+                        isSelected ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+                      )}>
+                        <button className="p-1.5 rounded-lg panel-surface-soft text-muted-theme hover:text-theme hover:bg-[var(--color-hover)] transition-all">
+                          <Edit2 size={12} />
+                        </button>
+                        <button 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            deleteNote(note.id);
+                          }}
+                          className="p-1.5 rounded-lg panel-surface-soft text-muted-theme hover:text-red-500 hover:bg-red-500/10 transition-all"
+                        >
+                          <Trash2 size={12} />
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                  <p className="text-[11px] text-muted-theme leading-relaxed mb-6 flex-1 line-clamp-4">
-                    {note.content}
-                  </p>
-                  <div className="flex items-center gap-1.5 text-[9px] text-muted-theme opacity-40 font-bold uppercase tracking-widest pt-4 border-t border-theme">
-                    <Clock size={10} />
-                    <span>{note.createdAt}</span>
-                  </div>
-                </Card>
-              </motion.div>
-            );
-          })}
-        </AnimatePresence>
+                    <p className="text-[11px] text-muted-theme leading-relaxed mb-6 flex-1 line-clamp-4">
+                      {note.content}
+                    </p>
+                    <div className="flex items-center gap-1.5 text-[9px] text-muted-theme opacity-40 font-bold uppercase tracking-widest pt-4 border-t border-theme">
+                      <Clock size={10} />
+                      <span>{note.createdAt}</span>
+                    </div>
+                  </Card>
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
+        )}
       </div>
 
       {/* Create Note Modal */}

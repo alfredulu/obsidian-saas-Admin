@@ -4,9 +4,11 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { companies } from '@/lib/mockData';
 import { Building2, Search, Filter, MoreHorizontal, ExternalLink, Users } from 'lucide-react';
-import { Card, Badge, Table, TableRow, TableCell } from '@/app/components/UI';
+import { Card, Badge, Table, TableRow, TableCell, EmptyState } from '@/app/components/UI';
 
 export default function CompaniesPage() {
+  const hasCompanies = companies.length > 0;
+
   const tableHeaders = [
     { label: 'Company' },
     { label: 'Industry' },
@@ -51,46 +53,58 @@ export default function CompaniesPage() {
           </div>
         </div>
 
-        <Table headers={tableHeaders}>
-          {companies.map((company) => (
-            <TableRow key={company.id}>
-              <TableCell>
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl panel-surface-soft flex items-center justify-center font-bold text-neon-cyan border border-theme group-hover:border-neon-cyan/50 transition-colors">
-                    {company.logo}
+        {hasCompanies ? (
+          <Table headers={tableHeaders}>
+            {companies.map((company) => (
+              <TableRow key={company.id}>
+                <TableCell>
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-xl panel-surface-soft flex items-center justify-center font-bold text-neon-cyan border border-theme group-hover:border-neon-cyan/50 transition-colors">
+                      {company.logo}
+                    </div>
+                    <span className="font-bold">{company.name}</span>
                   </div>
-                  <span className="font-bold">{company.name}</span>
-                </div>
-              </TableCell>
-              <TableCell className="text-muted-theme">{company.industry}</TableCell>
-              <TableCell>
-                <div className="flex items-center gap-2">
-                  <Users size={12} className="text-muted-theme opacity-40" />
-                  <span>{company.employees}</span>
-                </div>
-              </TableCell>
-              <TableCell>
-                <Badge variant={
-                  company.plan === 'Enterprise' ? 'purple' :
-                  company.plan === 'Pro' ? 'pink' :
-                  'default'
-                }>
-                  {company.plan}
-                </Badge>
-              </TableCell>
-              <TableCell align="right">
-                <div className="flex items-center justify-end gap-2">
-                  <button className="p-2 rounded-lg panel-surface-soft text-muted-theme hover:text-theme hover:bg-[var(--color-hover)] transition-all">
-                    <ExternalLink size={14} />
-                  </button>
-                  <button className="p-2 rounded-lg panel-surface-soft text-muted-theme hover:text-theme hover:bg-[var(--color-hover)] transition-all">
-                    <MoreHorizontal size={14} />
-                  </button>
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
-        </Table>
+                </TableCell>
+                <TableCell className="text-muted-theme">{company.industry}</TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    <Users size={12} className="text-muted-theme opacity-40" />
+                    <span>{company.employees}</span>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <Badge variant={
+                    company.plan === 'Enterprise' ? 'purple' :
+                    company.plan === 'Pro' ? 'pink' :
+                    'default'
+                  }>
+                    {company.plan}
+                  </Badge>
+                </TableCell>
+                <TableCell align="right">
+                  <div className="flex items-center justify-end gap-2">
+                    <button className="p-2 rounded-lg panel-surface-soft text-muted-theme hover:text-theme hover:bg-[var(--color-hover)] transition-all">
+                      <ExternalLink size={14} />
+                    </button>
+                    <button className="p-2 rounded-lg panel-surface-soft text-muted-theme hover:text-theme hover:bg-[var(--color-hover)] transition-all">
+                      <MoreHorizontal size={14} />
+                    </button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </Table>
+        ) : (
+          <div className="py-16">
+            <EmptyState
+              icon={<Building2 size={32} />}
+              title="No companies registered yet"
+              description="Add a company profile so teams can be connected to your dashboard."
+              actionLabel="Register Company"
+              onAction={() => {}}
+            />
+          </div>
+        )}
       </Card>
     </motion.div>
   );
