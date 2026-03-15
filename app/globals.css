@@ -21,6 +21,7 @@
   --color-card: rgba(255, 255, 255, 0.03);
   --color-shadow: rgba(0, 0, 0, 0.45);
   --color-hover: rgba(255, 255, 255, 0.06);
+  --color-widget-border: rgba(255, 255, 255, 0.06);
 }
 
 .dark {
@@ -36,6 +37,7 @@
   --color-card: rgba(255, 255, 255, 0.03);
   --color-shadow: rgba(0, 0, 0, 0.45);
   --color-hover: rgba(255, 255, 255, 0.06);
+  --color-widget-border: rgba(255, 255, 255, 0.06);
 }
 
 .light {
@@ -51,6 +53,7 @@
   --color-card: #ffffff;
   --color-shadow: rgba(15, 23, 42, 0.08);
   --color-hover: rgba(15, 23, 42, 0.05);
+  --color-widget-border: rgba(15, 23, 42, 0.08);
 }
 
 @layer base {

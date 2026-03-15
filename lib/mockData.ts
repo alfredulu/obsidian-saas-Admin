@@ -14,12 +14,22 @@ export const productHighlights = [
   { name: 'Cancel', value: 1200, color: '#FF4444' },
 ];
 
-export const taskProgressData = [
-  { value: 40 }, { value: 35 }, { value: 55 }, { value: 45 }, { value: 70 }, { value: 65 }, { value: 85 }
+export const taskProgressSeries = [
+  { month: 'Nov', value: 52 },
+  { month: 'Dec', value: 64 },
+  { month: 'Jan', value: 58 },
+  { month: 'Feb', value: 72 },
+  { month: 'Mar', value: 68 },
+  { month: 'Apr', value: 75 }
 ];
 
-export const taskExpensesData = [
-  { value: 6045 }, { value: 5800 }, { value: 6200 }, { value: 5900 }, { value: 6100 }, { value: 6045 }
+export const taskExpensesSeries = [
+  { month: 'Nov', value: 4800 },
+  { month: 'Dec', value: 5300 },
+  { month: 'Jan', value: 6200 },
+  { month: 'Feb', value: 6000 },
+  { month: 'Mar', value: 6550 },
+  { month: 'Apr', value: 6045 }
 ];
 
 export const topPeople = [

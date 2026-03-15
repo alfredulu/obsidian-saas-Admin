@@ -10,10 +10,10 @@ import {
   Tooltip, 
   ResponsiveContainer,
   Cell,
-  LineChart,
-  Line
+  AreaChart,
+  Area
 } from 'recharts';
-import { salesData, taskProgressData, taskExpensesData, topPeople } from '@/lib/mockData';
+import { salesData, taskProgressSeries, taskExpensesSeries, topPeople } from '@/lib/mockData';
 import { MoreHorizontal, Phone, Mail, Check } from 'lucide-react';
 import { Card, Avatar, Badge, Table, TableRow, TableCell } from './UI';
 
@@ -23,29 +23,56 @@ const useMounted = () => {
   return mounted;
 };
 
-export const SparklineCard = ({ label, value, data, color }: any) => {
+export const AnalyticsMiniWidget = ({ title, value, trend, data, color, gradientId }: any) => {
   const mounted = useMounted();
   return (
-    <Card className="p-5 flex flex-col gap-2 flex-1" title={label} action={<MoreHorizontal size={14} className="text-muted-theme" />}>
-      <div className="flex items-end justify-between gap-2 overflow-hidden">
-        <h3 className="text-xl sm:text-2xl font-bold min-w-0">{value}</h3>
-        <div className="h-10 w-24 shrink-0">
-          {mounted && (
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={data}>
-                <Line 
-                  type="monotone" 
-                  dataKey="value" 
-                  stroke={color} 
-                  strokeWidth={2} 
-                  dot={false} 
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          )}
+    <div
+      style={{ borderColor: 'var(--color-widget-border)' }}
+      className="glass-card border p-5 flex gap-6 transition-transform duration-200 hover:-translate-y-1 hover:shadow-xl"
+    >
+      <div className="flex-[0_0_60%] h-32">
+        {mounted ? (
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={data} margin={{ top: 10, right: 6, left: 0, bottom: 6 }}>
+              <defs>
+                <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor={color} stopOpacity={0.45} />
+                  <stop offset="75%" stopColor={color} stopOpacity={0.15} />
+                  <stop offset="100%" stopColor={color} stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid vertical strokeDasharray="3 3" stroke="var(--color-border)" horizontal={false} />
+              <XAxis dataKey="month" axisLine={false} tickLine={false} tick={false} />
+              <YAxis axisLine={false} tickLine={false} tick={false} />
+              <Area
+                type="monotone"
+                dataKey="value"
+                stroke={color}
+                strokeWidth={2}
+                dot={false}
+                fill={`url(#${gradientId})`}
+                fillOpacity={1}
+                style={{ filter: `drop-shadow(0 0 16px ${color}33)` }}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        ) : (
+          <div className="h-full w-full panel-surface-soft animate-pulse rounded-2xl" />
+        )}
+      </div>
+      <div className="flex flex-col justify-between gap-3 flex-[0_0_40%] min-w-0">
+        <div>
+          <p className="text-[10px] uppercase tracking-widest text-muted-theme">{title}</p>
+          <h3 className="text-3xl font-bold text-theme">{value}</h3>
+        </div>
+        <div className="flex flex-col gap-1">
+          <span className="inline-flex items-center justify-center px-3 py-1 rounded-full bg-neon-pink/10 text-neon-pink text-[10px] font-bold tracking-widest uppercase">
+            {trend}
+          </span>
+          <span className="text-[10px] text-muted-theme">This Month</span>
         </div>
       </div>
-    </Card>
+    </div>
   );
 };
 

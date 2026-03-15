@@ -2,11 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { 
-  SparklineCard, 
+  AnalyticsMiniWidget, 
   SaleHistoryBar, 
   TopPeopleTable 
 } from './components/DashboardComponents';
-import { taskProgressData, taskExpensesData } from '@/lib/mockData';
+import { taskProgressSeries, taskExpensesSeries } from '@/lib/mockData';
 import { motion } from 'motion/react';
 import { ProductHighlight, TaskSchedule } from './components/RightSidebar';
 import { Skeleton } from './components/UI';
@@ -41,17 +41,21 @@ export default function Dashboard() {
     >
       {/* Top Row: Two Cards Only */}
       <div className="flex flex-col sm:flex-row gap-6">
-        <SparklineCard 
-          label="Task Progress" 
-          value="213.52" 
-          data={taskProgressData} 
-          color="#FF00D6" 
+        <AnalyticsMiniWidget
+          title="Task Progress"
+          value="213.52"
+          trend="+12.1%"
+          data={taskProgressSeries}
+          color="#FF00D6"
+          gradientId="taskProgressGradient"
         />
-        <SparklineCard 
-          label="Task Expenses" 
-          value="$6,045" 
-          data={taskExpensesData} 
-          color="#BC13FE" 
+        <AnalyticsMiniWidget
+          title="Task Expenses"
+          value="$6,045"
+          trend="-4.6%"
+          data={taskExpensesSeries}
+          color="#BC13FE"
+          gradientId="taskExpensesGradient"
         />
       </div>
 
