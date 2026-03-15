@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { 
   BarChart, 
   Bar, 
@@ -15,7 +15,7 @@ import {
 } from 'recharts';
 import { salesData, taskProgressSeries, taskExpensesSeries, topPeople } from '@/lib/mockData';
 import { MoreHorizontal, Phone, Mail, Check } from 'lucide-react';
-import { Card, Avatar, Badge, Table, TableRow, TableCell } from './UI';
+import { Card, Avatar, Badge, Table, TableRow, TableCell, EmptyState, Skeleton } from './UI';
 
 const useMounted = () => {
   const [mounted, setMounted] = useState(false);
@@ -139,54 +139,161 @@ export const SaleHistoryBar = () => {
   );
 };
 
+type TopPeopleSortKey = 'name' | 'email' | 'status';
+
 export const TopPeopleTable = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [sortKey, setSortKey] = useState<TopPeopleSortKey>('name');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 900);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const sortedPeople = useMemo(() => {
+    const compare = (a: string | number, b: string | number) => {
+      if (typeof a === 'number' || typeof b === 'number') {
+        return Number(a) - Number(b);
+      }
+      return String(a)
+        .toLowerCase()
+        .localeCompare(String(b).toLowerCase(), undefined, { sensitivity: 'base' });
+    };
+
+    return [...topPeople].sort((a, b) => {
+      const base = compare(a[sortKey], b[sortKey]);
+      return sortDirection === 'asc' ? base : -base;
+    });
+  }, [sortKey, sortDirection]);
+
+  const handleSort = (key: TopPeopleSortKey) => {
+    if (key === sortKey) {
+      setSortDirection((prev) => (prev === 'asc' ? 'desc' : 'asc'));
+      return;
+    }
+    setSortKey(key);
+    setSortDirection('asc');
+  };
+
   const tableHeaders = [
-    { label: <div className="w-4 h-4 rounded border border-theme flex items-center justify-center panel-surface-soft"><Check size={10} className="text-muted-theme opacity-40" /></div>, className: 'w-10' },
-    { label: 'Name' },
-    { label: 'Email' },
-    { label: 'Status' },
+    {
+      label: (
+        <div className="w-4 h-4 rounded border border-theme flex items-center justify-center panel-surface-soft">
+          <Check size={10} className="text-muted-theme opacity-40" />
+        </div>
+      ),
+      className: 'w-10',
+    },
+    {
+      label: 'Name',
+      sortable: true,
+      sortDirection: sortKey === 'name' ? sortDirection : null,
+      onSort: () => handleSort('name'),
+    },
+    {
+      label: 'Email',
+      sortable: true,
+      sortDirection: sortKey === 'email' ? sortDirection : null,
+      onSort: () => handleSort('email'),
+    },
+    {
+      label: 'Status',
+      sortable: true,
+      sortDirection: sortKey === 'status' ? sortDirection : null,
+      onSort: () => handleSort('status'),
+    },
     { label: 'Action', className: 'text-right' },
   ];
 
+  const hasPeople = topPeople.length > 0;
+  const shouldShowEmpty = !hasPeople && !isLoading;
+
+  const skeletonRows = Array.from({ length: 4 }).map((_, index) => (
+    <TableRow key={`top-person-skeleton-${index}`}>
+      <TableCell>
+        <div className="w-4 h-4 rounded border border-theme flex items-center justify-center panel-surface-soft">
+          <Skeleton className="w-full h-full rounded-sm" />
+        </div>
+      </TableCell>
+      <TableCell>
+        <div className="flex items-center gap-2">
+          <Skeleton variant="circle" className="w-8 h-8" />
+          <div className="space-y-2">
+            <Skeleton className="w-24 h-3 rounded" />
+            <Skeleton className="w-20 h-2 rounded" />
+          </div>
+        </div>
+      </TableCell>
+      <TableCell>
+        <Skeleton className="w-32 h-3 rounded" />
+      </TableCell>
+      <TableCell>
+        <Skeleton className="w-24 h-4 rounded-full" />
+      </TableCell>
+      <TableCell align="right">
+        <Skeleton className="w-24 h-3 rounded" />
+      </TableCell>
+    </TableRow>
+  ));
+
   return (
     <Card className="p-6" title="Top People" action={<button className="text-[10px] font-bold text-neon-pink hover:underline">View All</button>}>
-      <Table headers={tableHeaders}>
-        {topPeople.map((person) => (
-          <TableRow key={person.id}>
-            <TableCell>
-              <div className="w-4 h-4 rounded border border-theme flex items-center justify-center panel-surface-soft group-hover:border-neon-pink/50 transition-colors">
-                <Check size={10} className="hidden group-hover:block text-neon-pink" />
-              </div>
-            </TableCell>
-            <TableCell>
-              <div className="flex items-center gap-2.5">
-                <Avatar name={person.name} size="sm" />
-                <span className="font-bold">{person.name}</span>
-              </div>
-            </TableCell>
-            <TableCell className="text-muted-theme">{person.email}</TableCell>
-            <TableCell>
-              <Badge variant={
-                person.status === 'Employee' ? 'pink' :
-                person.status === 'Customer' ? 'cyan' :
-                'purple'
-              }>
-                {person.status}
-              </Badge>
-            </TableCell>
-            <TableCell align="right">
-              <div className="flex items-center justify-end gap-2">
-                <button className="p-1.5 rounded-lg panel-surface-soft text-muted-theme hover:text-theme hover:bg-[var(--color-hover)] transition-all">
-                  <Phone size={12} />
-                </button>
-                <button className="p-1.5 rounded-lg panel-surface-soft text-muted-theme hover:text-theme hover:bg-[var(--color-hover)] transition-all">
-                  <Mail size={12} />
-                </button>
-              </div>
-            </TableCell>
-          </TableRow>
-        ))}
-      </Table>
+      {shouldShowEmpty ? (
+        <div className="py-16">
+          <EmptyState
+            icon={<Check size={32} />}
+            title="No people yet"
+            description="Add team members or customers to surface their activity here."
+            actionLabel="Add Person"
+            onAction={() => {}}
+          />
+        </div>
+      ) : (
+        <Table headers={tableHeaders}>
+          {isLoading
+            ? skeletonRows
+            : sortedPeople.map((person) => (
+                <TableRow key={person.id}>
+                  <TableCell>
+                    <div className="w-4 h-4 rounded border border-theme flex items-center justify-center panel-surface-soft group-hover:border-neon-pink/50 transition-colors">
+                      <Check size={10} className="hidden group-hover:block text-neon-pink" />
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2.5">
+                      <Avatar name={person.name} size="sm" />
+                      <span className="font-bold">{person.name}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-muted-theme">{person.email}</TableCell>
+                  <TableCell>
+                    <Badge
+                      variant={
+                        person.status === 'Employee'
+                          ? 'pink'
+                          : person.status === 'Customer'
+                          ? 'cyan'
+                          : 'purple'
+                      }
+                    >
+                      {person.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell align="right">
+                    <div className="flex items-center justify-end gap-2">
+                      <button className="p-1.5 rounded-lg panel-surface-soft text-muted-theme hover:text-theme hover:bg-[var(--color-hover)] transition-all">
+                        <Phone size={12} />
+                      </button>
+                      <button className="p-1.5 rounded-lg panel-surface-soft text-muted-theme hover:text-theme hover:bg-[var(--color-hover)] transition-all">
+                        <Mail size={12} />
+                      </button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+        </Table>
+      )}
     </Card>
   );
 };

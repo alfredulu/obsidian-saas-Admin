@@ -78,16 +78,70 @@ export const Avatar = ({ name, size = 'md', className }: any) => {
 };
 
 // --- Table ---
-export const Table = ({ headers, children, className }: any) => (
+export type TableHeader = {
+  label: ReactNode;
+  className?: string;
+  sortable?: boolean;
+  sortDirection?: 'asc' | 'desc' | null;
+  onSort?: () => void;
+};
+
+export type TableProps = {
+  headers: TableHeader[];
+  children: ReactNode;
+  className?: string;
+};
+
+export const Table = ({ headers, children, className }: TableProps) => (
   <div className={cn("overflow-x-auto", className)}>
     <table className="w-full text-left border-separate border-spacing-0">
       <thead>
         <tr className="text-muted-theme opacity-40 text-[9px] uppercase tracking-widest">
-          {headers.map((header: any, i: number) => (
-            <th key={i} className={cn("pb-3 font-bold border-b border-theme", header.className)}>
-              {header.label}
-            </th>
-          ))}
+          {headers.map((header, i) => {
+            const isSortable = header.sortable && header.onSort;
+            const isActive = Boolean(header.sortDirection);
+            const indicator =
+              header.sortable
+                ? header.sortDirection === 'asc'
+                  ? '▲'
+                  : header.sortDirection === 'desc'
+                    ? '▼'
+                    : '↕'
+                : null;
+
+            return (
+              <th
+                key={i}
+                className={cn(
+                  "pb-3 font-bold border-b border-theme",
+                  header.className,
+                  isSortable && "cursor-pointer select-none",
+                  isActive ? "text-theme" : "text-muted-theme"
+                )}
+                onClick={isSortable ? header.onSort : undefined}
+              >
+                <div className="inline-flex items-center gap-1">
+                  <span
+                    className={cn(
+                      isActive ? "text-theme font-semibold" : "text-muted-theme"
+                    )}
+                  >
+                    {header.label}
+                  </span>
+                  {header.sortable && (
+                    <span
+                      className={cn(
+                        "text-[10px] transition-colors",
+                        isActive ? "text-neon-cyan font-bold" : "text-muted-theme opacity-50"
+                      )}
+                    >
+                      {indicator}
+                    </span>
+                  )}
+                </div>
+              </th>
+            );
+          })}
         </tr>
       </thead>
       <tbody className="text-[11px]">
@@ -98,10 +152,11 @@ export const Table = ({ headers, children, className }: any) => (
 );
 
 export const TableRow = ({ children, className, onClick }: any) => (
-  <tr 
+  <tr
     onClick={onClick}
     className={cn(
-      "group hover:bg-[var(--color-hover)] transition-colors cursor-pointer interactive-row",
+      "group transition-all duration-200 border border-transparent rounded-[14px] hover:border-neon-cyan/40",
+      "hover:bg-[var(--color-panel-strong)] hover:shadow-[0_15px_30px_rgba(0,0,0,0.25)] cursor-default",
       className
     )}
   >
@@ -111,7 +166,7 @@ export const TableRow = ({ children, className, onClick }: any) => (
 
 export const TableCell = ({ children, className, align = 'left' }: any) => (
   <td className={cn(
-    "py-4 border-b border-theme group-last:border-0",
+    "py-4 px-3 border-b border-theme align-middle",
     align === 'right' && "text-right",
     align === 'center' && "text-center",
     className

@@ -123,13 +123,13 @@ export const calendarEvents = [
 ];
 
 export const users = [
-  { id: 1, name: 'Cody Fish', email: 'codyfish@gmail.com', role: 'Admin', status: 'Active', avatar: 'CF' },
-  { id: 2, name: 'Isaac Foster', email: 'issacfo@gmail.com', role: 'Staff', status: 'Active', avatar: 'IF' },
-  { id: 3, name: 'Alice Long', email: 'alicelong@gmail.com', role: 'Customer', status: 'Inactive', avatar: 'AL' },
-  { id: 4, name: 'Chloe Perez', email: 'chloeperez@gmail.com', role: 'Staff', status: 'Active', avatar: 'CP' },
-  { id: 5, name: 'Richard Clark', email: 'richardclark@gmail.com', role: 'Customer', status: 'Active', avatar: 'RC' },
-  { id: 6, name: 'Emma Wilson', email: 'emmaw@gmail.com', role: 'Staff', status: 'Inactive', avatar: 'EW' },
-  { id: 7, name: 'Liam Neeson', email: 'liam@gmail.com', role: 'Customer', status: 'Active', avatar: 'LN' },
+  { id: 1, name: 'Cody Fish', email: 'codyfish@gmail.com', role: 'Admin', status: 'Active', company: 'Neon Labs', avatar: 'CF' },
+  { id: 2, name: 'Isaac Foster', email: 'issacfo@gmail.com', role: 'Staff', status: 'Active', company: 'Aurora Systems', avatar: 'IF' },
+  { id: 3, name: 'Alice Long', email: 'alicelong@gmail.com', role: 'Customer', status: 'Inactive', company: 'NightWave', avatar: 'AL' },
+  { id: 4, name: 'Chloe Perez', email: 'chloeperez@gmail.com', role: 'Staff', status: 'Active', company: 'Obsidian Works', avatar: 'CP' },
+  { id: 5, name: 'Richard Clark', email: 'richardclark@gmail.com', role: 'Customer', status: 'Active', company: 'Pulse Media', avatar: 'RC' },
+  { id: 6, name: 'Emma Wilson', email: 'emmaw@gmail.com', role: 'Staff', status: 'Inactive', company: 'Lumina Labs', avatar: 'EW' },
+  { id: 7, name: 'Liam Neeson', email: 'liam@gmail.com', role: 'Customer', status: 'Active', company: 'Solarix', avatar: 'LN' },
 ];
 
 export const companies = [
