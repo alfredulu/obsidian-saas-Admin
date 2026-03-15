@@ -153,7 +153,7 @@ export const CommandPalette = () => {
                   className="w-full bg-transparent pl-10 pr-4 py-2 text-sm text-theme focus:outline-none placeholder:text-muted-theme"
                 />
                 <div className="absolute right-6 top-1/2 -translate-y-1/2 flex items-center gap-1">
-                  <span className="px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-[10px] text-muted-theme font-bold uppercase tracking-widest">Esc</span>
+                  <span className="px-1.5 py-0.5 rounded panel-surface-soft border border-theme text-[10px] text-muted-theme font-bold uppercase tracking-widest">Esc</span>
                 </div>
               </div>
 
@@ -171,14 +171,14 @@ export const CommandPalette = () => {
                           className={cn(
                             "w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-200 group",
                             isSelected 
-                              ? "bg-neon-pink text-white neon-glow-pink" 
-                              : "text-muted-theme hover:text-theme hover:bg-white/5"
+                              ? "bg-neon-pink text-theme neon-glow-pink" 
+                              : "text-muted-theme hover:text-theme hover:bg-[var(--color-hover)]"
                           )}
                         >
                           <div className="flex items-center gap-3">
                             <cmd.icon size={18} className={cn(
                               "transition-colors",
-                              isSelected ? "text-white" : "text-muted-theme group-hover:text-theme"
+                              isSelected ? "text-theme" : "text-muted-theme group-hover:text-theme"
                             )} />
                             <span className="text-sm font-medium">{cmd.label}</span>
                           </div>
@@ -203,13 +203,13 @@ export const CommandPalette = () => {
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-1.5">
                     <div className="flex gap-0.5">
-                      <span className="px-1 py-0.5 rounded bg-white/5 border border-white/10 text-[9px] text-muted-theme font-bold">↑</span>
-                      <span className="px-1 py-0.5 rounded bg-white/5 border border-white/10 text-[9px] text-muted-theme font-bold">↓</span>
+                      <span className="px-1 py-0.5 rounded panel-surface-soft border border-theme text-[9px] text-muted-theme font-bold">↑</span>
+                      <span className="px-1 py-0.5 rounded panel-surface-soft border border-theme text-[9px] text-muted-theme font-bold">↓</span>
                     </div>
                     <span className="text-[10px] text-muted-theme font-medium">to navigate</span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <span className="px-1 py-0.5 rounded bg-white/5 border border-white/10 text-[9px] text-muted-theme font-bold">↵</span>
+                    <span className="px-1 py-0.5 rounded panel-surface-soft border border-theme text-[9px] text-muted-theme font-bold">↵</span>
                     <span className="text-[10px] text-muted-theme font-medium">to select</span>
                   </div>
                 </div>

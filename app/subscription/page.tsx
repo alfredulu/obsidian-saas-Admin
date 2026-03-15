@@ -11,20 +11,20 @@ const PricingCard = ({ title, price, description, features, isPopular, color }: 
     isPopular ? "border-neon-pink/50 ring-1 ring-neon-pink/20" : ""
   )}>
     {isPopular && (
-      <div className="absolute top-4 right-[-32px] rotate-45 bg-neon-pink text-white text-[10px] font-bold py-1 px-10 neon-glow-pink">
+      <div className="absolute top-4 right-[-32px] rotate-45 bg-neon-pink text-theme text-[10px] font-bold py-1 px-10 neon-glow-pink">
         POPULAR
       </div>
     )}
     
     <div className="mb-8">
       <h3 className="text-xl font-bold mb-2">{title}</h3>
-      <p className="text-white/30 text-xs">{description}</p>
+      <p className="text-muted-theme opacity-40 text-xs">{description}</p>
     </div>
 
     <div className="mb-8">
       <div className="flex items-baseline gap-1">
         <span className="text-4xl font-bold">${price}</span>
-        <span className="text-white/30 text-sm">/month</span>
+        <span className="text-muted-theme opacity-40 text-sm">/month</span>
       </div>
     </div>
 
@@ -34,7 +34,7 @@ const PricingCard = ({ title, price, description, features, isPopular, color }: 
           <div className={cn("p-1 rounded-full", color === 'pink' ? "bg-neon-pink/20 text-neon-pink" : "bg-neon-cyan/20 text-neon-cyan")}>
             <Check size={12} />
           </div>
-          <span className="text-xs text-white/70">{feature}</span>
+          <span className="text-xs text-theme opacity-70">{feature}</span>
         </div>
       ))}
     </div>
@@ -42,8 +42,8 @@ const PricingCard = ({ title, price, description, features, isPopular, color }: 
     <button className={cn(
       "w-full py-3 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 group",
       isPopular 
-        ? "bg-neon-pink text-white neon-glow-pink hover:bg-neon-pink/80" 
-        : "bg-white/5 text-white hover:bg-white/10 border border-white/10"
+        ? "bg-neon-pink text-theme neon-glow-pink hover:bg-neon-pink/80" 
+        : "panel-surface-soft text-theme hover:bg-[var(--color-hover)] border border-theme"
     )}>
       Get Started <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
     </button>
@@ -60,17 +60,17 @@ export default function SubscriptionPage() {
     >
       <div className="text-center space-y-4">
         <h2 className="text-4xl font-bold tracking-tight">Choose Your Plan</h2>
-        <p className="text-white/30 text-lg max-w-2xl mx-auto">
+        <p className="text-muted-theme opacity-40 text-lg max-w-2xl mx-auto">
           Unlock the full potential of your business with our premium subscription plans. 
           Scale faster and smarter with Obsidian.
         </p>
         
         <div className="flex items-center justify-center gap-4 mt-10">
           <span className="text-sm font-medium">Monthly</span>
-          <button className="w-12 h-6 bg-white/10 rounded-full relative p-1">
+          <button className="w-12 h-6 panel-surface-strong rounded-full relative p-1">
             <div className="w-4 h-4 bg-neon-pink rounded-full neon-glow-pink" />
           </button>
-          <span className="text-sm font-medium text-white/30">Yearly <span className="text-neon-cyan text-[10px] font-bold ml-1">SAVE 20%</span></span>
+          <span className="text-sm font-medium text-muted-theme opacity-40">Yearly <span className="text-neon-cyan text-[10px] font-bold ml-1">SAVE 20%</span></span>
         </div>
       </div>
 
@@ -124,12 +124,12 @@ export default function SubscriptionPage() {
       <div className="glass-card p-10 flex flex-col md:flex-row items-center justify-between gap-8">
         <div className="space-y-4">
           <h3 className="text-2xl font-bold">Need a custom solution?</h3>
-          <p className="text-white/30 text-sm max-w-md">
+          <p className="text-muted-theme opacity-40 text-sm max-w-md">
             We offer tailored plans for companies with unique requirements. 
             Contact our sales team for a personalized demo.
           </p>
         </div>
-        <button className="px-8 py-4 bg-white text-obsidian rounded-xl font-bold hover:bg-neon-cyan hover:text-white transition-all">
+        <button className="px-8 py-4 bg-theme text-background rounded-xl font-bold hover:bg-neon-cyan hover:text-theme transition-all">
           Contact Sales
         </button>
       </div>

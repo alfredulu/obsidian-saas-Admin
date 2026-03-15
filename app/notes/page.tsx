@@ -49,11 +49,11 @@ export default function NotesPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Personal Notes</h1>
-          <p className="text-sm text-white/40">Capture your thoughts and organize your ideas.</p>
+          <p className="text-sm text-muted-theme">Capture your thoughts and organize your ideas.</p>
         </div>
         <button 
           onClick={() => setIsModalOpen(true)}
-          className="px-4 py-2 bg-neon-cyan text-obsidian rounded-xl text-sm font-bold shadow-[0_0_15px_rgba(0,245,255,0.3)] hover:bg-neon-cyan/80 transition-all flex items-center gap-2"
+          className="px-4 py-2 bg-neon-cyan text-background rounded-xl text-sm font-bold shadow-[0_0_15px_rgba(0,245,255,0.3)] hover:bg-neon-cyan/80 transition-all flex items-center gap-2"
         >
           <Plus size={18} />
           <span>Create Note</span>
@@ -61,13 +61,13 @@ export default function NotesPage() {
       </div>
 
       <div className="relative max-w-md">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/20" size={16} />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-theme opacity-40" size={16} />
         <input 
           type="text" 
           placeholder="Search notes..." 
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full bg-white/5 border border-white/5 rounded-xl py-2 pl-10 pr-4 text-xs focus:outline-none focus:border-neon-cyan/30 transition-all"
+          className="w-full panel-surface-soft border border-theme rounded-xl py-2 pl-10 pr-4 text-xs focus:outline-none focus:border-neon-cyan/30 transition-all"
         />
       </div>
 
@@ -92,7 +92,7 @@ export default function NotesPage() {
               >
                 <Card className={cn(
                   "h-full flex flex-col group cursor-pointer transition-all duration-200",
-                  isSelected ? "border-neon-cyan/50 bg-white/[0.05]" : "border-white/5"
+                  isSelected ? "border-neon-cyan/50 panel-surface-soft" : "border-theme"
                 )}>
                   <div className="flex justify-between items-start mb-3">
                     <h3 className={cn(
@@ -103,7 +103,7 @@ export default function NotesPage() {
                       "flex items-center gap-1 transition-opacity",
                       isSelected ? "opacity-100" : "opacity-0 group-hover:opacity-100"
                     )}>
-                      <button className="p-1.5 rounded-lg bg-white/5 text-white/30 hover:text-white hover:bg-white/10 transition-all">
+                      <button className="p-1.5 rounded-lg panel-surface-soft text-muted-theme hover:text-theme hover:bg-[var(--color-hover)] transition-all">
                         <Edit2 size={12} />
                       </button>
                       <button 
@@ -111,16 +111,16 @@ export default function NotesPage() {
                           e.stopPropagation();
                           deleteNote(note.id);
                         }}
-                        className="p-1.5 rounded-lg bg-white/5 text-white/30 hover:text-red-500 hover:bg-red-500/10 transition-all"
+                        className="p-1.5 rounded-lg panel-surface-soft text-muted-theme hover:text-red-500 hover:bg-red-500/10 transition-all"
                       >
                         <Trash2 size={12} />
                       </button>
                     </div>
                   </div>
-                  <p className="text-[11px] text-white/40 leading-relaxed mb-6 flex-1 line-clamp-4">
+                  <p className="text-[11px] text-muted-theme leading-relaxed mb-6 flex-1 line-clamp-4">
                     {note.content}
                   </p>
-                  <div className="flex items-center gap-1.5 text-[9px] text-white/20 font-bold uppercase tracking-widest pt-4 border-t border-white/5">
+                  <div className="flex items-center gap-1.5 text-[9px] text-muted-theme opacity-40 font-bold uppercase tracking-widest pt-4 border-t border-theme">
                     <Clock size={10} />
                     <span>{note.createdAt}</span>
                   </div>
@@ -146,13 +146,13 @@ export default function NotesPage() {
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-lg glass-card p-8 bg-obsidian border border-white/10 shadow-2xl"
+              className="relative w-full max-w-lg glass-card p-8 bg-background border border-theme shadow-2xl"
             >
               <div className="flex items-center justify-between mb-8">
                 <h2 className="text-xl font-bold tracking-tight">Create New Note</h2>
                 <button 
                   onClick={() => setIsModalOpen(false)}
-                  className="p-2 rounded-xl hover:bg-white/5 text-white/30 hover:text-white transition-all"
+                  className="p-2 rounded-xl hover:bg-[var(--color-hover)] text-muted-theme hover:text-theme transition-all"
                 >
                   <X size={20} />
                 </button>
@@ -160,24 +160,24 @@ export default function NotesPage() {
 
               <form onSubmit={handleCreateNote} className="space-y-6">
                 <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest text-white/30 font-bold px-1">Note Title</label>
+                  <label className="text-[10px] uppercase tracking-widest text-muted-theme font-bold px-1">Note Title</label>
                   <input 
                     type="text" 
                     placeholder="Enter title..."
                     value={newNote.title}
                     onChange={(e) => setNewNote({ ...newNote, title: e.target.value })}
-                    className="w-full bg-white/5 border border-white/5 rounded-xl py-3 px-4 text-sm focus:outline-none focus:border-neon-cyan/30 transition-all"
+                    className="w-full panel-surface-soft border border-theme rounded-xl py-3 px-4 text-sm focus:outline-none focus:border-neon-cyan/30 transition-all"
                     autoFocus
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest text-white/30 font-bold px-1">Content</label>
+                  <label className="text-[10px] uppercase tracking-widest text-muted-theme font-bold px-1">Content</label>
                   <textarea 
                     placeholder="Write your note here..."
                     rows={6}
                     value={newNote.content}
                     onChange={(e) => setNewNote({ ...newNote, content: e.target.value })}
-                    className="w-full bg-white/5 border border-white/5 rounded-xl py-3 px-4 text-sm focus:outline-none focus:border-neon-cyan/30 transition-all resize-none"
+                    className="w-full panel-surface-soft border border-theme rounded-xl py-3 px-4 text-sm focus:outline-none focus:border-neon-cyan/30 transition-all resize-none"
                   />
                 </div>
 
@@ -185,13 +185,13 @@ export default function NotesPage() {
                   <button 
                     type="button"
                     onClick={() => setIsModalOpen(false)}
-                    className="flex-1 py-3 bg-white/5 border border-white/5 rounded-xl text-sm font-bold hover:bg-white/10 transition-all"
+                    className="flex-1 py-3 panel-surface-soft border border-theme rounded-xl text-sm font-bold hover:bg-[var(--color-hover)] transition-all"
                   >
                     Cancel
                   </button>
                   <button 
                     type="submit"
-                    className="flex-1 py-3 bg-neon-cyan text-obsidian rounded-xl text-sm font-bold shadow-[0_0_15px_rgba(0,245,255,0.3)] hover:bg-neon-cyan/80 transition-all"
+                    className="flex-1 py-3 bg-neon-cyan text-background rounded-xl text-sm font-bold shadow-[0_0_15px_rgba(0,245,255,0.3)] hover:bg-neon-cyan/80 transition-all"
                   >
                     Save Note
                   </button>

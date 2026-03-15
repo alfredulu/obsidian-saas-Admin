@@ -26,7 +26,7 @@ export default function SettingsPage() {
     >
       <div>
         <h1 className="text-2xl font-bold tracking-tight">Settings</h1>
-        <p className="text-sm text-white/40">Manage your account settings and preferences.</p>
+        <p className="text-sm text-muted-theme">Manage your account settings and preferences.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -38,7 +38,7 @@ export default function SettingsPage() {
               <button 
                 key={item.id}
                 onClick={() => setActiveSection(item.id)}
-                className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all shrink-0 md:shrink ${isActive ? 'bg-neon-pink text-white neon-glow-pink' : 'text-white/40 hover:text-white hover:bg-white/5'}`}
+                className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all shrink-0 md:shrink ${isActive ? 'bg-neon-pink text-theme neon-glow-pink' : 'text-muted-theme hover:text-theme hover:bg-[var(--color-hover)]'}`}
               >
                 <item.icon size={18} />
                 <span>{item.label}</span>
@@ -63,7 +63,7 @@ export default function SettingsPage() {
                     <div className="flex items-center gap-6">
                       <Avatar name="Cody Fish" size="lg" />
                       <div className="flex gap-2">
-                        <button className="px-3 py-1.5 bg-white/5 border border-white/5 rounded-lg text-[10px] font-bold uppercase tracking-widest hover:bg-white/10 transition-all">
+                        <button className="px-3 py-1.5 panel-surface-soft border border-theme rounded-lg text-[10px] font-bold uppercase tracking-widest hover:bg-[var(--color-hover)] transition-all">
                           Change Avatar
                         </button>
                         <button className="px-3 py-1.5 bg-red-500/10 text-red-500 rounded-lg text-[10px] font-bold uppercase tracking-widest hover:bg-red-500/20 transition-all">
@@ -74,19 +74,19 @@ export default function SettingsPage() {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <label className="text-[10px] uppercase tracking-widest text-white/30 font-bold px-1">Full Name</label>
+                        <label className="text-[10px] uppercase tracking-widest text-muted-theme font-bold px-1">Full Name</label>
                         <input 
                           type="text" 
                           defaultValue="Cody Fish"
-                          className="w-full bg-white/5 border border-white/5 rounded-xl py-2.5 px-4 text-xs focus:outline-none focus:border-neon-pink/30 transition-all"
+                          className="w-full panel-surface-soft border border-theme rounded-xl py-2.5 px-4 text-xs focus:outline-none focus:border-neon-pink/30 transition-all"
                         />
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[10px] uppercase tracking-widest text-white/30 font-bold px-1">Email Address</label>
+                        <label className="text-[10px] uppercase tracking-widest text-muted-theme font-bold px-1">Email Address</label>
                         <input 
                           type="email" 
                           defaultValue="codyfish@gmail.com"
-                          className="w-full bg-white/5 border border-white/5 rounded-xl py-2.5 px-4 text-xs focus:outline-none focus:border-neon-pink/30 transition-all"
+                          className="w-full panel-surface-soft border border-theme rounded-xl py-2.5 px-4 text-xs focus:outline-none focus:border-neon-pink/30 transition-all"
                         />
                       </div>
                     </div>
@@ -107,26 +107,26 @@ export default function SettingsPage() {
                   <div className="space-y-6">
                     <div className="space-y-4">
                       <div className="space-y-2">
-                        <label className="text-[10px] uppercase tracking-widest text-white/30 font-bold px-1">Current Password</label>
+                        <label className="text-[10px] uppercase tracking-widest text-muted-theme font-bold px-1">Current Password</label>
                         <input 
                           type="password" 
                           placeholder="••••••••"
-                          className="w-full bg-white/5 border border-white/5 rounded-xl py-2.5 px-4 text-xs focus:outline-none focus:border-neon-pink/30 transition-all"
+                          className="w-full panel-surface-soft border border-theme rounded-xl py-2.5 px-4 text-xs focus:outline-none focus:border-neon-pink/30 transition-all"
                         />
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <label className="text-[10px] uppercase tracking-widest text-white/30 font-bold px-1">New Password</label>
+                          <label className="text-[10px] uppercase tracking-widest text-muted-theme font-bold px-1">New Password</label>
                           <input 
                             type="password" 
-                            className="w-full bg-white/5 border border-white/5 rounded-xl py-2.5 px-4 text-xs focus:outline-none focus:border-neon-pink/30 transition-all"
+                            className="w-full panel-surface-soft border border-theme rounded-xl py-2.5 px-4 text-xs focus:outline-none focus:border-neon-pink/30 transition-all"
                           />
                         </div>
                         <div className="space-y-2">
-                          <label className="text-[10px] uppercase tracking-widest text-white/30 font-bold px-1">Confirm New Password</label>
+                          <label className="text-[10px] uppercase tracking-widest text-muted-theme font-bold px-1">Confirm New Password</label>
                           <input 
                             type="password" 
-                            className="w-full bg-white/5 border border-white/5 rounded-xl py-2.5 px-4 text-xs focus:outline-none focus:border-neon-pink/30 transition-all"
+                            className="w-full panel-surface-soft border border-theme rounded-xl py-2.5 px-4 text-xs focus:outline-none focus:border-neon-pink/30 transition-all"
                           />
                         </div>
                       </div>
@@ -149,19 +149,19 @@ export default function SettingsPage() {
                     <div className="flex items-center justify-between">
                       <div>
                         <h4 className="text-xs font-bold">Email Notifications</h4>
-                        <p className="text-[10px] text-white/20">Receive weekly activity reports.</p>
+                        <p className="text-[10px] text-muted-theme opacity-40">Receive weekly activity reports.</p>
                       </div>
                       <div className="w-10 h-5 bg-neon-pink rounded-full relative cursor-pointer neon-glow-pink">
-                        <div className="absolute right-1 top-1 w-3 h-3 bg-white rounded-full" />
+                        <div className="absolute right-1 top-1 w-3 h-3 bg-theme rounded-full" />
                       </div>
                     </div>
                     <div className="flex items-center justify-between">
                       <div>
                         <h4 className="text-xs font-bold">Push Notifications</h4>
-                        <p className="text-[10px] text-white/20">Get real-time alerts on your device.</p>
+                        <p className="text-[10px] text-muted-theme opacity-40">Get real-time alerts on your device.</p>
                       </div>
-                      <div className="w-10 h-5 bg-white/10 rounded-full relative cursor-pointer">
-                        <div className="absolute left-1 top-1 w-3 h-3 bg-white/30 rounded-full" />
+                      <div className="w-10 h-5 panel-surface-strong rounded-full relative cursor-pointer">
+                        <div className="absolute left-1 top-1 w-3 h-3 bg-muted-theme opacity-40 rounded-full" />
                       </div>
                     </div>
                   </div>
@@ -182,19 +182,19 @@ export default function SettingsPage() {
                     <div className="flex items-center justify-between">
                       <div>
                         <h4 className="text-xs font-bold">Dark Mode</h4>
-                        <p className="text-[10px] text-white/20">Use the Obsidian Noir theme.</p>
+                        <p className="text-[10px] text-muted-theme opacity-40">Use the Obsidian Noir theme.</p>
                       </div>
                       <div className="w-10 h-5 bg-neon-pink rounded-full relative cursor-pointer neon-glow-pink">
-                        <div className="absolute right-1 top-1 w-3 h-3 bg-white rounded-full" />
+                        <div className="absolute right-1 top-1 w-3 h-3 bg-theme rounded-full" />
                       </div>
                     </div>
                     <div className="flex items-center justify-between">
                       <div>
                         <h4 className="text-xs font-bold">Compact Mode</h4>
-                        <p className="text-[10px] text-white/20">Reduce spacing in tables and lists.</p>
+                        <p className="text-[10px] text-muted-theme opacity-40">Reduce spacing in tables and lists.</p>
                       </div>
-                      <div className="w-10 h-5 bg-white/10 rounded-full relative cursor-pointer">
-                        <div className="absolute left-1 top-1 w-3 h-3 bg-white/30 rounded-full" />
+                      <div className="w-10 h-5 panel-surface-strong rounded-full relative cursor-pointer">
+                        <div className="absolute left-1 top-1 w-3 h-3 bg-muted-theme opacity-40 rounded-full" />
                       </div>
                     </div>
                   </div>
@@ -211,8 +211,8 @@ export default function SettingsPage() {
                 transition={{ duration: 0.2 }}
               >
                 <Card title={`${activeSection.charAt(0).toUpperCase() + activeSection.slice(1)} Settings`} subtitle={`Manage your ${activeSection} preferences.`}>
-                  <div className="h-32 flex items-center justify-center border-2 border-dashed border-white/5 rounded-xl">
-                    <p className="text-[10px] text-white/10 uppercase tracking-widest font-bold">Coming Soon</p>
+                  <div className="h-32 flex items-center justify-center border-2 border-dashed border-theme rounded-xl">
+                    <p className="text-[10px] text-muted-theme opacity-40 uppercase tracking-widest font-bold">Coming Soon</p>
                   </div>
                 </Card>
               </motion.div>
@@ -220,10 +220,10 @@ export default function SettingsPage() {
           </AnimatePresence>
 
           <div className="flex justify-end gap-3">
-            <button className="px-6 py-2.5 bg-white/5 border border-white/5 rounded-xl text-xs font-bold hover:bg-white/10 transition-all">
+            <button className="px-6 py-2.5 panel-surface-soft border border-theme rounded-xl text-xs font-bold hover:bg-[var(--color-hover)] transition-all">
               Discard Changes
             </button>
-            <button className="flex items-center gap-2 px-6 py-2.5 bg-neon-pink text-white rounded-xl text-xs font-bold neon-glow-pink hover:bg-neon-pink/80 transition-all">
+            <button className="flex items-center gap-2 px-6 py-2.5 bg-neon-pink text-theme rounded-xl text-xs font-bold neon-glow-pink hover:bg-neon-pink/80 transition-all">
               <Save size={16} />
               <span>Save Settings</span>
             </button>

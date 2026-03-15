@@ -24,7 +24,7 @@ const getIcon = (type: string) => {
     case 'payment': return <CreditCard size={16} className="text-emerald-400" />;
     case 'message': return <MessageSquare size={16} className="text-neon-pink" />;
     case 'security': return <ShieldAlert size={16} className="text-red-500" />;
-    default: return <Bell size={16} className="text-white/30" />;
+    default: return <Bell size={16} className="text-muted-theme opacity-40" />;
   }
 };
 
@@ -41,14 +41,14 @@ export default function NotificationsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Notifications</h1>
-          <p className="text-sm text-white/40">Stay updated with the latest activity on your platform.</p>
+          <p className="text-sm text-muted-theme">Stay updated with the latest activity on your platform.</p>
         </div>
         <div className="flex items-center gap-2">
-          <button className="flex items-center gap-2 px-3 py-2 bg-white/5 border border-white/5 rounded-xl text-xs font-medium hover:bg-white/10 transition-all">
+          <button className="flex items-center gap-2 px-3 py-2 panel-surface-soft border border-theme rounded-xl text-xs font-medium hover:bg-[var(--color-hover)] transition-all">
             <CheckCheck size={14} />
             <span>Mark all as read</span>
           </button>
-          <button className="p-2 bg-white/5 border border-white/5 rounded-xl text-white/30 hover:text-white transition-all">
+          <button className="p-2 panel-surface-soft border border-theme text-muted-theme hover:text-theme transition-all">
             <MoreHorizontal size={16} />
           </button>
         </div>
@@ -73,13 +73,13 @@ export default function NotificationsPage() {
               <Card 
                 className={cn(
                   "p-4 flex gap-4 group cursor-pointer transition-all border-l-2",
-                  notification.unread ? "bg-white/[0.03] border-l-neon-pink" : "border-l-transparent",
-                  isSelected ? "bg-white/[0.05] border-white/20" : "hover:bg-white/[0.02]"
+                  notification.unread ? "panel-surface-soft border-l-neon-pink" : "border-l-transparent",
+                  isSelected ? "panel-surface-strong border-theme" : "hover:bg-[var(--color-hover)]"
                 )}
               >
                 <div className={cn(
                   "w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors",
-                  notification.unread ? "bg-neon-pink/10" : isSelected ? "bg-white/10" : "bg-white/5"
+                  notification.unread ? "bg-neon-pink/10" : isSelected ? "panel-surface-strong" : "panel-surface-soft"
                 )}>
                   {getIcon(notification.type)}
                 </div>
@@ -88,13 +88,13 @@ export default function NotificationsPage() {
                   <div className="flex items-center justify-between mb-1">
                     <h4 className={cn(
                       "text-sm font-bold transition-colors",
-                      notification.unread || isSelected ? "text-white" : "text-white/70"
+                      notification.unread || isSelected ? "text-theme" : "text-theme opacity-70"
                     )}>
                       {notification.title}
                     </h4>
-                    <span className="text-[10px] text-white/20 font-medium">{notification.time}</span>
+                    <span className="text-[10px] text-muted-theme opacity-40 font-medium">{notification.time}</span>
                   </div>
-                  <p className="text-xs text-white/40 leading-relaxed">
+                  <p className="text-xs text-muted-theme leading-relaxed">
                     {notification.description}
                   </p>
                 </div>
@@ -103,10 +103,10 @@ export default function NotificationsPage() {
                   "flex flex-col justify-center gap-2 transition-opacity",
                   isSelected ? "opacity-100" : "opacity-0 group-hover:opacity-100"
                 )}>
-                  <button className="p-1.5 rounded-lg bg-white/5 text-white/30 hover:text-white hover:bg-white/10 transition-all">
+                  <button className="p-1.5 rounded-lg panel-surface-soft text-muted-theme hover:text-theme hover:bg-[var(--color-hover)] transition-all">
                     <CheckCheck size={14} />
                   </button>
-                  <button className="p-1.5 rounded-lg bg-white/5 text-white/30 hover:text-red-500 hover:bg-red-500/10 transition-all">
+                  <button className="p-1.5 rounded-lg panel-surface-soft text-muted-theme hover:text-red-500 hover:bg-red-500/10 transition-all">
                     <Trash2 size={14} />
                   </button>
                 </div>
@@ -117,7 +117,7 @@ export default function NotificationsPage() {
       </div>
 
       <div className="text-center pt-4">
-        <button className="text-xs font-bold text-white/20 hover:text-white transition-all">
+        <button className="text-xs font-bold text-muted-theme opacity-40 hover:text-theme transition-all">
           View older notifications
         </button>
       </div>

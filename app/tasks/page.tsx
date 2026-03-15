@@ -33,23 +33,23 @@ const TaskCard = ({ task, isSelected, onSelect }: { task: any, isSelected: boole
   >
     <Card className={cn(
       "p-4 mb-4 cursor-pointer transition-all duration-200",
-      isSelected ? "border-neon-pink/50 bg-white/[0.05]" : "border-white/5"
+      isSelected ? "border-neon-pink/50 panel-surface-soft" : "border-theme"
     )}>
       <div className="flex justify-between items-start mb-3">
         <PriorityBadge priority={task.priority} />
-        <button className="text-white/20 hover:text-white transition-colors">
+        <button className="text-muted-theme opacity-40 hover:text-theme transition-colors">
           <MoreVertical size={14} />
         </button>
       </div>
       <h4 className="text-sm font-bold mb-2">{task.title}</h4>
-      <p className="text-[11px] text-white/40 mb-4 line-clamp-2">{task.description}</p>
+      <p className="text-[11px] text-muted-theme mb-4 line-clamp-2">{task.description}</p>
       
-      <div className="flex items-center justify-between pt-3 border-t border-white/5">
+      <div className="flex items-center justify-between pt-3 border-t border-theme">
         <div className="flex items-center gap-2">
           <Avatar name={task.user} size="sm" />
-          <span className="text-[10px] text-white/60">{task.user}</span>
+          <span className="text-[10px] text-theme">{task.user}</span>
         </div>
-        <div className="flex items-center gap-1 text-[10px] text-white/30">
+        <div className="flex items-center gap-1 text-[10px] text-muted-theme opacity-40">
           <Calendar size={10} />
           <span>{task.dueDate}</span>
         </div>
@@ -65,17 +65,17 @@ const KanbanColumn = ({ title, status, tasks, selectedId, onSelect }: { title: s
     <div className="flex-1 min-w-[300px]">
       <div className="flex items-center justify-between mb-4 px-2">
         <div className="flex items-center gap-2">
-          <h3 className="text-xs font-bold uppercase tracking-widest text-white/50">{title}</h3>
-          <span className="text-[10px] bg-white/5 text-white/30 px-1.5 py-0.5 rounded-md font-bold">
+          <h3 className="text-xs font-bold uppercase tracking-widest text-muted-theme">{title}</h3>
+          <span className="text-[10px] panel-surface-soft text-muted-theme px-1.5 py-0.5 rounded-md font-bold">
             {filteredTasks.length}
           </span>
         </div>
-        <button className="p-1 rounded-md hover:bg-white/5 text-white/30 hover:text-white transition-all">
+        <button className="p-1 rounded-md hover:bg-[var(--color-hover)] text-muted-theme hover:text-theme transition-all">
           <Plus size={14} />
         </button>
       </div>
       
-      <div className="min-h-[500px] rounded-2xl bg-white/[0.02] p-2 border border-white/[0.03]">
+      <div className="min-h-[500px] rounded-2xl panel-surface-soft p-2 border border-theme">
         {filteredTasks.map(task => (
           <TaskCard 
             key={task.id} 
@@ -86,8 +86,8 @@ const KanbanColumn = ({ title, status, tasks, selectedId, onSelect }: { title: s
         ))}
         
         {filteredTasks.length === 0 && (
-          <div className="h-32 flex items-center justify-center border-2 border-dashed border-white/5 rounded-xl">
-            <p className="text-[10px] text-white/10 uppercase tracking-widest font-bold">No Tasks</p>
+          <div className="h-32 flex items-center justify-center border-2 border-dashed border-theme rounded-xl">
+            <p className="text-[10px] text-muted-theme opacity-20 uppercase tracking-widest font-bold">No Tasks</p>
           </div>
         )}
       </div>
@@ -108,13 +108,13 @@ export default function TasksPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Task Board</h1>
-          <p className="text-sm text-white/40">Manage your projects and track progress across the team.</p>
+          <p className="text-sm text-muted-theme">Manage your projects and track progress across the team.</p>
         </div>
         <div className="flex items-center gap-3">
-          <button className="px-4 py-2 bg-white/5 border border-white/5 rounded-xl text-xs font-bold hover:bg-white/10 transition-all">
+          <button className="px-4 py-2 panel-surface-soft border border-theme rounded-xl text-xs font-bold hover:bg-[var(--color-hover)] transition-all">
             Filter
           </button>
-          <button className="px-4 py-2 bg-neon-pink text-white rounded-xl text-sm font-bold neon-glow-pink hover:bg-neon-pink/80 transition-all flex items-center gap-2">
+          <button className="px-4 py-2 bg-neon-pink text-theme rounded-xl text-sm font-bold neon-glow-pink hover:bg-neon-pink/80 transition-all flex items-center gap-2">
             <Plus size={18} />
             <span>New Task</span>
           </button>

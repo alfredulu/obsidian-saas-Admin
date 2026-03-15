@@ -17,13 +17,13 @@ export const TopBar = () => {
         <div className="flex items-center gap-2 flex-1 min-w-0">
           <button 
             onClick={toggle}
-            className="lg:hidden text-muted-theme hover:text-theme p-1.5 hover:bg-white/5 rounded-lg transition-colors"
+            className="lg:hidden text-muted-theme hover:text-theme p-1.5 hover:bg-[var(--color-hover)] rounded-lg transition-colors"
           >
             <Menu size={20} />
           </button>
           <button 
             onClick={open}
-            className="sm:hidden text-muted-theme hover:text-theme p-1.5 hover:bg-white/5 rounded-lg transition-colors max-[400px]:hidden"
+            className="sm:hidden text-muted-theme hover:text-theme p-1.5 hover:bg-[var(--color-hover)] rounded-lg transition-colors max-[400px]:hidden"
           >
             <Search size={20} />
           </button>
@@ -32,7 +32,7 @@ export const TopBar = () => {
             className="relative hidden lg:flex flex-1 min-w-0 max-w-[360px] cursor-pointer group"
           >
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-theme group-hover:text-theme transition-colors" size={14} />
-            <div className="w-full bg-white/5 border border-white/5 rounded-lg py-1.5 pl-9 pr-12 text-[11px] text-muted-theme group-hover:text-theme transition-colors overflow-hidden text-ellipsis">
+            <div className="w-full panel-surface-soft border border-theme rounded-lg py-1.5 pl-9 pr-12 text-[11px] text-muted-theme group-hover:text-theme transition-colors overflow-hidden text-ellipsis">
               Search anything...
             </div>
             <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-0.5 text-[9px] text-muted-theme font-bold">
@@ -43,20 +43,20 @@ export const TopBar = () => {
         </div>
 
         <div className="flex-1 flex items-center justify-center gap-3 text-muted-theme">
-          <button className="p-1.5 rounded-lg hover:bg-white/5 transition-colors">
+          <button className="p-1.5 rounded-lg hover:bg-[var(--color-hover)] transition-colors">
             <Zap size={16} />
           </button>
-          <button className="relative p-1.5 rounded-lg hover:bg-white/5 transition-colors">
+          <button className="relative p-1.5 rounded-lg hover:bg-[var(--color-hover)] transition-colors">
             <Bell size={16} />
             <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-neon-pink rounded-full border border-obsidian" />
           </button>
-          <button className="p-1.5 rounded-lg hover:bg-white/5 transition-colors">
+          <button className="p-1.5 rounded-lg hover:bg-[var(--color-hover)] transition-colors">
             <Mail size={16} />
           </button>
           <button
             onClick={toggleTheme}
             aria-label="Toggle theme"
-            className="p-1.5 rounded-lg hover:bg-white/5 transition-colors"
+            className="p-1.5 rounded-lg hover:bg-[var(--color-hover)] transition-colors"
           >
             {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
           </button>

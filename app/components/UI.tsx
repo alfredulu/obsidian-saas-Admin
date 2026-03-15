@@ -11,8 +11,8 @@ export const Card = ({ children, className, title, subtitle, action }: any) => (
     {(title || action) && (
       <div className="flex items-center justify-between mb-6">
         <div>
-          {title && <h3 className="text-xs font-bold uppercase tracking-widest text-white/50">{title}</h3>}
-          {subtitle && <p className="text-[10px] text-white/20 mt-1">{subtitle}</p>}
+          {title && <h3 className="text-xs font-bold uppercase tracking-widest text-muted-theme">{title}</h3>}
+          {subtitle && <p className="text-[10px] text-muted-theme opacity-40 mt-1">{subtitle}</p>}
         </div>
         {action && <div>{action}</div>}
       </div>
@@ -24,7 +24,7 @@ export const Card = ({ children, className, title, subtitle, action }: any) => (
 // --- Badge ---
 export const Badge = ({ children, variant = 'default', className }: any) => {
   const variants: any = {
-    default: 'bg-white/10 text-white/50',
+    default: 'panel-surface-soft text-muted-theme',
     pink: 'bg-neon-pink/10 text-neon-pink',
     cyan: 'bg-neon-cyan/10 text-neon-cyan',
     purple: 'bg-neon-purple/10 text-neon-purple',
@@ -59,7 +59,7 @@ export const Avatar = ({ name, size = 'md', className }: any) => {
 
   return (
     <div className={cn(
-      "bg-gradient-to-br from-white/10 to-white/5 p-[1px] shrink-0",
+      "bg-gradient-to-br from-[var(--color-border)] to-[var(--color-panel-soft)] p-[1px] shrink-0",
       sizes[size] || sizes.md,
       className
     )}>
@@ -82,9 +82,9 @@ export const Table = ({ headers, children, className }: any) => (
   <div className={cn("overflow-x-auto", className)}>
     <table className="w-full text-left border-separate border-spacing-0">
       <thead>
-        <tr className="text-white/20 text-[9px] uppercase tracking-widest">
+        <tr className="text-muted-theme opacity-40 text-[9px] uppercase tracking-widest">
           {headers.map((header: any, i: number) => (
-            <th key={i} className={cn("pb-3 font-bold border-b border-white/5", header.className)}>
+            <th key={i} className={cn("pb-3 font-bold border-b border-theme", header.className)}>
               {header.label}
             </th>
           ))}
@@ -101,7 +101,7 @@ export const TableRow = ({ children, className, onClick }: any) => (
   <tr 
     onClick={onClick}
     className={cn(
-      "group hover:bg-white/[0.02] transition-colors cursor-pointer interactive-row",
+      "group hover:bg-[var(--color-hover)] transition-colors cursor-pointer interactive-row",
       className
     )}
   >
@@ -111,7 +111,7 @@ export const TableRow = ({ children, className, onClick }: any) => (
 
 export const TableCell = ({ children, className, align = 'left' }: any) => (
   <td className={cn(
-    "py-4 border-b border-white/5 group-last:border-0",
+    "py-4 border-b border-theme group-last:border-0",
     align === 'right' && "text-right",
     align === 'center' && "text-center",
     className
@@ -123,9 +123,9 @@ export const TableCell = ({ children, className, align = 'left' }: any) => (
 // --- Skeleton ---
 export const Skeleton = ({ className, variant = 'default' }: any) => {
   const variants: any = {
-    default: 'bg-white/5',
-    circle: 'bg-white/5 rounded-full',
-    card: 'glass-card bg-white/5',
+    default: 'panel-surface-soft',
+    circle: 'panel-surface-soft rounded-full',
+    card: 'glass-card panel-surface-soft',
   };
 
   return (
@@ -155,7 +155,7 @@ export const Modal = ({ isOpen, onClose, title, children, maxWidth = 'max-w-lg' 
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             className={cn(
-              "relative w-full glass-card p-8 bg-obsidian border border-white/10 shadow-2xl",
+              "relative w-full glass-card p-8 bg-obsidian border border-theme shadow-2xl",
               maxWidth
             )}
           >
@@ -163,7 +163,7 @@ export const Modal = ({ isOpen, onClose, title, children, maxWidth = 'max-w-lg' 
               <h2 className="text-xl font-bold tracking-tight">{title}</h2>
               <button 
                 onClick={onClose}
-                className="p-2 rounded-xl hover:bg-white/5 text-white/30 hover:text-white transition-all"
+                className="p-2 rounded-xl hover:bg-[var(--color-hover)] text-muted-theme opacity-60 hover:text-theme transition-all"
               >
                 <X size={20} />
               </button>

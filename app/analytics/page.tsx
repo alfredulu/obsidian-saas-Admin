@@ -30,9 +30,9 @@ const StatCard = ({ icon: Icon, label, value, trend, color }: any) => (
         <div className={`p-2 rounded-lg bg-${color}/10 text-${color}`}>
           <Icon size={20} />
         </div>
-        <p className="text-white/30 text-[10px] uppercase tracking-widest font-bold">{label}</p>
+        <p className="text-muted-theme opacity-40 text-[10px] uppercase tracking-widest font-bold">{label}</p>
       </div>
-      <MoreHorizontal size={16} className="text-white/20" />
+      <MoreHorizontal size={16} className="text-muted-theme opacity-40" />
     </div>
     <div className="grid grid-rows-[auto_auto] gap-1 mt-2">
       <h3 className="text-xl sm:text-2xl font-bold leading-tight whitespace-nowrap">{value}</h3>
@@ -54,11 +54,11 @@ export default function AnalyticsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold tracking-tight">Analytics Overview</h2>
-          <p className="text-white/30 text-sm mt-1">Comprehensive performance metrics and user insights.</p>
+          <p className="text-sm text-muted-theme mt-1">Comprehensive performance metrics and user insights.</p>
         </div>
         <div className="flex gap-3">
-          <button className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-xl text-xs font-bold transition-all border border-white/5">Export CSV</button>
-          <button className="px-4 py-2 bg-neon-pink text-white rounded-xl text-xs font-bold neon-glow-pink transition-all">Live View</button>
+          <button className="px-4 py-2 panel-surface-soft hover:bg-[var(--color-hover)] rounded-xl text-xs font-bold transition-all border border-theme">Export CSV</button>
+          <button className="px-4 py-2 bg-neon-pink text-theme rounded-xl text-xs font-bold neon-glow-pink transition-all">Live View</button>
         </div>
       </div>
 
@@ -66,7 +66,7 @@ export default function AnalyticsPage() {
         <StatCard icon={DollarSign} label="Total Revenue" value="$128,430" trend="+14.2%" color="neon-pink" />
         <StatCard icon={Users} label="Active Users" value="42,510" trend="+8.1%" color="neon-cyan" />
         <StatCard icon={Activity} label="Conversion Rate" value="3.24%" trend="+2.4%" color="neon-purple" />
-        <StatCard icon={TrendingUp} label="Growth Rate" value="24.8%" trend="+5.6%" color="white" />
+        <StatCard icon={TrendingUp} label="Growth Rate" value="24.8%" trend="+5.6%" color="theme" />
       </div>
 
       {/* Revenue Over Time */}
@@ -74,10 +74,10 @@ export default function AnalyticsPage() {
         <div className="flex items-center justify-between mb-10">
           <div>
             <h3 className="text-lg font-bold">Revenue Over Time</h3>
-            <p className="text-white/30 text-xs mt-1">Monthly revenue growth with projection analysis.</p>
+            <p className="text-muted-theme opacity-40 text-xs mt-1">Monthly revenue growth with projection analysis.</p>
           </div>
           <div className="flex gap-2">
-            <button className="px-3 py-1.5 bg-white/5 hover:bg-white/10 rounded-lg text-[10px] font-bold transition-colors">6 Months</button>
+            <button className="px-3 py-1.5 panel-surface-soft hover:bg-[var(--color-hover)] rounded-lg text-[10px] font-bold transition-colors">6 Months</button>
             <button className="px-3 py-1.5 bg-neon-purple/20 text-neon-purple border border-neon-purple/30 rounded-lg text-[10px] font-bold transition-colors">1 Year</button>
           </div>
         </div>
@@ -92,23 +92,23 @@ export default function AnalyticsPage() {
                     <stop offset="95%" stopColor="#BC13FE" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
                 <XAxis 
                   dataKey="month" 
                   axisLine={false} 
                   tickLine={false} 
-                  tick={{fill: '#ffffff20', fontSize: 11}}
+                  tick={{fill: 'var(--color-muted)', fontSize: 11}}
                   dy={10}
                 />
                 <YAxis 
                   axisLine={false} 
                   tickLine={false} 
-                  tick={{fill: '#ffffff20', fontSize: 11}}
+                  tick={{fill: 'var(--color-muted)', fontSize: 11}}
                   tickFormatter={(value) => `$${value/1000}k`}
                 />
                 <Tooltip 
-                  contentStyle={{backgroundColor: '#0A0A0B', border: '1px solid #ffffff10', borderRadius: '12px'}}
-                  itemStyle={{color: '#fff'}}
+                  contentStyle={{backgroundColor: 'var(--color-panel-strong)', border: '1px solid var(--color-border)', borderRadius: '12px'}}
+                  itemStyle={{color: 'var(--color-text)'}}
                   formatter={(value: any) => [`$${value.toLocaleString()}`, 'Revenue']}
                 />
                 <Area 
@@ -123,7 +123,7 @@ export default function AnalyticsPage() {
               </AreaChart>
             </ResponsiveContainer>
           ) : (
-            <div className="w-full h-full bg-white/5 animate-pulse rounded-2xl" />
+            <div className="w-full h-full panel-surface-soft animate-pulse rounded-2xl" />
           )}
         </div>
       </div>
@@ -133,24 +133,24 @@ export default function AnalyticsPage() {
         <div className="glass-card p-6">
           <div className="flex items-center justify-between mb-8">
             <h3 className="text-lg font-bold">User Acquisition</h3>
-            <MoreHorizontal size={16} className="text-white/20" />
+            <MoreHorizontal size={16} className="text-muted-theme opacity-40" />
           </div>
           <div className="h-[300px] w-full">
             {mounted ? (
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={userAcquisition} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
-                  <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{fill: '#ffffff20', fontSize: 11}} />
-                  <YAxis axisLine={false} tickLine={false} tick={{fill: '#ffffff20', fontSize: 11}} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
+                  <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{fill: 'var(--color-muted)', fontSize: 11}} />
+                  <YAxis axisLine={false} tickLine={false} tick={{fill: 'var(--color-muted)', fontSize: 11}} />
                   <Tooltip 
-                    contentStyle={{backgroundColor: '#0A0A0B', border: '1px solid #ffffff10', borderRadius: '12px'}}
-                    cursor={{fill: 'white', opacity: 0.05}}
+                    contentStyle={{backgroundColor: 'var(--color-panel-strong)', border: '1px solid var(--color-border)', borderRadius: '12px'}}
+                    cursor={{fill: 'var(--color-text)', opacity: 0.05}}
                   />
                   <Bar dataKey="newUsers" radius={[4, 4, 0, 0]} barSize={32}>
                     {userAcquisition.map((entry, index) => (
                       <Cell 
                         key={`cell-${index}`} 
-                        fill={index === userAcquisition.length - 1 ? '#00F5FF' : '#ffffff10'} 
+                        fill={index === userAcquisition.length - 1 ? '#00F5FF' : 'var(--color-muted)'} 
                         className="transition-all duration-300 hover:opacity-80"
                       />
                     ))}
@@ -158,7 +158,7 @@ export default function AnalyticsPage() {
                 </BarChart>
               </ResponsiveContainer>
             ) : (
-              <div className="w-full h-full bg-white/5 animate-pulse rounded-xl" />
+              <div className="w-full h-full panel-surface-soft animate-pulse rounded-xl" />
             )}
           </div>
         </div>
@@ -173,8 +173,8 @@ export default function AnalyticsPage() {
             {recentEvents.map((event) => (
               <div key={event.id} className="flex items-center justify-between group cursor-pointer">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-white/10 to-white/5 p-[1px]">
-                    <div className="w-full h-full rounded-[11px] bg-obsidian flex items-center justify-center overflow-hidden">
+                  <div className="w-9 h-9 rounded-xl panel-surface-soft p-[1px]">
+                    <div className="w-full h-full rounded-[11px] bg-background flex items-center justify-center overflow-hidden">
                       <img 
                         src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${event.user}`} 
                         alt={event.user} 
@@ -184,7 +184,7 @@ export default function AnalyticsPage() {
                   </div>
                   <div>
                     <p className="text-[11px] font-bold group-hover:text-neon-pink transition-colors">{event.user}</p>
-                    <p className="text-[10px] text-white/30">{event.event}</p>
+                    <p className="text-[10px] text-muted-theme opacity-40">{event.event}</p>
                   </div>
                 </div>
                 <div className="text-right">
@@ -192,11 +192,11 @@ export default function AnalyticsPage() {
                     event.type === 'Upgrade' ? 'bg-neon-pink/10 text-neon-pink' :
                     event.type === 'New' ? 'bg-neon-cyan/10 text-neon-cyan' :
                     event.type === 'Payment' ? 'bg-emerald-500/10 text-emerald-400' :
-                    'bg-white/5 text-white/40'
+                    'panel-surface-soft text-muted-theme opacity-40'
                   }`}>
                     {event.type}
                   </span>
-                  <div className="flex items-center justify-end gap-1 mt-1 text-[8px] text-white/20">
+                  <div className="flex items-center justify-end gap-1 mt-1 text-[8px] text-muted-theme opacity-40">
                     <Clock size={8} />
                     <span>{event.time}</span>
                   </div>
