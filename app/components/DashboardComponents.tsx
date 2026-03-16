@@ -60,7 +60,7 @@ export const AnalyticsMiniWidget = ({
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart
               data={data}
-              margin={{ top: 10, right: 6, left: 0, bottom: 6 }}
+              margin={{ top: 10, right: 6, left: 20, bottom: 20 }}
             >
               <defs>
                 <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
@@ -78,10 +78,14 @@ export const AnalyticsMiniWidget = ({
               />
               <XAxis dataKey="month" hide={true} interval={0} />
               <YAxis
-                hide={true}
-                domain={["dataMin", "dataMax"]}
-                tickCount={5}
-                width={500}
+                axisLine={false}
+                tickLine={false}
+                width={26}
+                tickCount={4}
+                tick={{
+                  fill: "var(--color-muted)",
+                  fontSize: 9,
+                }}
               />
               <Area
                 type="monotone"
