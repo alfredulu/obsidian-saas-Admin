@@ -38,17 +38,42 @@ const useMounted = () => {
   return mounted;
 };
 
+const MiniChartTooltip = ({
+  active,
+  payload,
+  label,
+}: {
+  active?: boolean;
+  payload?: any[];
+  label?: string;
+}) => {
+  if (!active || !payload?.length) return null;
+
+  const value = payload[0].value ?? payload[0].payload?.value;
+
+  return (
+    <div className="px-2 py-1 text-[10px] rounded bg-[var(--color-panel-strong)] border border-[var(--color-border)] shadow-sm">
+      <span className="text-muted-theme">{label}</span>
+      <span className="ml-1 font-semibold text-theme">{value}</span>
+    </div>
+  );
+};
+
 export const AnalyticsMiniWidget = ({
   title,
-  currentValue,
   maxValue,
   trend,
-  data,
+  data = [],
   color,
   gradientId,
   valueFormatter,
 }: any) => {
   const mounted = useMounted();
+  const currentValue = useMemo(() => {
+    if (!data?.length) return 0;
+    return data[data.length - 1]?.value ?? 0;
+  }, [data]);
+
   const animatedValue = useAnimatedNumber(currentValue, 1200, valueFormatter);
   return (
     <div
@@ -62,6 +87,7 @@ export const AnalyticsMiniWidget = ({
               data={data}
               margin={{ top: 10, right: 6, left: 20, bottom: 20 }}
             >
+              <Tooltip content={<MiniChartTooltip />} cursor={false} />
               <defs>
                 <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stopColor={color} stopOpacity={0.45} />
@@ -88,11 +114,20 @@ export const AnalyticsMiniWidget = ({
                 }}
               />
               <Area
-                type="monotone"
+                type="monotoneX"
                 dataKey="value"
                 stroke={color}
                 strokeWidth={2}
                 dot={false}
+                activeDot={{
+                  r: 4,
+                  stroke: color,
+                  strokeWidth: 2,
+                  fill: "var(--color-background)",
+                }}
+                isAnimationActive={true}
+                animationDuration={900}
+                animationEasing="ease-out"
                 fill={`url(#${gradientId})`}
                 fillOpacity={1}
                 style={{ filter: `drop-shadow(0 0 16px ${color}33)` }}

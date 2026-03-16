@@ -15,12 +15,10 @@ const currencyFormatter = (value: number) =>
   `$${Math.round(value).toLocaleString('en-US')}`;
 
 const taskProgressMetric = {
-  currentValue: '213.52',
   maxValue: '250',
 };
 
 const taskExpenseMetric = {
-  currentValue: '$6,045',
   valueFormatter: currencyFormatter,
 };
 
@@ -56,7 +54,6 @@ export default function Dashboard() {
       <div className="flex flex-col sm:flex-row gap-6">
         <AnalyticsMiniWidget
           title="Task Progress"
-          currentValue={taskProgressMetric.currentValue}
           maxValue={taskProgressMetric.maxValue}
           trend="+12.1%"
           data={taskProgressSeries}
@@ -65,7 +62,6 @@ export default function Dashboard() {
         />
         <AnalyticsMiniWidget
           title="Task Expenses"
-          currentValue={taskExpenseMetric.currentValue}
           valueFormatter={taskExpenseMetric.valueFormatter}
           trend="-4.6%"
           data={taskExpensesSeries}
