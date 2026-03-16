@@ -76,19 +76,12 @@ export const AnalyticsMiniWidget = ({
                 horizontal={true}
                 vertical={true}
               />
-              <XAxis
-                dataKey="month"
-                axisLine={false}
-                tickLine={false}
-                tick={false}
-                interval={0}
-              />
+              <XAxis dataKey="month" hide={true} interval={0} />
               <YAxis
-                axisLine={false}
-                tickLine={false}
-                tick={false}
-                width={20}
-                tickCount={4}
+                hide={true}
+                domain={["dataMin", "dataMax"]}
+                tickCount={5}
+                width={500}
               />
               <Area
                 type="monotone"
