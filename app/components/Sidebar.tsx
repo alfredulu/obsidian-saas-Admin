@@ -114,6 +114,8 @@ const SidebarItem = ({
   );
 };
 
+const STORAGE_KEY = 'sidebar-settings-open';
+
 const SettingsSupportBlock = ({
   pathname,
   pendingHref,
@@ -125,19 +127,25 @@ const SettingsSupportBlock = ({
   onItemClick: (href: string) => void;
   activeTab: string | null;
 }) => {
-  const [isSubmenuOpen, setIsSubmenuOpen] = React.useState(pathname.startsWith('/settings'));
+  const [isSubmenuOpen, setIsSubmenuOpen] = React.useState(false);
 
   React.useEffect(() => {
-    if (pathname.startsWith('/settings')) {
-      setIsSubmenuOpen(true);
-    }
-  }, [pathname]);
+    if (typeof window === 'undefined') return;
+    const storedValue = window.localStorage.getItem(STORAGE_KEY);
+    setIsSubmenuOpen(storedValue === 'true');
+  }, []);
 
   const isSettingsActive = pathname === '/settings';
   const isMainPending = pendingHref === '/settings';
 
   const toggleSubmenu = () => {
-    setIsSubmenuOpen((prev) => !prev);
+    setIsSubmenuOpen((prev) => {
+      const next = !prev;
+      if (typeof window !== 'undefined') {
+        window.localStorage.setItem(STORAGE_KEY, next.toString());
+      }
+      return next;
+    });
   };
 
   return (
@@ -171,18 +179,19 @@ const SettingsSupportBlock = ({
               aria-expanded={isSubmenuOpen}
               aria-label="Toggle Settings submenu"
               onClick={toggleSubmenu}
-              className="p-1 rounded-full hover:bg-[var(--color-hover)] transition-colors"
+              className={cn(
+                'p-1 rounded-full hover:bg-[var(--color-hover)] transition-colors',
+                isSettingsActive ? 'text-theme' : 'text-muted-theme'
+              )}
             >
-              <motion.span
-                animate={{ rotate: isSubmenuOpen ? 180 : 0 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+              <span
                 className={cn(
-                  'text-muted-theme transition-colors',
-                  isSettingsActive ? 'text-theme' : 'text-muted-theme'
+                  'transition-transform duration-200',
+                  isSubmenuOpen ? 'rotate-180' : 'rotate-0'
                 )}
               >
                 <ChevronDown size={14} />
-              </motion.span>
+              </span>
             </button>
           </div>
         </div>

@@ -11,6 +11,15 @@ import { motion } from 'motion/react';
 import { ProductHighlight, TaskSchedule } from './components/RightSidebar';
 import { Skeleton } from './components/UI';
 
+const taskProgressMetric = {
+  currentValue: '213.52',
+  maxValue: '250',
+};
+
+const taskExpenseMetric = {
+  currentValue: '$6,045',
+};
+
 export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -43,7 +52,8 @@ export default function Dashboard() {
       <div className="flex flex-col sm:flex-row gap-6">
         <AnalyticsMiniWidget
           title="Task Progress"
-          value="213.52"
+          currentValue={taskProgressMetric.currentValue}
+          maxValue={taskProgressMetric.maxValue}
           trend="+12.1%"
           data={taskProgressSeries}
           color="#FF00D6"
@@ -51,7 +61,7 @@ export default function Dashboard() {
         />
         <AnalyticsMiniWidget
           title="Task Expenses"
-          value="$6,045"
+          currentValue={taskExpenseMetric.currentValue}
           trend="-4.6%"
           data={taskExpensesSeries}
           color="#BC13FE"

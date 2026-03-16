@@ -39,7 +39,8 @@ const useMounted = () => {
 
 export const AnalyticsMiniWidget = ({
   title,
-  value,
+  currentValue,
+  maxValue,
   trend,
   data,
   color,
@@ -66,22 +67,25 @@ export const AnalyticsMiniWidget = ({
                 </linearGradient>
               </defs>
               <CartesianGrid
-                vertical
-                strokeDasharray="3 3"
                 stroke="var(--color-border)"
-                horizontal={false}
+                strokeDasharray="3 3"
+                strokeOpacity={0.25}
+                horizontal={true}
+                vertical={true}
               />
               <XAxis
                 dataKey="month"
                 axisLine={false}
                 tickLine={false}
                 tick={false}
+                interval={0}
               />
               <YAxis
                 axisLine={false}
                 tickLine={false}
                 tick={false}
                 width={20}
+                tickCount={4}
               />
               <Area
                 type="monotone"
@@ -104,7 +108,12 @@ export const AnalyticsMiniWidget = ({
           <p className="text-[10px] uppercase tracking-widest text-muted-theme">
             {title}
           </p>
-          <h3 className="text-xl font-bold text-theme">{value}</h3>
+          <h3 className="text-xl font-bold text-theme">{currentValue}</h3>
+          {maxValue && (
+            <p className="text-xs text-muted-theme leading-tight">
+              of {maxValue}
+            </p>
+          )}
         </div>
         <div className="flex flex-col gap-1">
           <span className="inline-flex items-center justify-center px-3 py-1 rounded-l-full bg-neon-pink/10 text-neon-pink text-[10px] font-bold tracking-widest uppercase">
