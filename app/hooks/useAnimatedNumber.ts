@@ -17,21 +17,25 @@ const countDecimalPlaces = (value: number | string) => {
   return decimalMatch ? decimalMatch[1].length : 0;
 };
 
-const createDefaultFormatter =
-  (decimalPlaces: number) =>
-  (value: number) =>
-    value.toLocaleString(undefined, {
-      minimumFractionDigits: decimalPlaces,
-      maximumFractionDigits: decimalPlaces,
-    });
+const createDefaultFormatter = (decimalPlaces: number) => (value: number) =>
+  value.toLocaleString(undefined, {
+    minimumFractionDigits: decimalPlaces,
+    maximumFractionDigits: decimalPlaces,
+  });
 
 export const useAnimatedNumber = (
   targetValue: number | string,
   duration = 1200,
   formatter?: (value: number) => string
 ) => {
-  const targetNumber = useMemo(() => parseNumericValue(targetValue), [targetValue]);
-  const decimalPlaces = useMemo(() => countDecimalPlaces(targetValue), [targetValue]);
+  const targetNumber = useMemo(
+    () => parseNumericValue(targetValue),
+    [targetValue]
+  );
+  const decimalPlaces = useMemo(
+    () => countDecimalPlaces(targetValue),
+    [targetValue]
+  );
   const formatValue = useMemo(
     () => formatter ?? createDefaultFormatter(decimalPlaces),
     [decimalPlaces, formatter]
@@ -46,7 +50,8 @@ export const useAnimatedNumber = (
 
     const animate = (timestamp: number) => {
       const elapsed = Math.max(0, timestamp - startTimestamp);
-      const progress = Math.min(elapsed / duration, 1);
+      let progress = Math.min(elapsed / duration, 1);
+      progress = 1 - Math.pow(1 - progress, 3);
       const currentValue = startValue + (targetNumber - startValue) * progress;
       setDisplayValue(formatValue(currentValue));
 
