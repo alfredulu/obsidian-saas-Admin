@@ -30,6 +30,7 @@ import {
   EmptyState,
   Skeleton,
 } from "./UI";
+import { useAnimatedNumber } from "../hooks/useAnimatedNumber";
 
 const useMounted = () => {
   const [mounted, setMounted] = useState(false);
@@ -45,8 +46,10 @@ export const AnalyticsMiniWidget = ({
   data,
   color,
   gradientId,
+  valueFormatter,
 }: any) => {
   const mounted = useMounted();
+  const animatedValue = useAnimatedNumber(currentValue, 1200, valueFormatter);
   return (
     <div
       style={{ borderColor: "var(--color-widget-border)" }}
@@ -103,12 +106,12 @@ export const AnalyticsMiniWidget = ({
           <div className="h-full w-full panel-surface-soft animate-pulse rounded-2xl" />
         )}
       </div>
-      <div className="flex flex-col justify-between gap-3 flex-[0_0_40%] min-w-0">
-        <div>
-          <p className="text-[10px] uppercase tracking-widest text-muted-theme">
-            {title}
-          </p>
-          <h3 className="text-xl font-bold text-theme">{currentValue}</h3>
+          <div className="flex flex-col justify-between gap-3 flex-[0_0_40%] min-w-0">
+            <div>
+              <p className="text-[10px] uppercase tracking-widest text-muted-theme">
+                {title}
+              </p>
+              <h3 className="text-xl font-bold text-theme">{animatedValue}</h3>
           {maxValue && (
             <p className="text-xs text-muted-theme leading-tight">
               of {maxValue}
