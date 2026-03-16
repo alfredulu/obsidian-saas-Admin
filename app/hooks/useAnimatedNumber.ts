@@ -42,9 +42,10 @@ export const useAnimatedNumber = (
   useEffect(() => {
     const startTimestamp = performance.now();
     const startValue = 0;
+    setDisplayValue(formatValue(startValue));
 
     const animate = (timestamp: number) => {
-      const elapsed = timestamp - startTimestamp;
+      const elapsed = Math.max(0, timestamp - startTimestamp);
       const progress = Math.min(elapsed / duration, 1);
       const currentValue = startValue + (targetNumber - startValue) * progress;
       setDisplayValue(formatValue(currentValue));
