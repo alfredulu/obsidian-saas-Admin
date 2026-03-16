@@ -50,8 +50,7 @@ export const useAnimatedNumber = (
 
     const animate = (timestamp: number) => {
       const elapsed = Math.max(0, timestamp - startTimestamp);
-      let progress = Math.min(elapsed / duration, 1);
-      progress = 1 - Math.pow(1 - progress, 3);
+      const progress = Math.min(elapsed / duration, 1);
       const currentValue = startValue + (targetNumber - startValue) * progress;
       setDisplayValue(formatValue(currentValue));
 
