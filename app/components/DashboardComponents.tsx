@@ -49,7 +49,7 @@ export const AnalyticsMiniWidget = ({
   return (
     <div
       style={{ borderColor: "var(--color-widget-border)" }}
-      className="glass-card border p-5 flex gap-6 transition-transform duration-200 hover:-translate-y-1 hover:shadow-xl"
+      className="glass-card border py-5 pr-6 flex gap-6 transition-transform duration-200 hover:-translate-y-1 hover:shadow-xl"
     >
       <div className="flex-[0_0_60%] h-32">
         {mounted ? (
@@ -99,7 +99,7 @@ export const AnalyticsMiniWidget = ({
           <p className="text-[10px] uppercase tracking-widest text-muted-theme">
             {title}
           </p>
-          <h3 className="text-3xl font-bold text-theme">{value}</h3>
+          <h3 className="text-xl font-bold text-theme">{value}</h3>
         </div>
         <div className="flex flex-col gap-1">
           <span className="inline-flex items-center justify-center px-3 py-1 rounded-l-full bg-neon-pink/10 text-neon-pink text-[10px] font-bold tracking-widest uppercase">
