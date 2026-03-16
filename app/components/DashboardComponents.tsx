@@ -77,7 +77,12 @@ export const AnalyticsMiniWidget = ({
                 tickLine={false}
                 tick={false}
               />
-              <YAxis axisLine={false} tickLine={false} tick={false} />
+              <YAxis
+                axisLine={false}
+                tickLine={false}
+                tick={false}
+                width={20}
+              />
               <Area
                 type="monotone"
                 dataKey="value"
