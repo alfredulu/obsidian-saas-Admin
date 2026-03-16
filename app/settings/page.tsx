@@ -1,21 +1,39 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Card, Avatar } from '@/app/components/UI';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { User, Lock, Bell, Moon, Globe, Shield, Save } from 'lucide-react';
 
-export default function SettingsPage() {
-  const [activeSection, setActiveSection] = useState('profile');
+const navItems = [
+  { id: 'profile', icon: User, label: 'Profile' },
+  { id: 'account', icon: Lock, label: 'Account' },
+  { id: 'notifications', icon: Bell, label: 'Notifications' },
+  { id: 'appearance', icon: Moon, label: 'Appearance' },
+  { id: 'language', icon: Globe, label: 'Language' },
+  { id: 'security', icon: Shield, label: 'Security' },
+];
 
-  const navItems = [
-    { id: 'profile', icon: User, label: 'Profile' },
-    { id: 'account', icon: Lock, label: 'Account' },
-    { id: 'notifications', icon: Bell, label: 'Notifications' },
-    { id: 'appearance', icon: Moon, label: 'Appearance' },
-    { id: 'language', icon: Globe, label: 'Language' },
-    { id: 'security', icon: Shield, label: 'Security' },
-  ];
+const tabWhitelist = new Set(navItems.map((item) => item.id));
+
+const getTabFromParam = (searchParams: ReadonlyURLSearchParams | null, pathname: string) => {
+  if (pathname !== '/settings') return null;
+  if (!searchParams) return 'profile';
+  const tabParam = searchParams.get('tab')?.toLowerCase();
+  return tabParam && tabWhitelist.has(tabParam) ? tabParam : 'profile';
+};
+
+export default function SettingsPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const activeSection = React.useMemo(() => getTabFromParam(searchParams, pathname) ?? 'profile', [searchParams, pathname]);
+
+  const handleTabClick = (id: string) => {
+    if (activeSection === id) return;
+    router.replace(`/settings?tab=${id}`);
+  };
 
   return (
     <motion.div 
@@ -37,7 +55,8 @@ export default function SettingsPage() {
             return (
               <button 
                 key={item.id}
-                onClick={() => setActiveSection(item.id)}
+                type="button"
+                onClick={() => handleTabClick(item.id)}
                 className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all shrink-0 md:shrink ${isActive ? 'bg-neon-pink text-theme neon-glow-pink' : 'text-muted-theme hover:text-theme hover:bg-[var(--color-hover)]'}`}
               >
                 <item.icon size={18} />

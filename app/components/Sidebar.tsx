@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   LayoutDashboard,
@@ -46,9 +46,24 @@ const menuItems: NavItem[] = [
 ];
 
 const supportItems: NavItem[] = [
-  { icon: Settings, label: 'Settings', href: '/settings', hasSubmenu: true },
   { icon: Grid2X2, label: 'Integrations', href: '/integrations' },
 ];
+
+const settingsSubmenuItems = [
+  { id: 'profile', label: 'Profile', href: '/settings?tab=profile' },
+  { id: 'account', label: 'Account', href: '/settings?tab=account' },
+  { id: 'notifications', label: 'Notifications', href: '/settings?tab=notifications' },
+  { id: 'appearance', label: 'Appearance', href: '/settings?tab=appearance' },
+  { id: 'language', label: 'Language', href: '/settings?tab=language' },
+  { id: 'security', label: 'Security', href: '/settings?tab=security' },
+];
+
+const navStateClass = (isActive: boolean, isPending: boolean) =>
+  isActive
+    ? 'bg-neon-pink text-theme neon-glow-pink'
+    : isPending
+    ? 'panel-surface-strong text-muted-theme border border-theme cursor-default'
+    : 'text-muted-theme hover:text-theme hover:bg-[var(--color-hover)] hover:shadow-[0_0_15px_var(--color-shadow)]';
 
 const SidebarItem = ({
   icon: Icon,
@@ -59,11 +74,7 @@ const SidebarItem = ({
   isPending,
   onClick
 }: NavItem & { isActive: boolean; isPending: boolean; onClick?: () => void }) => {
-  const stateClass = isActive
-    ? 'bg-neon-pink text-theme neon-glow-pink'
-    : isPending
-    ? 'panel-surface-strong text-muted-theme border border-theme cursor-default'
-    : 'text-muted-theme hover:text-theme hover:bg-[var(--color-hover)] hover:shadow-[0_0_15px_var(--color-shadow)]';
+  const stateClass = navStateClass(isActive, isPending);
 
   return (
     <motion.div
@@ -102,6 +113,122 @@ const SidebarItem = ({
     </motion.div>
   );
 };
+
+const SettingsSupportBlock = ({
+  pathname,
+  pendingHref,
+  onItemClick,
+  activeTab
+}: {
+  pathname: string;
+  pendingHref: string | null;
+  onItemClick: (href: string) => void;
+  activeTab: string | null;
+}) => {
+  const [isSubmenuOpen, setIsSubmenuOpen] = React.useState(pathname.startsWith('/settings'));
+
+  React.useEffect(() => {
+    if (pathname.startsWith('/settings')) {
+      setIsSubmenuOpen(true);
+    }
+  }, [pathname]);
+
+  const isSettingsActive = pathname === '/settings';
+  const isMainPending = pendingHref === '/settings';
+
+  const toggleSubmenu = () => {
+    setIsSubmenuOpen((prev) => !prev);
+  };
+
+  return (
+    <>
+      <motion.div
+        animate={{ x: isSettingsActive ? 4 : 0 }}
+        whileHover={!isMainPending ? { x: 4 } : undefined}
+        transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+      >
+        <div
+          className={cn(
+            'flex items-center justify-between px-4 py-2.5 rounded-xl cursor-pointer transition-all duration-200 group relative overflow-hidden sidebar-interactive',
+            navStateClass(isSettingsActive, isMainPending)
+          )}
+        >
+          <Link
+            href="/settings"
+            scroll={false}
+            onClick={() => onItemClick('/settings')}
+            className="flex items-center gap-3 flex-1"
+          >
+            <Settings size={18} className={isSettingsActive ? 'text-theme' : 'text-muted-theme'} />
+            <span className="text-sm font-medium">Settings</span>
+          </Link>
+          <div className="flex items-center gap-2">
+            {isMainPending && (
+              <span className="w-3 h-3 border-[2px] border-theme border-t-[var(--color-text)] rounded-full animate-spin" aria-hidden />
+            )}
+            <button
+              type="button"
+              aria-expanded={isSubmenuOpen}
+              aria-label="Toggle Settings submenu"
+              onClick={toggleSubmenu}
+              className="p-1 rounded-full hover:bg-[var(--color-hover)] transition-colors"
+            >
+              <motion.span
+                animate={{ rotate: isSubmenuOpen ? 180 : 0 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                className={cn(
+                  'text-muted-theme transition-colors',
+                  isSettingsActive ? 'text-theme' : 'text-muted-theme'
+                )}
+              >
+                <ChevronDown size={14} />
+              </motion.span>
+            </button>
+          </div>
+        </div>
+      </motion.div>
+
+      <AnimatePresence initial={false}>
+        {isSubmenuOpen && (
+          <motion.div
+            key="settings-submenu"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.25 }}
+            className="overflow-hidden"
+          >
+            <div className="flex flex-col gap-1 mt-1">
+              {settingsSubmenuItems.map((item) => {
+                const isActive = activeTab === item.id;
+                const isPending = pendingHref === item.href;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    scroll={false}
+                    onClick={() => onItemClick(item.href)}
+                    className={cn(
+                      'flex items-center gap-2 rounded-xl px-10 py-2.5 text-xs font-medium transition-all',
+                      isActive
+                        ? 'bg-[rgba(255,0,214,0.15)] text-theme'
+                        : 'text-muted-theme hover:text-theme hover:bg-[var(--color-hover)]'
+                    )}
+                  >
+                    {isPending && (
+                      <span className="w-3 h-3 border-[2px] border-theme border-t-[var(--color-text)] rounded-full animate-spin" aria-hidden />
+                    )}
+                    <span>{item.label}</span>
+                  </Link>
+                );
+              })}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+};
 const SidebarSection = ({
   title,
   items,
@@ -134,6 +261,15 @@ const SidebarSection = ({
 export const Sidebar = () => {
   const { isOpen, close } = useSidebar();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const tabParam = searchParams?.get('tab');
+  const normalizedTabParam = tabParam ? tabParam.toLowerCase() : null;
+  const activeTab =
+    pathname === '/settings'
+      ? normalizedTabParam && settingsSubmenuItems.some((item) => item.id === normalizedTabParam)
+        ? normalizedTabParam
+        : 'profile'
+      : null;
   const [pendingHref, setPendingHref] = React.useState<string | null>(null);
 
   React.useEffect(() => {
@@ -150,7 +286,7 @@ export const Sidebar = () => {
   return (
     <>
       <div className="hidden lg:flex h-full">
-        <SidebarContent pathname={pathname} pendingHref={pendingHref} onItemClick={handleItemClick} />
+        <SidebarContent pathname={pathname} pendingHref={pendingHref} onItemClick={handleItemClick} activeTab={activeTab} />
       </div>
       <AnimatePresence>
         {isOpen && (
@@ -169,7 +305,7 @@ export const Sidebar = () => {
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
               className="absolute left-0 top-0 bottom-0 w-64 panel-surface-strong shadow-2xl"
             >
-              <SidebarContent pathname={pathname} pendingHref={pendingHref} onItemClick={handleItemClick} />
+              <SidebarContent pathname={pathname} pendingHref={pendingHref} onItemClick={handleItemClick} activeTab={activeTab} />
             </motion.div>
           </div>
         )}
@@ -181,11 +317,13 @@ export const Sidebar = () => {
 const SidebarContent = ({
   pathname,
   pendingHref,
-  onItemClick
+  onItemClick,
+  activeTab
 }: {
   pathname: string;
   pendingHref: string | null;
   onItemClick: (href: string) => void;
+  activeTab: string | null;
 }) => (
   <aside className="w-60 min-w-[240px] h-full flex flex-col border-r border-theme p-5 panel-surface-soft backdrop-blur-xl">
     <div className="flex items-center gap-2 mb-8">
@@ -202,7 +340,21 @@ const SidebarContent = ({
       <div className="flex-1 overflow-y-auto">
         <div className="space-y-6">
           <SidebarSection title="Menu" items={menuItems} pathname={pathname} pendingHref={pendingHref} onItemClick={onItemClick} />
-          <SidebarSection title="Support" items={supportItems} pathname={pathname} pendingHref={pendingHref} onItemClick={onItemClick} />
+          <div>
+            <p className="text-[10px] uppercase tracking-widest text-muted-theme font-bold mb-3 px-3">Support</p>
+            <nav className="space-y-1">
+              <SettingsSupportBlock pathname={pathname} pendingHref={pendingHref} onItemClick={onItemClick} activeTab={activeTab} />
+              {supportItems.map((item) => (
+                <SidebarItem
+                  key={item.href}
+                  {...item}
+                  isActive={pathname === item.href}
+                  isPending={pendingHref === item.href && pathname !== item.href}
+                  onClick={() => onItemClick(item.href)}
+                />
+              ))}
+            </nav>
+          </div>
         </div>
       </div>
     </div>
