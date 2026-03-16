@@ -54,15 +54,15 @@ export const TopBar = () => {
           </div>
         </div>
 
-        <div className="flex-1 flex items-center justify-center gap-3 text-muted-theme">
-          <button className="p-1.5 rounded-lg hover:bg-[var(--color-hover)] transition-colors">
+        <div className="flex-none sm:flex-1 flex items-center justify-center gap-3 text-muted-theme">
+          <button className="p-1.5 rounded-lg hover:bg-[var(--color-hover)] transition-colors hidden sm:flex">
             <Zap size={16} />
           </button>
           <button className="relative p-1.5 rounded-lg hover:bg-[var(--color-hover)] transition-colors">
             <Bell size={16} />
             <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-neon-pink rounded-full border border-obsidian" />
           </button>
-          <button className="p-1.5 rounded-lg hover:bg-[var(--color-hover)] transition-colors">
+          <button className="p-1.5 rounded-lg hover:bg-[var(--color-hover)] transition-colors hidden sm:flex">
             <Mail size={16} />
           </button>
           <button

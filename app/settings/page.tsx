@@ -1,9 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Card, Avatar } from '@/app/components/UI';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams, ReadonlyURLSearchParams } from 'next/navigation';
 import { User, Lock, Bell, Moon, Globe, Shield, Save } from 'lucide-react';
 
 const navItems = [
@@ -25,6 +25,14 @@ const getTabFromParam = (searchParams: ReadonlyURLSearchParams | null, pathname:
 };
 
 export default function SettingsPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SettingsPageContent />
+    </Suspense>
+  );
+}
+
+function SettingsPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();

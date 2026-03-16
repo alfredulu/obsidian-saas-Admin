@@ -1,3 +1,4 @@
+import React, { Suspense } from "react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -33,7 +34,9 @@ export default function RootLayout({
               <GlobalModalsProvider>
                 <CommandPaletteProvider>
                   <div className="flex h-screen overflow-hidden theme-bg">
-                    <Sidebar />
+                    <Suspense fallback={<div>Loading...</div>}>
+                      <Sidebar />
+                    </Suspense>
                     <div className="flex flex-col flex-1 overflow-hidden">
                       <TopBar />
                       <div className="grid grid-cols-1 xl:grid-cols-[1fr_auto] flex-1 overflow-hidden">
