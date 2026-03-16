@@ -271,12 +271,17 @@ export const Sidebar = () => {
         : 'profile'
       : null;
   const [pendingHref, setPendingHref] = React.useState<string | null>(null);
+  const queryString = searchParams?.toString();
+  const currentRoute = React.useMemo(
+    () => (queryString ? `${pathname}?${queryString}` : pathname),
+    [pathname, queryString]
+  );
 
   React.useEffect(() => {
-    if (pendingHref && pathname === pendingHref) {
+    if (pendingHref && currentRoute === pendingHref) {
       setPendingHref(null);
     }
-  }, [pathname, pendingHref]);
+  }, [currentRoute, pendingHref]);
 
   const handleItemClick = (href: string) => {
     if (href === pathname) return;
