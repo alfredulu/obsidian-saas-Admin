@@ -177,21 +177,13 @@ const SettingsSupportBlock = ({
             <button
               type="button"
               aria-expanded={isSubmenuOpen}
-              aria-label="Toggle Settings submenu"
               onClick={toggleSubmenu}
-              className={cn(
-                'p-1 rounded-full hover:bg-[var(--color-hover)] transition-colors',
-                isSettingsActive ? 'text-theme' : 'text-muted-theme'
-              )}
+              className="flex items-center justify-center p-1 rounded-full hover:bg-[var(--color-hover)] transition-colors"
             >
-              <span
-                className={cn(
-                  'transition-transform duration-200',
-                  isSubmenuOpen ? 'rotate-180' : 'rotate-0'
-                )}
-              >
-                <ChevronDown size={14} />
-              </span>
+              <ChevronDown
+                size={14}
+                className={`transition-transform duration-200 ${isSubmenuOpen ? 'rotate-180' : 'rotate-0'}`}
+              />
             </button>
           </div>
         </div>
