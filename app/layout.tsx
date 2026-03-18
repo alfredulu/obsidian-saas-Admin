@@ -13,6 +13,7 @@ export const metadata: Metadata = {
   description: "Premium SaaS Admin Dashboard",
 };
 
+import { AuthProvider } from "./components/AuthContext";
 import { SidebarProvider } from "./components/SidebarContext";
 import { CommandPaletteProvider } from "./components/CommandPaletteContext";
 import { CommandPalette } from "./components/CommandPalette";
@@ -28,8 +29,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`dark ${inter.className}`}>
       <body className={inter.className}>
-        <ThemeProvider>
-          <SidebarProvider>
+        <AuthProvider>
+          <ThemeProvider>
+            <SidebarProvider>
             <ToastProvider>
               <GlobalModalsProvider>
                 <CommandPaletteProvider>
@@ -53,6 +55,7 @@ export default function RootLayout({
             </ToastProvider>
           </SidebarProvider>
         </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );

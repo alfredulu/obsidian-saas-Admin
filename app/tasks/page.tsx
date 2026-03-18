@@ -1,11 +1,12 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
-import { tasks } from '@/lib/mockData';
 import { Card, Badge, Avatar, EmptyState } from '@/app/components/UI';
 import { Calendar, MoreVertical, Plus, ClipboardList } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { supabase } from '@/lib/supabaseClient';
+import { useAuth } from '@/app/components/AuthContext';
 
 const PriorityBadge = ({ priority }: { priority: string }) => {
   switch (priority) {
@@ -36,7 +37,7 @@ const TaskCard = ({ task, isSelected, onSelect }: { task: any, isSelected: boole
       isSelected ? "border-neon-pink/50 panel-surface-soft" : "border-theme"
     )}>
       <div className="flex justify-between items-start mb-3">
-        <PriorityBadge priority={task.priority} />
+        <PriorityBadge priority={task.priority || 'Medium'} />
         <button className="text-muted-theme opacity-40 hover:text-theme transition-colors">
           <MoreVertical size={14} />
         </button>
@@ -46,20 +47,20 @@ const TaskCard = ({ task, isSelected, onSelect }: { task: any, isSelected: boole
       
       <div className="flex items-center justify-between pt-3 border-t border-theme">
         <div className="flex items-center gap-2">
-          <Avatar name={task.user} size="sm" />
-          <span className="text-[10px] text-theme">{task.user}</span>
+          <Avatar name={task.user || 'User'} size="sm" />
+          <span className="text-[10px] text-theme">{task.user || 'User'}</span>
         </div>
         <div className="flex items-center gap-1 text-[10px] text-muted-theme opacity-40">
           <Calendar size={10} />
-          <span>{task.dueDate}</span>
+          <span>{new Date(task.created_at).toLocaleDateString()}</span>
         </div>
       </div>
     </Card>
   </motion.div>
 );
 
-const KanbanColumn = ({ title, status, tasks, selectedId, onSelect }: { title: string, status: string, tasks: any[], selectedId: number | null, onSelect: (id: number) => void }) => {
-  const filteredTasks = tasks.filter(t => t.status === status);
+const KanbanColumn = ({ title, status, tasks, selectedId, onSelect }: { title: string, status: string, tasks: any[], selectedId: string | null, onSelect: (id: string) => void }) => {
+  const filteredTasks = tasks.filter(t => t.status === status.toLowerCase());
   
   return (
     <div className="flex-1 min-w-[300px]">
@@ -96,9 +97,63 @@ const KanbanColumn = ({ title, status, tasks, selectedId, onSelect }: { title: s
 };
 
 export default function TasksPage() {
-  const hasTasks = tasks.length > 0;
+  const { user } = useAuth();
+  const [tasks, setTasks] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  const [selectedId, setSelectedId] = React.useState<number | null>(null);
+  useEffect(() => {
+    if (user) {
+      fetchTasks();
+    }
+  }, [user]);
+
+  const fetchTasks = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from('tasks')
+      .select('*')
+      .eq('user_id', user?.id);
+    
+    if (error) {
+      console.error('Error fetching tasks:', error);
+    } else {
+      setTasks(data || []);
+    }
+    setLoading(false);
+  };
+
+  const addTask = async (title: string, description: string, status: string) => {
+    const { data, error } = await supabase
+      .from('tasks')
+      .insert([{ title, description, status, user_id: user?.id }])
+      .select();
+    
+    if (error) console.error('Error adding task:', error);
+    else setTasks([...tasks, ...data]);
+  };
+
+  const updateTask = async (id: string, updates: any) => {
+    const { error } = await supabase
+      .from('tasks')
+      .update(updates)
+      .eq('id', id);
+    
+    if (error) console.error('Error updating task:', error);
+    else setTasks(tasks.map(t => t.id === id ? { ...t, ...updates } : t));
+  };
+
+  const deleteTask = async (id: string) => {
+    const { error } = await supabase
+      .from('tasks')
+      .delete()
+      .eq('id', id);
+    
+    if (error) console.error('Error deleting task:', error);
+    else setTasks(tasks.filter(t => t.id !== id));
+  };
+
+  const hasTasks = tasks.length > 0;
 
   return (
     <motion.div 
@@ -123,11 +178,13 @@ export default function TasksPage() {
         </div>
       </div>
 
-      {hasTasks ? (
+      {loading ? (
+        <div className="text-center p-10">Loading tasks...</div>
+      ) : hasTasks ? (
         <div className="flex flex-col lg:flex-row gap-6 overflow-x-auto pb-6">
-          <KanbanColumn title="Todo" status="Todo" tasks={tasks} selectedId={selectedId} onSelect={setSelectedId} />
-          <KanbanColumn title="In Progress" status="In Progress" tasks={tasks} selectedId={selectedId} onSelect={setSelectedId} />
-          <KanbanColumn title="Completed" status="Completed" tasks={tasks} selectedId={selectedId} onSelect={setSelectedId} />
+          <KanbanColumn title="Todo" status="todo" tasks={tasks} selectedId={selectedId} onSelect={setSelectedId} />
+          <KanbanColumn title="In Progress" status="in-progress" tasks={tasks} selectedId={selectedId} onSelect={setSelectedId} />
+          <KanbanColumn title="Completed" status="done" tasks={tasks} selectedId={selectedId} onSelect={setSelectedId} />
         </div>
       ) : (
         <div className="min-h-[420px] flex items-center justify-center">
