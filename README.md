@@ -1,4 +1,4 @@
-# Obsidian SaaS Admin
+# Workload Saas Admin
 
 Obsidian SaaS Admin is a modern SaaS dashboard built with Next.js, designed to replicate the structure and interaction patterns of production-grade admin systems.
 
