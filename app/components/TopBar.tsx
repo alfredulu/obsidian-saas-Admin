@@ -76,7 +76,7 @@ export const TopBar = () => {
 
         <div className="flex items-center gap-3 cursor-pointer group pt-1 ml-auto">
           <div className="text-right">
-            <p className="text-[11px] font-bold text-theme">WorkLoad Hq</p>
+            <p className="text-[11px] font-bold text-theme">WorkLoad HQ</p>
             <p className="text-[9px] text-muted-theme font-medium">
               Admin Account
             </p>
