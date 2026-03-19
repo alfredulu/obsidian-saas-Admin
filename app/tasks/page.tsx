@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
-import { Card, Badge, Avatar, EmptyState } from '@/app/components/UI';
+import { Card, Badge, Avatar, EmptyState, Modal } from '@/app/components/UI';
 import { Calendar, MoreVertical, Plus, ClipboardList } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/lib/supabaseClient';
@@ -107,6 +107,8 @@ export default function TasksPage() {
   const [tasks, setTasks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [newTaskTitle, setNewTaskTitle] = useState('');
 
   useEffect(() => {
     if (user) {
@@ -131,11 +133,10 @@ export default function TasksPage() {
   };
 
   const addTask = async () => {
-    const title = prompt('Enter task title:');
-    if (!title) return;
+    if (!newTaskTitle) return;
     const { data, error } = await supabase
       .from('tasks')
-      .insert([{ title, status: 'todo', user_id: user?.id }])
+      .insert([{ title: newTaskTitle, status: 'todo', user_id: user?.id }])
       .select();
     
     if (error) {
@@ -144,6 +145,8 @@ export default function TasksPage() {
     } else {
       setTasks([...tasks, ...(data || [])]);
       showToast('Task added successfully');
+      setIsCreateModalOpen(false);
+      setNewTaskTitle('');
     }
   };
 
@@ -195,7 +198,7 @@ export default function TasksPage() {
           <button onClick={() => showToast('Coming soon', 'info')} className="px-4 py-2 panel-surface-soft border border-theme rounded-xl text-xs font-bold hover:bg-[var(--color-hover)] transition-all">
             Filter
           </button>
-          <button onClick={addTask} className="px-4 py-2 bg-neon-pink text-theme rounded-xl text-sm font-bold neon-glow-pink hover:bg-neon-pink/80 transition-all flex items-center gap-2">
+          <button onClick={() => setIsCreateModalOpen(true)} className="px-4 py-2 bg-neon-pink text-theme rounded-xl text-sm font-bold neon-glow-pink hover:bg-neon-pink/80 transition-all flex items-center gap-2">
             <Plus size={18} />
             <span>New Task</span>
           </button>
@@ -217,11 +220,31 @@ export default function TasksPage() {
             title="No tasks yet"
             description="Create a task to start filling the board and keep your projects moving."
             actionLabel="Create First Task"
-            onAction={addTask}
+            onAction={() => setIsCreateModalOpen(true)}
             className="w-full"
           />
         </div>
       )}
+
+      <Modal isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)} title="Create New Task">
+        <div className="space-y-4">
+          <input 
+            type="text" 
+            placeholder="Task title"
+            value={newTaskTitle}
+            onChange={(e) => setNewTaskTitle(e.target.value)}
+            className="w-full panel-surface-soft border border-theme rounded-xl py-2.5 px-4 text-xs focus:outline-none focus:border-neon-pink/30 transition-all"
+          />
+          <div className="flex justify-end gap-3">
+            <button onClick={() => setIsCreateModalOpen(false)} className="px-4 py-2 panel-surface-soft border border-theme rounded-xl text-xs font-bold hover:bg-[var(--color-hover)] transition-all">
+              Cancel
+            </button>
+            <button onClick={addTask} className="px-4 py-2 bg-neon-pink text-theme rounded-xl text-xs font-bold neon-glow-pink hover:bg-neon-pink/80 transition-all">
+              Create Task
+            </button>
+          </div>
+        </div>
+      </Modal>
     </motion.div>
   );
 }

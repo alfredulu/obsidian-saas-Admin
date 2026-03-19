@@ -9,7 +9,9 @@ import {
   Tooltip
 } from 'recharts';
 import { productHighlights } from '@/lib/mockData';
-import { Calendar as CalendarIcon, MoreHorizontal, CheckCircle2, Clock } from 'lucide-react';
+import { Calendar as CalendarIcon, CheckCircle2, Clock } from 'lucide-react';
+import { MoreOptionsButton } from './UI';
+import { useToast } from './ToastContext';
 
 const useMounted = () => {
   const [mounted, setMounted] = useState(false);
@@ -19,11 +21,12 @@ const useMounted = () => {
 
 export const ProductHighlight = () => {
   const mounted = useMounted();
+  const { showToast } = useToast();
   return (
     <div className="glass-card p-5">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-xs font-bold uppercase tracking-widest text-muted-theme">Product Highlight</h3>
-        <MoreHorizontal size={14} className="text-muted-theme" />
+        <MoreOptionsButton onClick={() => showToast('More options coming soon!')} />
       </div>
       
       <div className="h-40 w-full relative">

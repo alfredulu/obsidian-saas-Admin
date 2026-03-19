@@ -30,29 +30,35 @@ const useMounted = () => {
   return mounted;
 };
 
-const StatCard = ({ icon: Icon, label, value, trend, color }: any) => (
-  <div className="glass-card p-6">
-    <div className="flex items-center justify-between mb-4">
-      <div className="flex items-center gap-3">
-        <div className={`p-2 rounded-lg bg-${color}/10 text-${color}`}>
-          <Icon size={20} />
+import { useToast } from "@/app/components/ToastContext";
+import { MoreOptionsButton } from "@/app/components/UI";
+// ... (rest of imports)
+const StatCard = ({ icon: Icon, label, value, trend, color }: any) => {
+  const { showToast } = useToast();
+  return (
+    <div className="glass-card p-6">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-3">
+          <div className={`p-2 rounded-lg bg-${color}/10 text-${color}`}>
+            <Icon size={20} />
+          </div>
+          <p className="text-muted-theme opacity-40 text-[10px] uppercase tracking-widest font-bold">
+            {label}
+          </p>
         </div>
-        <p className="text-muted-theme opacity-40 text-[10px] uppercase tracking-widest font-bold">
-          {label}
-        </p>
+        <MoreOptionsButton onClick={() => showToast('More options coming soon!')} />
       </div>
-      <MoreHorizontal size={16} className="text-muted-theme opacity-40" />
+      <div className="grid grid-rows-[auto_auto] gap-1 mt-2">
+        <h3 className="text-xl sm:text-2xl font-bold leading-tight whitespace-nowrap">
+          {value}
+        </h3>
+        <span className="text-emerald-400 text-[10px] font-bold text-right w-full">
+          {trend}
+        </span>
+      </div>
     </div>
-    <div className="grid grid-rows-[auto_auto] gap-1 mt-2">
-      <h3 className="text-xl sm:text-2xl font-bold leading-tight whitespace-nowrap">
-        {value}
-      </h3>
-      <span className="text-emerald-400 text-[10px] font-bold text-right w-full">
-        {trend}
-      </span>
-    </div>
-  </div>
-);
+  );
+};
 
 export default function AnalyticsPage() {
   const mounted = useMounted();
@@ -198,7 +204,7 @@ export default function AnalyticsPage() {
         <div className="glass-card p-6">
           <div className="flex items-center justify-between mb-8">
             <h3 className="text-lg font-bold">User Acquisition</h3>
-            <MoreHorizontal size={16} className="text-muted-theme opacity-40" />
+            <MoreOptionsButton onClick={() => showToast('More options coming soon!')} />
           </div>
           <div className="h-[300px] w-full">
             {mounted ? (

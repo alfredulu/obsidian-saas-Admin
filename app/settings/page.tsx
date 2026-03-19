@@ -2,7 +2,7 @@
 
 import React, { Suspense } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Card, Avatar } from '@/app/components/UI';
+import { Card, Avatar, ToggleSwitch } from '@/app/components/UI';
 import { usePathname, useRouter, useSearchParams, ReadonlyURLSearchParams } from 'next/navigation';
 import { User, Lock, Bell, Moon, Globe, Shield, Save } from 'lucide-react';
 import { useAuth } from '@/app/components/AuthContext';
@@ -45,6 +45,7 @@ function SettingsPageContent() {
   const activeSection = React.useMemo(() => getTabFromParam(searchParams, pathname) ?? 'profile', [searchParams, pathname]);
   
   const [fullName, setFullName] = useState(user?.user_metadata?.full_name || '');
+  const [avatarSeed, setAvatarSeed] = useState(user?.user_metadata?.avatar_seed || user?.email || 'Guest');
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -55,8 +56,13 @@ function SettingsPageContent() {
   };
 
   const handleSaveProfile = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      showToast('Auth session missing!', 'error');
+      return;
+    }
     const { error } = await supabase.auth.updateUser({
-      data: { full_name: fullName }
+      data: { full_name: fullName, avatar_seed: avatarSeed }
     });
     if (error) {
       console.error('Error updating profile:', error);
@@ -137,14 +143,15 @@ function SettingsPageContent() {
                 <Card title="Profile Settings" subtitle="This information will be displayed publicly.">
                   <div className="space-y-6">
                     <div className="flex items-center gap-6">
-                      <Avatar name={user?.email || 'Guest'} size="lg" />
-                      <div className="flex gap-2">
-                        <button onClick={() => showToast("Coming soon")} className="px-3 py-1.5 panel-surface-soft border border-theme rounded-lg text-[10px] font-bold uppercase tracking-widest hover:bg-[var(--color-hover)] transition-all">
-                          Change Avatar
-                        </button>
-                        <button onClick={() => showToast("Coming soon")} className="px-3 py-1.5 bg-red-500/10 text-red-500 rounded-lg text-[10px] font-bold uppercase tracking-widest hover:bg-red-500/20 transition-all">
-                          Remove
-                        </button>
+                      <Avatar name={avatarSeed} size="lg" />
+                      <div className="flex-1 space-y-2">
+                        <label className="text-[10px] uppercase tracking-widest text-muted-theme font-bold px-1">Avatar Seed</label>
+                        <input 
+                          type="text" 
+                          value={avatarSeed}
+                          onChange={(e) => setAvatarSeed(e.target.value)}
+                          className="w-full panel-surface-soft border border-theme rounded-xl py-2.5 px-4 text-xs focus:outline-none focus:border-neon-pink/30 transition-all"
+                        />
                       </div>
                     </div>
 
@@ -247,18 +254,14 @@ function SettingsPageContent() {
                         <h4 className="text-xs font-bold">Email Notifications</h4>
                         <p className="text-[10px] text-muted-theme opacity-40">Receive weekly activity reports.</p>
                       </div>
-                      <div className="w-10 h-5 bg-neon-pink rounded-full relative cursor-pointer neon-glow-pink">
-                        <div className="absolute right-1 top-1 w-3 h-3 bg-theme rounded-full" />
-                      </div>
+                      <ToggleSwitch checked={true} onChange={() => {}} />
                     </div>
                     <div className="flex items-center justify-between">
                       <div>
                         <h4 className="text-xs font-bold">Push Notifications</h4>
                         <p className="text-[10px] text-muted-theme opacity-40">Get real-time alerts on your device.</p>
                       </div>
-                      <div className="w-10 h-5 panel-surface-strong rounded-full relative cursor-pointer">
-                        <div className="absolute left-1 top-1 w-3 h-3 bg-muted-theme opacity-40 rounded-full" />
-                      </div>
+                      <ToggleSwitch checked={false} onChange={() => {}} />
                     </div>
                   </div>
                 </Card>
@@ -280,18 +283,14 @@ function SettingsPageContent() {
                         <h4 className="text-xs font-bold">Dark Mode</h4>
                         <p className="text-[10px] text-muted-theme opacity-40">Use the Obsidian Noir theme.</p>
                       </div>
-                      <div className="w-10 h-5 bg-neon-pink rounded-full relative cursor-pointer neon-glow-pink">
-                        <div className="absolute right-1 top-1 w-3 h-3 bg-theme rounded-full" />
-                      </div>
+                      <ToggleSwitch checked={true} onChange={() => {}} />
                     </div>
                     <div className="flex items-center justify-between">
                       <div>
                         <h4 className="text-xs font-bold">Compact Mode</h4>
                         <p className="text-[10px] text-muted-theme opacity-40">Reduce spacing in tables and lists.</p>
                       </div>
-                      <div className="w-10 h-5 panel-surface-strong rounded-full relative cursor-pointer">
-                        <div className="absolute left-1 top-1 w-3 h-3 bg-muted-theme opacity-40 rounded-full" />
-                      </div>
+                      <ToggleSwitch checked={false} onChange={() => {}} />
                     </div>
                   </div>
                 </Card>

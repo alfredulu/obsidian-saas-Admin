@@ -192,6 +192,30 @@ export const Skeleton = ({ className, variant = 'default' }: any) => {
   );
 };
 
+// --- ToggleSwitch ---
+export const ToggleSwitch = ({ checked, onChange }: { checked: boolean; onChange: (checked: boolean) => void }) => (
+  <div
+    onClick={() => onChange(!checked)}
+    className={`w-10 h-5 rounded-full relative cursor-pointer transition-colors duration-300 ${
+      checked ? "bg-neon-pink neon-glow-pink" : "panel-surface-strong"
+    }`}
+  >
+    <div
+      className={`absolute top-1 w-3 h-3 rounded-full transition-all duration-300 ${
+        checked ? "right-1 bg-theme" : "left-1 bg-muted-theme opacity-40"
+      }`}
+    />
+  </div>
+);
+
+// --- MoreOptionsButton ---
+import { MoreHorizontal } from "lucide-react";
+export const MoreOptionsButton = ({ onClick }: { onClick: () => void }) => (
+  <button onClick={onClick} className="p-1 rounded-lg hover:bg-[var(--color-hover)] transition-colors">
+    <MoreHorizontal size={16} className="text-muted-theme opacity-40" />
+  </button>
+);
+
 type EmptyStateProps = {
   icon?: ReactNode;
   title: string;
