@@ -5,6 +5,10 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Card, Avatar } from '@/app/components/UI';
 import { usePathname, useRouter, useSearchParams, ReadonlyURLSearchParams } from 'next/navigation';
 import { User, Lock, Bell, Moon, Globe, Shield, Save } from 'lucide-react';
+import { useAuth } from '@/app/components/AuthContext';
+import { supabase } from '@/lib/supabaseClient';
+import { useToast } from '@/app/components/ToastContext';
+import { useState } from 'react';
 
 const navItems = [
   { id: 'profile', icon: User, label: 'Profile' },
@@ -32,18 +36,60 @@ export default function SettingsPage() {
   );
 }
 
-import { useAuth } from '@/app/components/AuthContext';
-
 function SettingsPageContent() {
   const { user } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
+  const { showToast } = useToast();
   const activeSection = React.useMemo(() => getTabFromParam(searchParams, pathname) ?? 'profile', [searchParams, pathname]);
+  
+  const [fullName, setFullName] = useState(user?.user_metadata?.full_name || '');
+  const [password, setPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleTabClick = (id: string) => {
     if (activeSection === id) return;
     router.replace(`/settings?tab=${id}`);
+  };
+
+  const handleSaveProfile = async () => {
+    const { error } = await supabase.auth.updateUser({
+      data: { full_name: fullName }
+    });
+    if (error) {
+      console.error('Error updating profile:', error);
+      showToast('Failed to update profile', 'error');
+    } else {
+      showToast('Profile updated successfully');
+    }
+  };
+
+  const handleSaveAccount = async () => {
+    if (newPassword !== confirmPassword) {
+      showToast('Passwords do not match', 'error');
+      return;
+    }
+    const { error } = await supabase.auth.updateUser({
+      password: newPassword
+    });
+    if (error) {
+      console.error('Error updating password:', error);
+      showToast('Failed to update password', 'error');
+    } else {
+      showToast('Password updated successfully');
+      setPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
+    }
+  };
+
+  const handleSaveAll = async () => {
+    await handleSaveProfile();
+    if (newPassword) {
+      await handleSaveAccount();
+    }
   };
 
   return (
@@ -93,10 +139,10 @@ function SettingsPageContent() {
                     <div className="flex items-center gap-6">
                       <Avatar name={user?.email || 'Guest'} size="lg" />
                       <div className="flex gap-2">
-                        <button className="px-3 py-1.5 panel-surface-soft border border-theme rounded-lg text-[10px] font-bold uppercase tracking-widest hover:bg-[var(--color-hover)] transition-all">
+                        <button onClick={() => showToast("Coming soon")} className="px-3 py-1.5 panel-surface-soft border border-theme rounded-lg text-[10px] font-bold uppercase tracking-widest hover:bg-[var(--color-hover)] transition-all">
                           Change Avatar
                         </button>
-                        <button className="px-3 py-1.5 bg-red-500/10 text-red-500 rounded-lg text-[10px] font-bold uppercase tracking-widest hover:bg-red-500/20 transition-all">
+                        <button onClick={() => showToast("Coming soon")} className="px-3 py-1.5 bg-red-500/10 text-red-500 rounded-lg text-[10px] font-bold uppercase tracking-widest hover:bg-red-500/20 transition-all">
                           Remove
                         </button>
                       </div>
@@ -107,7 +153,8 @@ function SettingsPageContent() {
                         <label className="text-[10px] uppercase tracking-widest text-muted-theme font-bold px-1">Full Name</label>
                         <input 
                           type="text" 
-                          defaultValue={user?.email?.split('@')[0] || 'User'}
+                          value={fullName}
+                          onChange={(e) => setFullName(e.target.value)}
                           className="w-full panel-surface-soft border border-theme rounded-xl py-2.5 px-4 text-xs focus:outline-none focus:border-neon-pink/30 transition-all"
                         />
                       </div>
@@ -120,6 +167,12 @@ function SettingsPageContent() {
                           className="w-full panel-surface-soft border border-theme rounded-xl py-2.5 px-4 text-xs focus:outline-none focus:border-neon-pink/30 transition-all"
                         />
                       </div>
+                    </div>
+                    <div className="flex justify-end">
+                      <button onClick={handleSaveProfile} className="flex items-center gap-2 px-6 py-2.5 bg-neon-pink text-theme rounded-xl text-xs font-bold neon-glow-pink hover:bg-neon-pink/80 transition-all">
+                        <Save size={16} />
+                        <span>Save Profile</span>
+                      </button>
                     </div>
                   </div>
                 </Card>
@@ -142,6 +195,8 @@ function SettingsPageContent() {
                         <input 
                           type="password" 
                           placeholder="••••••••"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
                           className="w-full panel-surface-soft border border-theme rounded-xl py-2.5 px-4 text-xs focus:outline-none focus:border-neon-pink/30 transition-all"
                         />
                       </div>
@@ -150,6 +205,8 @@ function SettingsPageContent() {
                           <label className="text-[10px] uppercase tracking-widest text-muted-theme font-bold px-1">New Password</label>
                           <input 
                             type="password" 
+                            value={newPassword}
+                            onChange={(e) => setNewPassword(e.target.value)}
                             className="w-full panel-surface-soft border border-theme rounded-xl py-2.5 px-4 text-xs focus:outline-none focus:border-neon-pink/30 transition-all"
                           />
                         </div>
@@ -157,10 +214,18 @@ function SettingsPageContent() {
                           <label className="text-[10px] uppercase tracking-widest text-muted-theme font-bold px-1">Confirm New Password</label>
                           <input 
                             type="password" 
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
                             className="w-full panel-surface-soft border border-theme rounded-xl py-2.5 px-4 text-xs focus:outline-none focus:border-neon-pink/30 transition-all"
                           />
                         </div>
                       </div>
+                    </div>
+                    <div className="flex justify-end">
+                      <button onClick={handleSaveAccount} className="flex items-center gap-2 px-6 py-2.5 bg-neon-pink text-theme rounded-xl text-xs font-bold neon-glow-pink hover:bg-neon-pink/80 transition-all">
+                        <Save size={16} />
+                        <span>Save Password</span>
+                      </button>
                     </div>
                   </div>
                 </Card>
@@ -251,10 +316,10 @@ function SettingsPageContent() {
           </AnimatePresence>
 
           <div className="flex justify-end gap-3">
-            <button className="px-6 py-2.5 panel-surface-soft border border-theme rounded-xl text-xs font-bold hover:bg-[var(--color-hover)] transition-all">
+            <button onClick={() => router.refresh()} className="px-6 py-2.5 panel-surface-soft border border-theme rounded-xl text-xs font-bold hover:bg-[var(--color-hover)] transition-all">
               Discard Changes
             </button>
-            <button className="flex items-center gap-2 px-6 py-2.5 bg-neon-pink text-theme rounded-xl text-xs font-bold neon-glow-pink hover:bg-neon-pink/80 transition-all">
+            <button onClick={handleSaveAll} className="flex items-center gap-2 px-6 py-2.5 bg-neon-pink text-theme rounded-xl text-xs font-bold neon-glow-pink hover:bg-neon-pink/80 transition-all">
               <Save size={16} />
               <span>Save Settings</span>
             </button>

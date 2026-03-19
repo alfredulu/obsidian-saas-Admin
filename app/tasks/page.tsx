@@ -7,6 +7,7 @@ import { Calendar, MoreVertical, Plus, ClipboardList } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/lib/supabaseClient';
 import { useAuth } from '@/app/components/AuthContext';
+import { useToast } from '@/app/components/ToastContext';
 
 const PriorityBadge = ({ priority }: { priority: string }) => {
   switch (priority) {
@@ -102,6 +103,7 @@ const KanbanColumn = ({ title, status, tasks, selectedId, onSelect, onUpdateStat
 
 export default function TasksPage() {
   const { user } = useAuth();
+  const { showToast } = useToast();
   const [tasks, setTasks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -121,6 +123,7 @@ export default function TasksPage() {
     
     if (error) {
       console.error('Error fetching tasks:', error);
+      showToast('Failed to fetch tasks', 'error');
     } else {
       setTasks(data || []);
     }
@@ -135,8 +138,13 @@ export default function TasksPage() {
       .insert([{ title, status: 'todo', user_id: user?.id }])
       .select();
     
-    if (error) console.error('Error adding task:', error);
-    else setTasks([...tasks, ...data]);
+    if (error) {
+      console.error('Error adding task:', error);
+      showToast('Failed to add task', 'error');
+    } else {
+      setTasks([...tasks, ...(data || [])]);
+      showToast('Task added successfully');
+    }
   };
 
   const updateTaskStatus = async (id: string, status: string) => {
@@ -145,8 +153,13 @@ export default function TasksPage() {
       .update({ status })
       .eq('id', id);
     
-    if (error) console.error('Error updating task:', error);
-    else setTasks(tasks.map(t => t.id === id ? { ...t, status } : t));
+    if (error) {
+      console.error('Error updating task:', error);
+      showToast('Failed to update task', 'error');
+    } else {
+      setTasks(tasks.map(t => t.id === id ? { ...t, status } : t));
+      showToast('Task updated');
+    }
   };
 
   const deleteTask = async (id: string) => {
@@ -155,8 +168,13 @@ export default function TasksPage() {
       .delete()
       .eq('id', id);
     
-    if (error) console.error('Error deleting task:', error);
-    else setTasks(tasks.filter(t => t.id !== id));
+    if (error) {
+      console.error('Error deleting task:', error);
+      showToast('Failed to delete task', 'error');
+    } else {
+      setTasks(tasks.filter(t => t.id !== id));
+      showToast('Task deleted');
+    }
   };
 
   const hasTasks = tasks.length > 0;
@@ -174,10 +192,10 @@ export default function TasksPage() {
           <p className="text-sm text-muted-theme">Manage your projects and track progress across the team.</p>
         </div>
         <div className="flex items-center gap-3">
-          <button className="px-4 py-2 panel-surface-soft border border-theme rounded-xl text-xs font-bold hover:bg-[var(--color-hover)] transition-all">
+          <button onClick={() => showToast('Coming soon', 'info')} className="px-4 py-2 panel-surface-soft border border-theme rounded-xl text-xs font-bold hover:bg-[var(--color-hover)] transition-all">
             Filter
           </button>
-          <button className="px-4 py-2 bg-neon-pink text-theme rounded-xl text-sm font-bold neon-glow-pink hover:bg-neon-pink/80 transition-all flex items-center gap-2">
+          <button onClick={addTask} className="px-4 py-2 bg-neon-pink text-theme rounded-xl text-sm font-bold neon-glow-pink hover:bg-neon-pink/80 transition-all flex items-center gap-2">
             <Plus size={18} />
             <span>New Task</span>
           </button>
@@ -199,7 +217,7 @@ export default function TasksPage() {
             title="No tasks yet"
             description="Create a task to start filling the board and keep your projects moving."
             actionLabel="Create First Task"
-            onAction={() => {}}
+            onAction={addTask}
             className="w-full"
           />
         </div>
