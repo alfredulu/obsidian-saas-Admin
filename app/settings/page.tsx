@@ -32,7 +32,10 @@ export default function SettingsPage() {
   );
 }
 
+import { useAuth } from '@/app/components/AuthContext';
+
 function SettingsPageContent() {
+  const { user } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -88,7 +91,7 @@ function SettingsPageContent() {
                 <Card title="Profile Settings" subtitle="This information will be displayed publicly.">
                   <div className="space-y-6">
                     <div className="flex items-center gap-6">
-                      <Avatar name="Cody Fish" size="lg" />
+                      <Avatar name={user?.email || 'Guest'} size="lg" />
                       <div className="flex gap-2">
                         <button className="px-3 py-1.5 panel-surface-soft border border-theme rounded-lg text-[10px] font-bold uppercase tracking-widest hover:bg-[var(--color-hover)] transition-all">
                           Change Avatar
@@ -104,7 +107,7 @@ function SettingsPageContent() {
                         <label className="text-[10px] uppercase tracking-widest text-muted-theme font-bold px-1">Full Name</label>
                         <input 
                           type="text" 
-                          defaultValue="Cody Fish"
+                          defaultValue={user?.email?.split('@')[0] || 'User'}
                           className="w-full panel-surface-soft border border-theme rounded-xl py-2.5 px-4 text-xs focus:outline-none focus:border-neon-pink/30 transition-all"
                         />
                       </div>
@@ -112,7 +115,8 @@ function SettingsPageContent() {
                         <label className="text-[10px] uppercase tracking-widest text-muted-theme font-bold px-1">Email Address</label>
                         <input 
                           type="email" 
-                          defaultValue="codyfish@gmail.com"
+                          defaultValue={user?.email || ''}
+                          readOnly
                           className="w-full panel-surface-soft border border-theme rounded-xl py-2.5 px-4 text-xs focus:outline-none focus:border-neon-pink/30 transition-all"
                         />
                       </div>

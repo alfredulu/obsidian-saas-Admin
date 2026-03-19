@@ -21,7 +21,7 @@ const PriorityBadge = ({ priority }: { priority: string }) => {
   }
 };
 
-const TaskCard = ({ task, isSelected, onSelect }: { task: any, isSelected: boolean, onSelect: () => void }) => (
+const TaskCard = ({ task, isSelected, onSelect, onUpdateStatus, onDelete }: { task: any, isSelected: boolean, onSelect: () => void, onUpdateStatus: (status: string) => void, onDelete: () => void }) => (
   <motion.div
     animate={{ 
       y: isSelected ? -4 : 0, 
@@ -38,9 +38,14 @@ const TaskCard = ({ task, isSelected, onSelect }: { task: any, isSelected: boole
     )}>
       <div className="flex justify-between items-start mb-3">
         <PriorityBadge priority={task.priority || 'Medium'} />
-        <button className="text-muted-theme opacity-40 hover:text-theme transition-colors">
-          <MoreVertical size={14} />
-        </button>
+        <div className="flex gap-1">
+          <button onClick={(e) => { e.stopPropagation(); onUpdateStatus(task.status === 'todo' ? 'in-progress' : 'done'); }} className="text-muted-theme hover:text-theme transition-colors">
+            <Plus size={14} />
+          </button>
+          <button onClick={(e) => { e.stopPropagation(); onDelete(); }} className="text-muted-theme hover:text-theme transition-colors">
+            <MoreVertical size={14} />
+          </button>
+        </div>
       </div>
       <h4 className="text-sm font-bold mb-2">{task.title}</h4>
       <p className="text-[11px] text-muted-theme mb-4 line-clamp-2">{task.description}</p>
@@ -59,7 +64,7 @@ const TaskCard = ({ task, isSelected, onSelect }: { task: any, isSelected: boole
   </motion.div>
 );
 
-const KanbanColumn = ({ title, status, tasks, selectedId, onSelect }: { title: string, status: string, tasks: any[], selectedId: string | null, onSelect: (id: string) => void }) => {
+const KanbanColumn = ({ title, status, tasks, selectedId, onSelect, onUpdateStatus, onDelete }: { title: string, status: string, tasks: any[], selectedId: string | null, onSelect: (id: string) => void, onUpdateStatus: (id: string, status: string) => void, onDelete: (id: string) => void }) => {
   const filteredTasks = tasks.filter(t => t.status === status.toLowerCase());
   
   return (
@@ -71,9 +76,6 @@ const KanbanColumn = ({ title, status, tasks, selectedId, onSelect }: { title: s
             {filteredTasks.length}
           </span>
         </div>
-        <button className="p-1 rounded-md hover:bg-[var(--color-hover)] text-muted-theme hover:text-theme transition-all">
-          <Plus size={14} />
-        </button>
       </div>
       
       <div className="min-h-[500px] rounded-2xl panel-surface-soft p-2 border border-theme">
@@ -83,6 +85,8 @@ const KanbanColumn = ({ title, status, tasks, selectedId, onSelect }: { title: s
             task={task} 
             isSelected={selectedId === task.id}
             onSelect={() => onSelect(task.id)}
+            onUpdateStatus={(newStatus) => onUpdateStatus(task.id, newStatus)}
+            onDelete={() => onDelete(task.id)}
           />
         ))}
         
@@ -123,24 +127,26 @@ export default function TasksPage() {
     setLoading(false);
   };
 
-  const addTask = async (title: string, description: string, status: string) => {
+  const addTask = async () => {
+    const title = prompt('Enter task title:');
+    if (!title) return;
     const { data, error } = await supabase
       .from('tasks')
-      .insert([{ title, description, status, user_id: user?.id }])
+      .insert([{ title, status: 'todo', user_id: user?.id }])
       .select();
     
     if (error) console.error('Error adding task:', error);
     else setTasks([...tasks, ...data]);
   };
 
-  const updateTask = async (id: string, updates: any) => {
+  const updateTaskStatus = async (id: string, status: string) => {
     const { error } = await supabase
       .from('tasks')
-      .update(updates)
+      .update({ status })
       .eq('id', id);
     
     if (error) console.error('Error updating task:', error);
-    else setTasks(tasks.map(t => t.id === id ? { ...t, ...updates } : t));
+    else setTasks(tasks.map(t => t.id === id ? { ...t, status } : t));
   };
 
   const deleteTask = async (id: string) => {
@@ -182,9 +188,9 @@ export default function TasksPage() {
         <div className="text-center p-10">Loading tasks...</div>
       ) : hasTasks ? (
         <div className="flex flex-col lg:flex-row gap-6 overflow-x-auto pb-6">
-          <KanbanColumn title="Todo" status="todo" tasks={tasks} selectedId={selectedId} onSelect={setSelectedId} />
-          <KanbanColumn title="In Progress" status="in-progress" tasks={tasks} selectedId={selectedId} onSelect={setSelectedId} />
-          <KanbanColumn title="Completed" status="done" tasks={tasks} selectedId={selectedId} onSelect={setSelectedId} />
+          <KanbanColumn title="Todo" status="todo" tasks={tasks} selectedId={selectedId} onSelect={setSelectedId} onUpdateStatus={updateTaskStatus} onDelete={deleteTask} />
+          <KanbanColumn title="In Progress" status="in-progress" tasks={tasks} selectedId={selectedId} onSelect={setSelectedId} onUpdateStatus={updateTaskStatus} onDelete={deleteTask} />
+          <KanbanColumn title="Completed" status="done" tasks={tasks} selectedId={selectedId} onSelect={setSelectedId} onUpdateStatus={updateTaskStatus} onDelete={deleteTask} />
         </div>
       ) : (
         <div className="min-h-[420px] flex items-center justify-center">
