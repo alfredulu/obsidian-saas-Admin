@@ -6,6 +6,7 @@ import { Card, Avatar, ToggleSwitch } from '@/app/components/UI';
 import { usePathname, useRouter, useSearchParams, ReadonlyURLSearchParams } from 'next/navigation';
 import { User, Lock, Bell, Moon, Globe, Shield, Save } from 'lucide-react';
 import { useAuth } from '@/app/components/AuthContext';
+import { useTheme } from '@/app/components/ThemeProvider';
 import { supabase } from '@/lib/supabaseClient';
 import { useToast } from '@/app/components/ToastContext';
 import { useState } from 'react';
@@ -49,6 +50,26 @@ function SettingsPageContent() {
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const { theme, toggleTheme } = useTheme();
+  const [darkMode, setDarkMode] = useState(theme === 'dark');
+  const [compactMode, setCompactMode] = useState(false);
+  const [emailNotifications, setEmailNotifications] = useState(true);
+  const [pushNotifications, setPushNotifications] = useState(false);
+
+  const handleDarkModeToggle = () => {
+    setDarkMode(!darkMode);
+    toggleTheme();
+  };
+
+  const handleCompactModeToggle = () => {
+    const newCompactMode = !compactMode;
+    setCompactMode(newCompactMode);
+    if (newCompactMode) {
+      document.documentElement.classList.add('compact');
+    } else {
+      document.documentElement.classList.remove('compact');
+    }
+  };
 
   const handleTabClick = (id: string) => {
     if (activeSection === id) return;
@@ -254,14 +275,14 @@ function SettingsPageContent() {
                         <h4 className="text-xs font-bold">Email Notifications</h4>
                         <p className="text-[10px] text-muted-theme opacity-40">Receive weekly activity reports.</p>
                       </div>
-                      <ToggleSwitch checked={true} onChange={() => {}} />
+                      <ToggleSwitch checked={emailNotifications} onChange={() => showToast('Coming soon!')} />
                     </div>
                     <div className="flex items-center justify-between">
                       <div>
                         <h4 className="text-xs font-bold">Push Notifications</h4>
                         <p className="text-[10px] text-muted-theme opacity-40">Get real-time alerts on your device.</p>
                       </div>
-                      <ToggleSwitch checked={false} onChange={() => {}} />
+                      <ToggleSwitch checked={pushNotifications} onChange={() => showToast('Coming soon!')} />
                     </div>
                   </div>
                 </Card>
@@ -283,14 +304,14 @@ function SettingsPageContent() {
                         <h4 className="text-xs font-bold">Dark Mode</h4>
                         <p className="text-[10px] text-muted-theme opacity-40">Use the Obsidian Noir theme.</p>
                       </div>
-                      <ToggleSwitch checked={true} onChange={() => {}} />
+                      <ToggleSwitch checked={darkMode} onChange={handleDarkModeToggle} />
                     </div>
                     <div className="flex items-center justify-between">
                       <div>
                         <h4 className="text-xs font-bold">Compact Mode</h4>
                         <p className="text-[10px] text-muted-theme opacity-40">Reduce spacing in tables and lists.</p>
                       </div>
-                      <ToggleSwitch checked={false} onChange={() => {}} />
+                      <ToggleSwitch checked={compactMode} onChange={handleCompactModeToggle} />
                     </div>
                   </div>
                 </Card>

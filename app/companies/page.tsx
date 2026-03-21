@@ -12,7 +12,9 @@ import {
   TableCell,
   EmptyState,
   Skeleton,
+  MoreOptionsButton,
 } from '@/app/components/UI';
+import { useToast } from '@/app/components/ToastContext';
 
 type CompanySortKey = 'name' | 'industry' | 'employees' | 'plan';
 
@@ -20,6 +22,7 @@ export default function CompaniesPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [sortKey, setSortKey] = useState<CompanySortKey>('name');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+  const { showToast } = useToast();
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 1300);
@@ -196,9 +199,7 @@ export default function CompaniesPage() {
                         <button className="p-2 rounded-lg panel-surface-soft text-muted-theme hover:text-theme hover:bg-[var(--color-hover)] transition-all">
                           <ExternalLink size={14} />
                         </button>
-                        <button className="p-2 rounded-lg panel-surface-soft text-muted-theme hover:text-theme hover:bg-[var(--color-hover)] transition-all">
-                          <MoreHorizontal size={14} />
-                        </button>
+                        <MoreOptionsButton onClick={() => showToast('Coming soon!')} />
                       </div>
                     </TableCell>
                   </TableRow>

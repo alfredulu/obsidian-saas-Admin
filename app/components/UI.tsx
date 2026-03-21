@@ -196,13 +196,13 @@ export const Skeleton = ({ className, variant = 'default' }: any) => {
 export const ToggleSwitch = ({ checked, onChange }: { checked: boolean; onChange: (checked: boolean) => void }) => (
   <div
     onClick={() => onChange(!checked)}
-    className={`w-10 h-5 rounded-full relative cursor-pointer transition-colors duration-300 ${
-      checked ? "bg-neon-pink neon-glow-pink" : "panel-surface-strong"
+    className={`w-12 h-6 rounded-full relative cursor-pointer transition-colors duration-300 flex items-center p-1 ${
+      checked ? "bg-neon-pink neon-glow-pink" : "bg-muted-theme/20"
     }`}
   >
     <div
-      className={`absolute top-1 w-3 h-3 rounded-full transition-all duration-300 ${
-        checked ? "right-1 bg-theme" : "left-1 bg-muted-theme opacity-40"
+      className={`w-4 h-4 rounded-full bg-white shadow-sm transition-all duration-300 ${
+        checked ? "translate-x-6" : "translate-x-0"
       }`}
     />
   </div>

@@ -140,6 +140,15 @@
   }
 }
 
+.compact {
+  --spacing-multiplier: 0.75;
+}
+
+.compact table td, .compact table th {
+  padding-top: calc(0.5rem * var(--spacing-multiplier));
+  padding-bottom: calc(0.5rem * var(--spacing-multiplier));
+}
+
 .light [class*="text-white"] {
   color: var(--color-muted) !important;
 }

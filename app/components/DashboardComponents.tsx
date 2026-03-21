@@ -29,7 +29,9 @@ import {
   TableCell,
   EmptyState,
   Skeleton,
+  MoreOptionsButton,
 } from "./UI";
+import { useToast } from "./ToastContext";
 import { useAnimatedNumber } from "../hooks/useAnimatedNumber";
 
 const useMounted = () => {
@@ -250,6 +252,7 @@ export const TopPeopleTable = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [sortKey, setSortKey] = useState<TopPeopleSortKey>("name");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+  const { showToast } = useToast();
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 900);
@@ -349,9 +352,7 @@ export const TopPeopleTable = () => {
       className="p-6"
       title="Top People"
       action={
-        <button className="text-[10px] font-bold text-neon-pink hover:underline">
-          View All
-        </button>
+        <MoreOptionsButton onClick={() => showToast('Coming soon!')} />
       }
     >
       {shouldShowEmpty ? (

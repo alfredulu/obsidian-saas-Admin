@@ -62,6 +62,7 @@ const StatCard = ({ icon: Icon, label, value, trend, color }: any) => {
 
 export default function AnalyticsPage() {
   const mounted = useMounted();
+  const { showToast } = useToast();
 
   return (
     <motion.div

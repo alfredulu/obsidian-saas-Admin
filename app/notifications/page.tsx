@@ -15,7 +15,9 @@ import {
   Trash2
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/app/components/ToastContext';
 import { Card } from '@/app/components/UI';
+import { MoreOptionsButton } from '@/app/components/UI';
 
 const getIcon = (type: string) => {
   switch (type) {
@@ -30,6 +32,7 @@ const getIcon = (type: string) => {
 
 export default function NotificationsPage() {
   const [selectedId, setSelectedId] = React.useState<number | null>(null);
+  const { showToast } = useToast();
 
   return (
     <motion.div 
@@ -44,13 +47,11 @@ export default function NotificationsPage() {
           <p className="text-sm text-muted-theme">Stay updated with the latest activity on your platform.</p>
         </div>
         <div className="flex items-center gap-2">
-          <button className="flex items-center gap-2 px-3 py-2 panel-surface-soft border border-theme rounded-xl text-xs font-medium hover:bg-[var(--color-hover)] transition-all">
+          <button className="flex items-center gap-2 px-3 py-2 panel-surface-soft border border-theme rounded-xl text-xs font-medium hover:bg-[var(--color-hover)] transition-all" onClick={() => showToast('Coming soon!')}>
             <CheckCheck size={14} />
             <span>Mark all as read</span>
           </button>
-          <button className="p-2 panel-surface-soft border border-theme text-muted-theme hover:text-theme transition-all">
-            <MoreHorizontal size={16} />
-          </button>
+          <MoreOptionsButton onClick={() => showToast('Coming soon!')} />
         </div>
       </div>
 
