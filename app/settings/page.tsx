@@ -2,7 +2,8 @@
 
 import React, { Suspense } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Card, Avatar, ToggleSwitch } from '@/app/components/UI';
+import { Card, Avatar } from '@/app/components/UI';
+import { ToggleSwitch } from '@/app/components/ToggleSwitch';
 import { usePathname, useRouter, useSearchParams, ReadonlyURLSearchParams } from 'next/navigation';
 import { User, Lock, Bell, Moon, Globe, Shield, Save } from 'lucide-react';
 import { useAuth } from '@/app/components/AuthContext';

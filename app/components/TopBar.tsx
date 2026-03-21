@@ -20,6 +20,8 @@ import { useCommandPalette } from "./CommandPaletteContext";
 import { useTheme } from "./ThemeProvider";
 import { useAuth } from "./AuthContext";
 import { useToast } from "./ToastContext";
+import { MoreOptionsButton } from "./MoreOptionsButton";
+import { ToggleSwitch } from "./ToggleSwitch";
 import { Avatar } from "./UI";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
@@ -116,7 +118,7 @@ export const TopBar = () => {
                 </p>
               )}
             </div>
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-neon-pink to-neon-purple p-[1px]" onClick={() => router.push('/settings')}>
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-neon-pink to-neon-purple p-[1px]">
               <div className="w-full h-full rounded-[7px] panel-surface flex items-center justify-center overflow-hidden">
                 <Avatar name={user?.user_metadata?.avatar_seed || user?.email || 'Guest'} size="sm" />
               </div>
@@ -128,7 +130,7 @@ export const TopBar = () => {
           </div>
 
           {isDropdownOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-obsidian border border-theme rounded-xl shadow-lg z-50 p-1">
+            <div className="absolute right-0 mt-2 w-48 bg-obsidian border border-theme rounded-xl shadow-xl z-[100] p-1 animate-in fade-in zoom-in duration-200">
               <button onClick={() => { router.push('/settings'); setIsDropdownOpen(false); }} className="flex w-full items-center gap-2 px-3 py-2 text-xs font-medium text-muted-theme hover:text-theme hover:bg-[var(--color-hover)] rounded-lg transition-colors">
                 <UserIcon size={14} /> Profile
               </button>

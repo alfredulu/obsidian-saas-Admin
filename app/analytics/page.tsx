@@ -31,7 +31,8 @@ const useMounted = () => {
 };
 
 import { useToast } from "@/app/components/ToastContext";
-import { MoreOptionsButton } from "@/app/components/UI";
+import { MoreOptionsButton } from "@/app/components/MoreOptionsButton";
+import { Avatar } from "@/app/components/UI";
 // ... (rest of imports)
 const StatCard = ({ icon: Icon, label, value, trend, color }: any) => {
   const { showToast } = useToast();

@@ -17,7 +17,7 @@ import {
 import { cn } from '@/lib/utils';
 import { useToast } from '@/app/components/ToastContext';
 import { Card } from '@/app/components/UI';
-import { MoreOptionsButton } from '@/app/components/UI';
+import { MoreOptionsButton } from '@/app/components/MoreOptionsButton';
 
 const getIcon = (type: string) => {
   switch (type) {

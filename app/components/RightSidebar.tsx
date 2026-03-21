@@ -10,7 +10,7 @@ import {
 } from 'recharts';
 import { productHighlights } from '@/lib/mockData';
 import { Calendar as CalendarIcon, CheckCircle2, Clock } from 'lucide-react';
-import { MoreOptionsButton } from './UI';
+import { MoreOptionsButton } from './MoreOptionsButton';
 import { useToast } from './ToastContext';
 
 const useMounted = () => {

@@ -1,9 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { Check, Zap, Shield, Globe, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ToggleSwitch } from '@/app/components/ToggleSwitch';
 
 const PricingCard = ({ title, price, description, features, isPopular, color }: any) => (
   <div className={cn(
@@ -51,6 +52,8 @@ const PricingCard = ({ title, price, description, features, isPopular, color }: 
 );
 
 export default function SubscriptionPage() {
+  const [isYearly, setIsYearly] = useState(false);
+
   return (
     <motion.div 
       initial={{ opacity: 0, scale: 0.95 }}
@@ -66,11 +69,9 @@ export default function SubscriptionPage() {
         </p>
         
         <div className="flex items-center justify-center gap-4 mt-10">
-          <span className="text-sm font-medium">Monthly</span>
-          <button className="w-12 h-6 panel-surface-strong rounded-full relative p-1">
-            <div className="w-4 h-4 bg-neon-pink rounded-full neon-glow-pink" />
-          </button>
-          <span className="text-sm font-medium text-muted-theme opacity-40">Yearly <span className="text-neon-cyan text-[10px] font-bold ml-1">SAVE 20%</span></span>
+          <span className={cn("text-sm font-medium", !isYearly ? "text-theme" : "text-muted-theme opacity-40")}>Monthly</span>
+          <ToggleSwitch checked={isYearly} onChange={setIsYearly} />
+          <span className={cn("text-sm font-medium", isYearly ? "text-theme" : "text-muted-theme opacity-40")}>Yearly <span className="text-neon-cyan text-[10px] font-bold ml-1">SAVE 20%</span></span>
         </div>
       </div>
 

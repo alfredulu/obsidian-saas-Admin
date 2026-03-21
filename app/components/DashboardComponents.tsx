@@ -29,8 +29,8 @@ import {
   TableCell,
   EmptyState,
   Skeleton,
-  MoreOptionsButton,
 } from "./UI";
+import { MoreOptionsButton } from "./MoreOptionsButton";
 import { useToast } from "./ToastContext";
 import { useAnimatedNumber } from "../hooks/useAnimatedNumber";
 
