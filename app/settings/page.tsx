@@ -56,6 +56,16 @@ function SettingsPageContent() {
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [pushNotifications, setPushNotifications] = useState(false);
 
+  React.useEffect(() => {
+    if (user) {
+      setFullName(user.user_metadata?.full_name || '');
+      setAvatarSeed(user.user_metadata?.avatar_seed || user.email || 'Guest');
+    } else {
+      setFullName('');
+      setAvatarSeed('Guest');
+    }
+  }, [user]);
+
   const handleDarkModeToggle = () => {
     setDarkMode(!darkMode);
     toggleTheme();
@@ -109,13 +119,6 @@ function SettingsPageContent() {
       setPassword('');
       setNewPassword('');
       setConfirmPassword('');
-    }
-  };
-
-  const handleSaveAll = async () => {
-    await handleSaveProfile();
-    if (newPassword) {
-      await handleSaveAccount();
     }
   };
 
@@ -334,16 +337,6 @@ function SettingsPageContent() {
               </motion.div>
             )}
           </AnimatePresence>
-
-          <div className="flex justify-end gap-3">
-            <button onClick={() => router.refresh()} className="px-6 py-2.5 panel-surface-soft border border-theme rounded-xl text-xs font-bold hover:bg-[var(--color-hover)] transition-all">
-              Discard Changes
-            </button>
-            <button onClick={handleSaveAll} className="flex items-center gap-2 px-6 py-2.5 bg-neon-pink text-theme rounded-xl text-xs font-bold neon-glow-pink hover:bg-neon-pink/80 transition-all">
-              <Save size={16} />
-              <span>Save Settings</span>
-            </button>
-          </div>
         </div>
       </div>
     </motion.div>
