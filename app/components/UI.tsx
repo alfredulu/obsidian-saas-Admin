@@ -3,7 +3,7 @@
 import React, { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'motion/react';
-import { X } from 'lucide-react';
+import { MoreHorizontal, X } from 'lucide-react';
 
 // --- Card ---
 export const Card = ({ children, className, title, subtitle, action }: any) => (
@@ -280,3 +280,20 @@ export const Modal = ({ isOpen, onClose, title, children, maxWidth = 'max-w-lg' 
     </AnimatePresence>
   );
 };
+
+export const MoreOptionsButton = ({
+  onClick,
+  ariaLabel = 'More options',
+}: {
+  onClick?: () => void;
+  ariaLabel?: string;
+}) => (
+  <button
+    type="button"
+    onClick={onClick}
+    aria-label={ariaLabel}
+    className="p-2 rounded-xl panel-surface-soft border border-theme text-muted-theme hover:text-theme hover:border-neon-cyan/40 transition-colors"
+  >
+    <MoreHorizontal size={14} />
+  </button>
+);
