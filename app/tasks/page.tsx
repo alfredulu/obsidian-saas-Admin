@@ -102,7 +102,7 @@ const KanbanColumn = ({ title, status, tasks, selectedId, onSelect, onUpdateStat
 };
 
 export default function TasksPage() {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const { showToast } = useToast();
   const [tasks, setTasks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -111,10 +111,14 @@ export default function TasksPage() {
   const [newTaskTitle, setNewTaskTitle] = useState('');
 
   useEffect(() => {
-    if (user) {
-      fetchTasks();
+    if (authLoading) return;
+    if (!user) {
+      setTasks([]);
+      setLoading(false);
+      return;
     }
-  }, [user]);
+    fetchTasks();
+  }, [user, authLoading]);
 
   const fetchTasks = async () => {
     setLoading(true);
