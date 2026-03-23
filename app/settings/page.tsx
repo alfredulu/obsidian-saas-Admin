@@ -88,6 +88,10 @@ function SettingsPageContent() {
   };
 
   const handleSaveProfile = async () => {
+    if (!user) {
+      showToast('Please log in to update your profile', 'error');
+      return;
+    }
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) {
       showToast('Auth session missing!', 'error');
@@ -105,6 +109,10 @@ function SettingsPageContent() {
   };
 
   const handleSaveAccount = async () => {
+    if (!user) {
+      showToast('Please log in to update your account', 'error');
+      return;
+    }
     if (newPassword !== confirmPassword) {
       showToast('Passwords do not match', 'error');
       return;

@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import {
   LayoutDashboard,
@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "./SidebarContext";
+import { useAuth } from "./AuthContext";
 
 type NavItem = {
   icon: React.ComponentType<any>;
@@ -77,10 +78,12 @@ const SidebarItem = ({
   isActive,
   isPending,
   onClick,
+  disabled = false,
 }: NavItem & {
   isActive: boolean;
   isPending: boolean;
-  onClick?: () => void;
+  onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
+  disabled?: boolean;
 }) => {
   const stateClass = navStateClass(isActive, isPending);
 
@@ -91,12 +94,14 @@ const SidebarItem = ({
       transition={{ type: "spring", stiffness: 400, damping: 10 }}
     >
       <Link
-        href={href}
+        href={disabled ? "/auth" : href}
         scroll={false}
         onClick={onClick}
+        aria-disabled={disabled}
         className={cn(
           "flex items-center justify-between px-4 py-2.5 rounded-xl cursor-pointer transition-all duration-200 group relative overflow-hidden sidebar-interactive",
-          stateClass
+          stateClass,
+          disabled && "opacity-70"
         )}
       >
         <div className="flex items-center gap-3">
@@ -140,11 +145,13 @@ const SettingsSupportBlock = ({
   pendingHref,
   onItemClick,
   activeTab,
+  isAuthenticated,
 }: {
   pathname: string;
   pendingHref: string | null;
   onItemClick: (href: string) => void;
   activeTab: string | null;
+  isAuthenticated: boolean;
 }) => {
   const [isSubmenuOpen, setIsSubmenuOpen] = React.useState(false);
 
@@ -183,7 +190,12 @@ const SettingsSupportBlock = ({
           <Link
             href="/settings"
             scroll={false}
-            onClick={() => onItemClick("/settings")}
+            onClick={(event) => {
+              if (!isAuthenticated) {
+                event.preventDefault();
+              }
+              onItemClick("/settings");
+            }}
             className="flex items-center gap-3 flex-1"
           >
             <Settings
@@ -231,18 +243,23 @@ const SettingsSupportBlock = ({
                 const isActive = activeTab === item.id;
                 const isPending = pendingHref === item.href;
                 return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    scroll={false}
-                    onClick={() => onItemClick(item.href)}
-                    className={cn(
-                      "flex items-center gap-2 rounded-xl px-10 py-2.5 text-xs font-medium transition-all",
-                      isActive
-                        ? "bg-[rgba(255,0,214,0.15)] text-theme"
-                        : "text-muted-theme hover:text-theme hover:bg-[var(--color-hover)]"
-                    )}
-                  >
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      scroll={false}
+                      onClick={(event) => {
+                        if (!isAuthenticated) {
+                          event.preventDefault();
+                        }
+                        onItemClick(item.href);
+                      }}
+                      className={cn(
+                        "flex items-center gap-2 rounded-xl px-10 py-2.5 text-xs font-medium transition-all",
+                        isActive
+                          ? "bg-[rgba(255,0,214,0.15)] text-theme"
+                          : "text-muted-theme hover:text-theme hover:bg-[var(--color-hover)]"
+                      )}
+                    >
                     {isPending && (
                       <span
                         className="w-3 h-3 border-[2px] border-theme border-t-[var(--color-text)] rounded-full animate-spin"
@@ -266,12 +283,14 @@ const SidebarSection = ({
   pathname,
   pendingHref,
   onItemClick,
+  isAuthenticated,
 }: {
   title: string;
   items: NavItem[];
   pathname: string;
   pendingHref: string | null;
   onItemClick: (href: string) => void;
+  isAuthenticated: boolean;
 }) => (
   <div>
     <p className="text-[10px] uppercase tracking-widest text-muted-theme font-bold mb-3 px-3">
@@ -284,7 +303,13 @@ const SidebarSection = ({
           {...item}
           isActive={pathname === item.href}
           isPending={pendingHref === item.href && pathname !== item.href}
-          onClick={() => onItemClick(item.href)}
+          disabled={!isAuthenticated}
+          onClick={(event) => {
+            if (!isAuthenticated) {
+              event.preventDefault();
+            }
+            onItemClick(item.href);
+          }}
         />
       ))}
     </nav>
@@ -293,6 +318,8 @@ const SidebarSection = ({
 
 export const Sidebar = () => {
   const { isOpen, close } = useSidebar();
+  const { user } = useAuth();
+  const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const tabParam = searchParams?.get("tab");
@@ -318,6 +345,12 @@ export const Sidebar = () => {
   }, [currentRoute, pendingHref]);
 
   const handleItemClick = (href: string) => {
+    if (!user) {
+      setPendingHref(null);
+      router.push("/auth");
+      close();
+      return;
+    }
     if (href === pathname) return;
     setPendingHref(href);
   };
@@ -330,6 +363,7 @@ export const Sidebar = () => {
           pendingHref={pendingHref}
           onItemClick={handleItemClick}
           activeTab={activeTab}
+          isAuthenticated={!!user}
         />
       </div>
       <AnimatePresence>
@@ -354,6 +388,7 @@ export const Sidebar = () => {
                 pendingHref={pendingHref}
                 onItemClick={handleItemClick}
                 activeTab={activeTab}
+                isAuthenticated={!!user}
               />
             </motion.div>
           </div>
@@ -368,11 +403,13 @@ const SidebarContent = ({
   pendingHref,
   onItemClick,
   activeTab,
+  isAuthenticated,
 }: {
   pathname: string;
   pendingHref: string | null;
   onItemClick: (href: string) => void;
   activeTab: string | null;
+  isAuthenticated: boolean;
 }) => (
   <aside className="w-60 min-w-[240px] h-full flex flex-col border-r border-theme p-5 panel-surface-soft backdrop-blur-xl">
     <div className="flex items-center gap-2 mb-8">
@@ -394,6 +431,7 @@ const SidebarContent = ({
             pathname={pathname}
             pendingHref={pendingHref}
             onItemClick={onItemClick}
+            isAuthenticated={isAuthenticated}
           />
           <div>
             <p className="text-[10px] uppercase tracking-widest text-muted-theme font-bold mb-3 px-3">
@@ -405,6 +443,7 @@ const SidebarContent = ({
                 pendingHref={pendingHref}
                 onItemClick={onItemClick}
                 activeTab={activeTab}
+                isAuthenticated={isAuthenticated}
               />
               {supportItems.map((item) => (
                 <SidebarItem
@@ -414,7 +453,13 @@ const SidebarContent = ({
                   isPending={
                     pendingHref === item.href && pathname !== item.href
                   }
-                  onClick={() => onItemClick(item.href)}
+                  disabled={!isAuthenticated}
+                  onClick={(event) => {
+                    if (!isAuthenticated) {
+                      event.preventDefault();
+                    }
+                    onItemClick(item.href);
+                  }}
                 />
               ))}
             </nav>

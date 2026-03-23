@@ -137,6 +137,10 @@ export default function TasksPage() {
   };
 
   const addTask = async () => {
+    if (!user) {
+      showToast('Please log in to create tasks', 'error');
+      return;
+    }
     if (!newTaskTitle) return;
     const { data, error } = await supabase
       .from('tasks')
@@ -155,6 +159,10 @@ export default function TasksPage() {
   };
 
   const updateTaskStatus = async (id: string, status: string) => {
+    if (!user) {
+      showToast('Please log in to update tasks', 'error');
+      return;
+    }
     const { error } = await supabase
       .from('tasks')
       .update({ status })
@@ -170,6 +178,10 @@ export default function TasksPage() {
   };
 
   const deleteTask = async (id: string) => {
+    if (!user) {
+      showToast('Please log in to delete tasks', 'error');
+      return;
+    }
     const { error } = await supabase
       .from('tasks')
       .delete()
@@ -202,9 +214,13 @@ export default function TasksPage() {
           <button onClick={() => showToast('Coming soon', 'info')} className="px-4 py-2 panel-surface-soft border border-theme rounded-xl text-xs font-bold hover:bg-[var(--color-hover)] transition-all">
             Filter
           </button>
-          <button onClick={() => setIsCreateModalOpen(true)} className="px-4 py-2 bg-neon-pink text-theme rounded-xl text-sm font-bold neon-glow-pink hover:bg-neon-pink/80 transition-all flex items-center gap-2">
+          <button
+            onClick={() => setIsCreateModalOpen(true)}
+            disabled={!user}
+            className={`px-4 py-2 bg-neon-pink text-theme rounded-xl text-sm font-bold neon-glow-pink transition-all flex items-center gap-2 ${!user ? 'opacity-60 cursor-not-allowed hover:bg-neon-pink' : 'hover:bg-neon-pink/80'}`}
+          >
             <Plus size={18} />
-            <span>New Task</span>
+            <span>{user ? 'New Task' : 'Login to Create'}</span>
           </button>
         </div>
       </div>
