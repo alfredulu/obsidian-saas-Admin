@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import { useRouter } from 'next/navigation';
 import { motion } from 'motion/react';
+import { useToast } from '@/app/components/ToastContext';
 import { useAuth } from '@/app/components/AuthContext';
 
 export default function AuthPage() {
@@ -13,6 +14,7 @@ export default function AuthPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
+  const { showToast } = useToast();
 
   useEffect(() => {
     if (!authLoading && user) {
@@ -20,20 +22,36 @@ export default function AuthPage() {
     }
   }, [authLoading, router, user]);
 
-  const handleAuth = async (e: React.FormEvent) => {
+  const handleAuth = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
 
-    if (isSignUp) {
-      const { error } = await supabase.auth.signUp({ email, password });
-      if (error) alert(error.message);
-      else alert('Check your email for confirmation!');
-    } else {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) alert(error.message);
-      else router.replace('/');
+    try {
+      if (isSignUp) {
+        const { error } = await supabase.auth.signUp({ email, password });
+        if (error) {
+          showToast(error.message, 'error');
+          return;
+        }
+        showToast('Check your email for confirmation!', 'success');
+      } else {
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) {
+          showToast(error.message, 'error');
+          return;
+        }
+        router.replace('/');
+      }
+    } catch (err) {
+      console.error('Supabase auth request failed', err);
+      const message =
+        err instanceof Error
+          ? err.message
+          : 'Unable to reach authentication service. Please try again.';
+      showToast(message, 'error');
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
